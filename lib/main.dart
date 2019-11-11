@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sfindit/screens/SplashScreen.dart';
+import 'package:sfindit/screens/splash.dart';
 
 void main() => runApp(MyApp());
 

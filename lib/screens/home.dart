@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sfindit/common/color.dart';
 
-class SplashScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
