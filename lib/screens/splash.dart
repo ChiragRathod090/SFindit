@@ -14,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     new Future.delayed(Duration(seconds: 3), () {
-      Navigator.push(
+      Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => LoginScreen()));
     });
   }
@@ -25,6 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
       color: primaryColor,
       child: Image(
         image: AssetImage(Images.SPLASH_BACKGROUND),
+        height: double.infinity,
+        width: double.infinity,
         fit: BoxFit.fill,
       ),
     );

@@ -48,6 +48,12 @@ flutter:
   assets:
     - assets/images/splash_background.jpg
     - assets/images/logo_transparent.png
+    - assets/images/document.png
+    - assets/images/fixture.png
+    - assets/images/live_support.png
+    - assets/images/notification.png
+    - assets/images/profile.png
+    - assets/images/teams.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
