@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/string.dart';
+import 'package:sfindit/screens/profile.dart';
 
 class HomeModel {
   String title;
@@ -54,9 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(20.0),
       child: InkWell(
         onTap: () {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(list[index].title),
-          ));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ProfileScreen()));
+//          Scaffold.of(context).showSnackBar(SnackBar(
+//            content: Text(list[index].title),
+//          ));
         },
         child: Column(
           children: <Widget>[

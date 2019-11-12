@@ -54,6 +54,8 @@ flutter:
     - assets/images/notification.png
     - assets/images/profile.png
     - assets/images/teams.png
+    - assets/images/back.png
+    - assets/images/edit.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

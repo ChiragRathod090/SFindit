@@ -5,6 +5,7 @@ const String lblLogin = "Log in";
 
 // Hard Coded Text
 const String txtLogin = "Login";
+
 const String txtProfile = "Profile";
 const String txtNotifications = "Notifications";
 const String txtTeams = "Teams";
