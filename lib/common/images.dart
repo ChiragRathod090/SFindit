@@ -12,4 +12,10 @@ class Images {
 
   static const String BACK = "assets/images/back.png";
   static const String EDIT = "assets/images/edit.png";
+
+  static const String APPBAR_HEADER = "assets/images/appbar_header.png";
+
+  static const String USER_PROFILE = "assets/images/user_profile.png";
+  static const String MAIL = "assets/images/mail.png";
+  static const String PHONE = "assets/images/phone.png";
 }

@@ -56,6 +56,11 @@ flutter:
     - assets/images/teams.png
     - assets/images/back.png
     - assets/images/edit.png
+    - assets/images/appbar_header.png
+    - assets/images/user_profile.png
+    - assets/images/jocker.jpg
+    - assets/images/mail.png
+    - assets/images/phone.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
