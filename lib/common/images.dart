@@ -12,6 +12,7 @@ class Images {
 
   static const String BACK = "assets/images/back.png";
   static const String EDIT = "assets/images/edit.png";
+  static const String SELECT_IMAGE = "assets/images/edit_profile.png";
 
   static const String APPBAR_HEADER = "assets/images/appbar_header.png";
 

@@ -13,15 +13,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Appbar(),
+      appBar: Appbar(txtProfile, true),
       body: Stack(
         children: <Widget>[
           Column(
             children: <Widget>[
-              Container(
-                child: Image.asset(
-                  Images.APPBAR_HEADER,
-                ),
+              Image.asset(
+                Images.APPBAR_HEADER,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -36,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           "assets/images/jocker.jpg",
                           height: 80.0,
                           width: 80.0,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -208,7 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextStyle(fontSize: 20, color: Colors.grey[600]),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

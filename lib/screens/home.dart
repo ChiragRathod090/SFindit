@@ -2,14 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/string.dart';
+import 'package:sfindit/screens/notification.dart';
 import 'package:sfindit/screens/profile.dart';
-
-class HomeModel {
-  String title;
-  String img;
-
-  HomeModel(this.title, this.img);
-}
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -55,8 +49,21 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(20.0),
       child: InkWell(
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ProfileScreen()));
+          switch (index) {
+            case 0:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()));
+              break;
+            case 1:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NotificationScreen()));
+              break;
+            default:
+              break;
+          }
+
 //          Scaffold.of(context).showSnackBar(SnackBar(
 //            content: Text(list[index].title),
 //          ));
@@ -77,6 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
+
+class HomeModel {
+  String title;
+  String img;
+
+  HomeModel(this.title, this.img);
 }
 
 class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {

@@ -19,12 +19,6 @@ class _LoginScreenState extends State<LoginScreen> {
   FocusNode passwordFocusNode;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
