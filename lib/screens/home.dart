@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/string.dart';
-import 'package:sfindit/screens/notification.dart';
+import 'package:sfindit/screens/notifications.dart';
 import 'package:sfindit/screens/profile.dart';
+import 'package:sfindit/screens/season.dart';
+import 'package:sfindit/screens/teams.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -59,6 +61,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => NotificationScreen()));
+              break;
+            case 2:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TeamsScreen()));
+              break;
+            case 3:
+              break;
+            case 4:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SeasonScreen()));
+              break;
+            case 5:
               break;
             default:
               break;

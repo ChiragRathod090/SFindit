@@ -7,6 +7,8 @@ const String lblLogin = "Log in";
 const String txtLogin = "Login";
 const String txtLogout = "Logout";
 const String txtSave = "Save";
+const String txtPlaying = "Playing";
+const String txtUnavailable = "Unavailable";
 
 const String txtProfile = "Profile";
 const String txtNotifications = "Notifications";
@@ -16,6 +18,8 @@ const String txtInvoices = "Invoices";
 const String txtLiveSupport = "Live Support";
 const String txtEditProfile = "Edit Profile";
 const String txtNotification = "Notification";
+const String txtUpcomingMatch = "Upcoming match";
+const String txtSelectSeason = "Select Season";
 
 // Hints
 const String hintUsername = "User name";
@@ -26,3 +30,4 @@ const String hintEmail = "Email";
 const String hintPhoneNumber = "Phone no.";
 const String hintEmergencyContactName = "Emergency contact name";
 const String hintEmergencyContact = "Emergency contact";
+const String hintWriteMessage = "Write Message";

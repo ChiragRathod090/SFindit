@@ -10,13 +10,20 @@ class Images {
   static const String HOME_PROFILE = "assets/images/profile.png";
   static const String HOME_TEAMS = "assets/images/teams.png";
 
+  static const String AUTUMN = "assets/images/autumn.png";
+  static const String SPRING = "assets/images/spring.png";
+  static const String SUMMER = "assets/images/sumer.png";
+
   static const String BACK = "assets/images/back.png";
   static const String EDIT = "assets/images/edit.png";
   static const String SELECT_IMAGE = "assets/images/edit_profile.png";
+  static const String CLOSE = "assets/images/close.png";
 
   static const String APPBAR_HEADER = "assets/images/appbar_header.png";
 
   static const String USER_PROFILE = "assets/images/user_profile.png";
   static const String MAIL = "assets/images/mail.png";
   static const String PHONE = "assets/images/phone.png";
+  static const String TEAMS = "assets/images/ic_teams.png";
+  static const String INFO = "assets/images/ic_info.png";
 }
