@@ -45,10 +45,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: <Widget>[
                           Text(
                             'Loream Ipsum',
-                            style: TextStyle(
-                                color: primaryColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
+                            style: Theme.of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(fontSize: 20.0),
                           ),
                           Text(
                             'Nick Name',

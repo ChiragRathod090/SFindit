@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/string.dart';
+import 'package:sfindit/screens/fixturesAndLadders.dart';
+import 'package:sfindit/screens/liveSupport.dart';
 import 'package:sfindit/screens/notifications.dart';
 import 'package:sfindit/screens/profile.dart';
 import 'package:sfindit/screens/season.dart';
@@ -67,12 +69,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   MaterialPageRoute(builder: (context) => TeamsScreen()));
               break;
             case 3:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FixtureAndLaddersScreen()));
               break;
             case 4:
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SeasonScreen()));
               break;
             case 5:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LiveSupportScreen()));
               break;
             default:
               break;

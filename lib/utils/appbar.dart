@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/screens/editProfile.dart';
 
@@ -13,7 +12,6 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0.0,
-      backgroundColor: primaryColor,
       centerTitle: true,
       title: Text(title),
       actions: <Widget>[

@@ -9,6 +9,9 @@ const String txtLogout = "Logout";
 const String txtSave = "Save";
 const String txtPlaying = "Playing";
 const String txtUnavailable = "Unavailable";
+const String txtPayInvoice = "Pay Invoice";
+const String txtFixtures = "Fixtures";
+const String txtLadders = "Ladders";
 
 const String txtProfile = "Profile";
 const String txtNotifications = "Notifications";

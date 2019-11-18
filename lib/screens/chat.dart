@@ -46,7 +46,7 @@ class _ChatState extends State<Chat> {
               ],
             ),
           ),
-          _buildTextComposer(context) //ne
+          _buildTextComposer(context)
         ],
       ),
     );
