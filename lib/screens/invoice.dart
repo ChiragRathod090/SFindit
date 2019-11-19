@@ -39,20 +39,26 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           children: <Widget>[
                             Text(
                               'Sfindit Flyers',
-                              style: TextStyle(
-                                  color: blackColor,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body2
+                                  .copyWith(fontSize: 18.0, color: blackColor),
+//                              style: TextStyle(
+//                                  color: blackColor,
+//                                  fontSize: 18,
+//                                  fontWeight: FontWeight.bold),
                             ),
                             Text(
                               'Full Court Metball:',
-                              style: TextStyle(
-                                  color: Colors.grey[600], fontSize: 13),
+                              style: Theme.of(context).textTheme.body1.copyWith(
+                                  fontSize: 13.0, color: Colors.grey[600]),
+                              //style: TextStyle(color: Colors.grey[600], fontSize: 13),
                             ),
                             Text(
                               'Wednesday Ladies',
-                              style: TextStyle(
-                                  color: Colors.grey[600], fontSize: 13),
+                              style: Theme.of(context).textTheme.body1.copyWith(
+                                  fontSize: 13.0, color: Colors.grey[600]),
+                              //style: TextStyle(color: Colors.grey[600], fontSize: 13),
                             ),
                           ],
                         ),
@@ -77,13 +83,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               children: <Widget>[
                                 Text(
                                   'Weeks',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   '15',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -95,13 +111,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               children: <Widget>[
                                 Text(
                                   'Cost',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   "133.0",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -113,13 +139,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               children: <Widget>[
                                 Text(
                                   'Paid',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   "133.0",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -131,13 +167,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               children: <Widget>[
                                 Text(
                                   'Due',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   '0.0',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -149,13 +195,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               children: <Widget>[
                                 Text(
                                   'Due date',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   '12/12/2019',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -175,20 +231,26 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           children: <Widget>[
                             Text(
                               'Sfindit Cruisers',
-                              style: TextStyle(
-                                  color: blackColor,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body2
+                                  .copyWith(fontSize: 18.0, color: blackColor),
+//                              style: TextStyle(
+//                                  color: blackColor,
+//                                  fontSize: 18,
+//                                  fontWeight: FontWeight.bold),
                             ),
                             Text(
                               'Full Court Metball:',
-                              style: TextStyle(
-                                  color: Colors.grey[600], fontSize: 13),
+                              style: Theme.of(context).textTheme.body1.copyWith(
+                                  fontSize: 13.0, color: Colors.grey[600]),
+                              //style: TextStyle(color: Colors.grey[600], fontSize: 13),
                             ),
                             Text(
                               'Thursday Ladies',
-                              style: TextStyle(
-                                  color: Colors.grey[600], fontSize: 13),
+                              style: Theme.of(context).textTheme.body1.copyWith(
+                                  fontSize: 13.0, color: Colors.grey[600]),
+                              //style: TextStyle(color: Colors.grey[600], fontSize: 13),
                             ),
                           ],
                         ),
@@ -213,13 +275,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               children: <Widget>[
                                 Text(
                                   'Weeks',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   '14',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -231,13 +303,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               children: <Widget>[
                                 Text(
                                   'Cost',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   "125.0",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -249,13 +331,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               children: <Widget>[
                                 Text(
                                   'Paid',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   "0.0",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -267,13 +359,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               children: <Widget>[
                                 Text(
                                   'Due',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   '125.0',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -285,13 +387,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               children: <Widget>[
                                 Text(
                                   'Due date',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   '19/12/2019',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -311,7 +423,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       children: <Widget>[
                         Container(
                           height: 1.0,
-                          width: MediaQuery.of(context).size.width * 0.20,
+                          width: MediaQuery.of(context).size.width / 6,
                           color: Colors.grey,
                         ),
                         Padding(
@@ -319,13 +431,14 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               const EdgeInsets.only(left: 10.0, right: 10.0),
                           child: Text(
                             "Total payable amount",
-                            style: TextStyle(
-                                backgroundColor: whiteColor, fontSize: 18),
+                            style: Theme.of(context).textTheme.body1.copyWith(
+                                fontSize: 16.0, backgroundColor: whiteColor),
+                            //style: TextStyle(backgroundColor: whiteColor, fontSize: 18),
                           ),
                         ),
                         Container(
                           height: 1.0,
-                          width: MediaQuery.of(context).size.width * 0.20,
+                          width: MediaQuery.of(context).size.width / 6,
                           color: Colors.grey,
                         ),
                       ],
@@ -340,11 +453,19 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           children: <Widget>[
                             Text(
                               'Total',
-                              style: TextStyle(fontSize: 17, color: blackColor),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 17.0, color: blackColor),
+                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                             Text(
                               '258.0',
-                              style: TextStyle(fontSize: 17, color: blackColor),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 17.0, color: blackColor),
+                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                           ],
                         ),
@@ -356,11 +477,19 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           children: <Widget>[
                             Text(
                               'GST',
-                              style: TextStyle(fontSize: 17, color: blackColor),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 17.0, color: blackColor),
+                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                             Text(
                               '23.45',
-                              style: TextStyle(fontSize: 17, color: blackColor),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 17.0, color: blackColor),
+                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                           ],
                         ),
@@ -372,11 +501,19 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           children: <Widget>[
                             Text(
                               'Paid',
-                              style: TextStyle(fontSize: 17, color: blackColor),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 17.0, color: blackColor),
+                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                             Text(
                               '133.0',
-                              style: TextStyle(fontSize: 17, color: blackColor),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 17.0, color: blackColor),
+                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                           ],
                         ),
@@ -388,11 +525,19 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           children: <Widget>[
                             Text(
                               'Owing',
-                              style: TextStyle(fontSize: 17, color: blackColor),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 17.0, color: blackColor),
+                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                             Text(
                               '125.0',
-                              style: TextStyle(fontSize: 17, color: blackColor),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 17.0, color: blackColor),
+                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                           ],
                         ),
@@ -405,8 +550,14 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8.0))),
-                            child: Text(txtPayInvoice,
-                                style: TextStyle(fontSize: 18)),
+                            child: Text(
+                              txtPayInvoice,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 18.0),
+                              //style: TextStyle(fontSize: 18)
+                            ),
                             color: orangeColor,
                             padding: EdgeInsets.only(
                                 left: 50.0,

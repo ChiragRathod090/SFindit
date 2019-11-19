@@ -52,7 +52,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           Text(
                             'Nick Name',
-                            style: TextStyle(color: primaryColor, fontSize: 12),
+                            style: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(fontSize: 12.0, color: primaryColor),
+                            //style: TextStyle(color: primaryColor, fontSize: 12),
                           ),
                         ],
                       ),
@@ -81,9 +85,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           "dummy@gmail.com",
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(color: Colors.grey[600]),
+                          //style: TextStyle(color: Colors.grey[600],),
                         )),
                   ],
                 ),
@@ -106,9 +112,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           "+61 9876543210",
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(color: Colors.grey[600]),
+                          //style: TextStyle(color: Colors.grey[600],),
                         )),
                   ],
                 ),
@@ -119,24 +127,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Container(
                       height: 1.0,
-                      width: MediaQuery.of(context).size.width * 0.24,
+                      width: MediaQuery.of(context).size.width / 5,
+                      //width: MediaQuery.of(context).size.width * 0.24,
                       color: Colors.grey,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                       child: Text(
                         "Emergency contact",
-                        style: TextStyle(backgroundColor: whiteColor),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(backgroundColor: whiteColor),
+                        //style: TextStyle(backgroundColor: whiteColor),
                       ),
                     ),
                     Container(
                       height: 1.0,
-                      width: MediaQuery.of(context).size.width * 0.24,
+                      width: MediaQuery.of(context).size.width / 5,
+                      //width: MediaQuery.of(context).size.width * 0.24,
                       color: Colors.grey,
                     ),
                   ],
@@ -163,9 +177,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           "Sam moore",
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(color: Colors.grey[600]),
+                          //style: TextStyle(color: Colors.grey[600],),
                         )),
                   ],
                 ),
@@ -188,9 +204,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           "+61 9876543210",
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(color: Colors.grey[600]),
+                          //style: TextStyle(color: Colors.grey[600],),
                         )),
                   ],
                 ),
@@ -203,7 +221,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: FlatButton(
               child: Text(
                 txtLogout,
-                style: TextStyle(fontSize: 20, color: Colors.grey[600]),
+                style: Theme.of(context)
+                    .textTheme
+                    .body1
+                    .copyWith(fontSize: 20.0, color: Colors.grey[600]),
+                //style: TextStyle(fontSize: 20, color: Colors.grey[600]),
               ),
             ),
           ),

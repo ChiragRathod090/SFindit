@@ -55,11 +55,12 @@ class _TeamsScreenState extends State<TeamsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      'SFindit Flyers',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
+                    Text('SFindit Flyers',
+                        style: Theme.of(context)
+                            .textTheme
+                            .body2
+                            .copyWith(fontSize: 16.0)),
+                    //style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     SizedBox(
                       height: 4.0,
                     ),
@@ -75,12 +76,12 @@ class _TeamsScreenState extends State<TeamsScreen> {
                         SizedBox(
                           width: 4.0,
                         ),
-                        Text(
-                          '09',
-                          style: TextStyle(
-                            fontSize: 13,
-                          ),
-                        )
+                        Text('09',
+                            style: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(fontSize: 13.0)),
+                        //style: TextStyle(fontSize: 13))
                       ],
                     ),
                   ],

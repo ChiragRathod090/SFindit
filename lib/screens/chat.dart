@@ -86,7 +86,7 @@ class _ChatState extends State<Chat> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      list.add(text);
+                      if (text != null) if (text.length != 0) list.add(text);
                     });
                   },
                   child: Icon(
@@ -117,37 +117,14 @@ class _ChatState extends State<Chat> {
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Text(text,
-                    //style: Theme.of(context).textTheme.body1),
-                    style: TextStyle(color: whiteColor)),
-//                child: Column(
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  children: <Widget>[
-//                    Row(
-//                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                      children: <Widget>[
-//                        Text(
-//                          "You",
-//                          style: Theme.of(context).textTheme.body1.copyWith(
-//                              fontSize: 12.0,
-//                              color: whiteColor /*Colors.grey[400]*/),
-//                        ),
-//                        Icon(
-//                          Icons.visibility,
-//                          color: Colors.grey[300],
-//                          size: 12.0,
-//                        )
-//                      ],
-//                    ),
-//                    SizedBox(
-//                      height: 4.0,
-//                    ),
-//                    Text(
-//                        "With decades of industry leadership, Loram is a recognized pioneer in maintenance of way services and equipment for the railroad industry.",
-//                        //style: Theme.of(context).textTheme.body1),
-//                        style: TextStyle(color: whiteColor)),
-//                  ],
-//                ),
+                child: Text(
+                  text,
+                  style: Theme.of(context)
+                      .textTheme
+                      .body1
+                      .copyWith(color: whiteColor),
+                  //style: TextStyle(color: whiteColor)
+                ),
               ),
               margin: EdgeInsets.only(top: 6.0, bottom: 6.0),
             ),
@@ -229,101 +206,142 @@ class _ChatState extends State<Chat> {
   }
 
   Widget upcomingMatchPopUp() {
-    return Container(
-      padding: EdgeInsets.only(top: 10.0),
-      height: MediaQuery.of(context).size.height * 0.30,
-      alignment: Alignment.topCenter,
-      color: Colors.grey[200],
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(top: 10.0),
+        alignment: Alignment.topCenter,
+        color: Colors.grey[200],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Upcoming Match \n vs. All That Talent',
+                            style: Theme.of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(fontSize: 16.0, color: blackColor),
+//                          style: TextStyle(
+//                              fontWeight: FontWeight.bold,
+//                              color: blackColor,
+//                              fontSize: 16),
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                '07/10/2019',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .body1
+                                    .copyWith(
+                                        fontSize: 12.0,
+                                        color: Colors.grey[600]),
+                                //style: TextStyle(color: Colors.grey[600], fontSize: 12)
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20.0),
+                                child: Text(
+                                  '7:10 PM',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontSize: 12.0,
+                                          color: Colors.grey[600]),
+                                  //style: TextStyle(color: Colors.grey[600], fontSize: 12)
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => CustomDialog(),
+                        );
+                      },
+                      child: Image(
+                        image: AssetImage(Images.INFO),
+                        color: orangeColor,
+                        height: 20.0,
+                        width: 20.0,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Are you available?',
+                  style: Theme.of(context)
+                      .textTheme
+                      .body2
+                      .copyWith(fontSize: 16.0, color: blackColor),
+//                style: TextStyle(
+//                    color: blackColor,
+//                    fontSize: 16,
+//                    fontWeight: FontWeight.bold),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Upcoming Match \n vs. All That Talent',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: blackColor,
-                              fontSize: 16),
-                        ),
-                        SizedBox(
-                          height: 8.0,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text('07/10/2019',
-                                style: TextStyle(
-                                    color: Colors.grey[600], fontSize: 12)),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20.0),
-                              child: Text('7:10 PM',
-                                  style: TextStyle(
-                                      color: Colors.grey[600], fontSize: 12)),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 2.4,
+                    child: RaisedButton(
+                      color: greenColor,
+                      textColor: whiteColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                      child: Text(
+                        txtPlaying,
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 14.0),
+                        //style: TextStyle(fontSize: 14)
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 2.4,
+                    child: RaisedButton(
+                      color: Colors.grey[500],
+                      textColor: Colors.black54,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                      child: Text(
+                        txtUnavailable,
+                        style: Theme.of(context).textTheme.body1.copyWith(
+                              fontSize: 14.0,
                             ),
-                          ],
-                        )
-                      ],
+                        //style: TextStyle(fontSize: 14)
+                      ),
+                      onPressed: () {},
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => CustomDialog(),
-                      );
-                    },
-                    child: Image(
-                      image: AssetImage(Images.INFO),
-                      color: orangeColor,
-                      height: 20.0,
-                      width: 20.0,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  )
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Are you available?',
-                style: TextStyle(
-                    color: blackColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                RaisedButton(
-                  color: greenColor,
-                  textColor: whiteColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                  child: Text(txtPlaying, style: TextStyle(fontSize: 14)),
-                  padding: EdgeInsets.only(left: 50.0, right: 50.0),
-                  onPressed: () {},
-                ),
-                RaisedButton(
-                  color: Colors.grey[500],
-                  textColor: Colors.black54,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                  child: Text(txtUnavailable, style: TextStyle(fontSize: 14)),
-                  padding: EdgeInsets.only(left: 50.0, right: 50.0),
-                  onPressed: () {},
-                )
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -343,7 +361,6 @@ class CustomDialog extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: whiteColor,
-          border: Border.all(width: 1),
           borderRadius: BorderRadius.all(Radius.circular(16.0))),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -357,7 +374,11 @@ class CustomDialog extends StatelessWidget {
               children: <Widget>[
                 Text(
                   txtUpcomingMatch,
-                  style: TextStyle(fontSize: 20, color: blackColor),
+                  style: Theme.of(context)
+                      .textTheme
+                      .body1
+                      .copyWith(fontSize: 20.0, color: blackColor),
+                  //style: TextStyle(fontSize: 20, color: blackColor),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -378,7 +399,11 @@ class CustomDialog extends StatelessWidget {
                 const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
             child: Text(
               '07/10/2019',
-              style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+              style: Theme.of(context)
+                  .textTheme
+                  .body1
+                  .copyWith(fontSize: 14.0, color: Colors.grey[500]),
+              //style: TextStyle(fontSize: 14, color: Colors.grey[500]),
             ),
           ),
           Divider(),
@@ -387,7 +412,7 @@ class CustomDialog extends StatelessWidget {
               shrinkWrap: true,
               itemCount: 10,
               itemBuilder: (BuildContext context, int index) {
-                return listItem();
+                return listItem(context);
               },
             ),
           ),
@@ -396,7 +421,7 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  Widget listItem() {
+  Widget listItem(BuildContext context) {
     return Container(
       child: Row(
         children: <Widget>[
@@ -420,10 +445,11 @@ class CustomDialog extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       'Andrew Scotch',
-                      style: TextStyle(
-                          color: blackColor,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold),
+                      style: Theme.of(context)
+                          .textTheme
+                          .body2
+                          .copyWith(color: blackColor, fontSize: 16.0),
+                      //style: TextStyle(color: blackColor, fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -432,7 +458,11 @@ class CustomDialog extends StatelessWidget {
                 ),
                 Text(
                   'Playing',
-                  style: TextStyle(fontSize: 14, color: greenColor),
+                  style: Theme.of(context)
+                      .textTheme
+                      .body1
+                      .copyWith(fontSize: 14.0, color: greenColor),
+                  //style: TextStyle(fontSize: 14, color: greenColor),
                 )
               ],
             ),

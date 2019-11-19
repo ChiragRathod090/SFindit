@@ -39,12 +39,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   width: 10,
                 ),
-                Text(
-                  lblLogin,
-                  style: TextStyle(
-                    fontSize: 35,
-                  ),
-                ),
+                Text(lblLogin,
+                    style: Theme.of(context)
+                        .textTheme
+                        .body1
+                        .copyWith(fontSize: 35.0)),
+                //style: TextStyle(fontSize: 35)),
               ],
             ),
             SizedBox(
@@ -92,7 +92,12 @@ class _LoginScreenState extends State<LoginScreen> {
             RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
-              child: Text(txtLogin, style: TextStyle(fontSize: 20)),
+              child: Text(txtLogin,
+                  style: Theme.of(context)
+                      .textTheme
+                      .body1
+                      .copyWith(fontSize: 20.0)),
+              //style: TextStyle(fontSize: 20)),
               color: orangeColor,
               padding: EdgeInsets.only(left: 50.0, right: 50.0),
               textColor: whiteColor,

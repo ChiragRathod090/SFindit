@@ -23,6 +23,7 @@ const String txtEditProfile = "Edit Profile";
 const String txtNotification = "Notification";
 const String txtUpcomingMatch = "Upcoming match";
 const String txtSelectSeason = "Select Season";
+const String txtSelectTeam = "Select team";
 
 // Hints
 const String hintUsername = "User name";

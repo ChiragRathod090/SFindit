@@ -22,6 +22,16 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
   ];
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration(milliseconds: 500), () {
+      showDialog(
+          context: context, builder: (BuildContext context) => CustomDialog());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Appbar(txtFixturesAndLadders, false),
@@ -98,7 +108,9 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
               icon: Icon(Icons.keyboard_arrow_down),
               iconSize: 24,
               elevation: 16,
-              style: TextStyle(color: blackColor),
+              style:
+                  Theme.of(context).textTheme.body1.copyWith(color: blackColor),
+              //style: TextStyle(color: blackColor),
               items: list.map((String value) {
                 return new DropdownMenuItem<String>(
                   value: value,
@@ -269,34 +281,6 @@ Widget fixturesItem(String list, BuildContext context) {
       ],
     ),
   );
-/*
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Container(
-      height: 100.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(list),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text("RND-R1"),
-              Text("5 - 0"),
-              Text("Aug 15\n 7:50 Pm"),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text("Venue - Brunkswick"),
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
-*/
 }
 
 Widget laddersItem(String leaderList, BuildContext context) {
@@ -339,4 +323,80 @@ Widget laddersItem(String leaderList, BuildContext context) {
       ],
     ),
   );
+}
+
+class CustomDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  dialogContent(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: whiteColor,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(Radius.circular(16.0))),
+      child: Column(
+        //mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 10.0, right: 10.0, top: 10, bottom: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  txtSelectTeam,
+                  style: Theme.of(context)
+                      .textTheme
+                      .body1
+                      .copyWith(fontSize: 20.0, color: blackColor),
+                  //style: TextStyle(fontSize: 20, color: blackColor),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Image(
+                    image: AssetImage(Images.CLOSE),
+                    height: 16.0,
+                    width: 16.0,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Divider(),
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: 10,
+              itemBuilder: (BuildContext context, int index) {
+                return listItem(context);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget listItem(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Text(
+        'SFindit Cruisers',
+        style: Theme.of(context)
+            .textTheme
+            .body1
+            .copyWith(fontSize: 16.0, color: blackColor),
+      ),
+    );
+  }
 }

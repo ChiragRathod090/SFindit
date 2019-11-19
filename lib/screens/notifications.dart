@@ -65,26 +65,32 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                            'Andrew Scotch',
-                            style: TextStyle(
-                                color: blackColor,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "18/09/2018",
-                            style: TextStyle(fontSize: 13),
-                          ),
+                          Text('Andrew Scotch',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body2
+                                  .copyWith(fontSize: 16.0, color: blackColor)),
+//                            style: TextStyle(
+//                                color: blackColor,
+//                                fontSize: 16.0,
+//                                fontWeight: FontWeight.bold)),
+                          Text("18/09/2018",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 13.0)),
+                          //style: TextStyle(fontSize: 13)),
                         ],
                       ),
                       SizedBox(
                         height: 2.0,
                       ),
-                      Text(
-                        'Lorem ipsum doler sit amet this is a dummy text.',
-                        style: TextStyle(fontSize: 14),
-                      )
+                      Text('Lorem ipsum doler sit amet this is a dummy text.',
+                          style: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(fontSize: 14.0)),
+                      //style: TextStyle(fontSize: 14))
                     ],
                   ),
                 )

@@ -78,7 +78,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      list.add(text);
+                      if (text != null) if (text.length != 0) list.add(text);
                     });
                   },
                   child: Icon(
@@ -110,8 +110,11 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Text(text,
-                    //style: Theme.of(context).textTheme.body1),
-                    style: TextStyle(color: whiteColor)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .body1
+                        .copyWith(color: whiteColor)),
+                //style: TextStyle(color: whiteColor)),
               ),
               margin: EdgeInsets.only(top: 6.0, bottom: 6.0),
             ),

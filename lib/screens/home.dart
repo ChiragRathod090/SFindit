@@ -85,10 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
             default:
               break;
           }
-
-//          Scaffold.of(context).showSnackBar(SnackBar(
-//            content: Text(list[index].title),
-//          ));
         },
         child: Column(
           children: <Widget>[
@@ -97,9 +93,13 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 100,
               image: AssetImage(list[index].img),
             ),
-            Text(
-              list[index].title,
-              style: TextStyle(fontSize: 16),
+            Expanded(
+              child: Text(
+                list[index].title,
+                style:
+                    Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
+                //style: TextStyle(fontSize: 16),
+              ),
             ),
           ],
         ),

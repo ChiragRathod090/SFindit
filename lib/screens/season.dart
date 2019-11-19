@@ -89,10 +89,12 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    list[index].name,
-                    style: TextStyle(color: blackColor, fontSize: 18),
-                  ),
+                  child: Text(list[index].name,
+                      style: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(fontSize: 18.0)),
+                  //style: TextStyle(color: blackColor, fontSize: 18)),
                 )
               ],
             )),

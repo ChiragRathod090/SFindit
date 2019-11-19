@@ -65,10 +65,12 @@ class _EditProfileState extends State<EditProfile> {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             hintName,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
+                            style: Theme.of(context).textTheme.body1.copyWith(
+                                fontSize: 14.0, color: Colors.grey[600]),
+//                            style: TextStyle(
+//                              fontSize: 14,
+//                              color: Colors.grey[600],
+//                            ),
                           ),
                         ),
                       ],
@@ -83,7 +85,11 @@ class _EditProfileState extends State<EditProfile> {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: TextFormField(
-                        style: (TextStyle(color: blackColor, fontSize: 16)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 16.0, color: blackColor),
+                        //style: (TextStyle(color: blackColor, fontSize: 16)),
                         textInputAction: TextInputAction.next,
                         autocorrect: false,
                         focusNode: nameFocusNode,
@@ -107,10 +113,12 @@ class _EditProfileState extends State<EditProfile> {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             hintNickName,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
+                            style: Theme.of(context).textTheme.body1.copyWith(
+                                fontSize: 14.0, color: Colors.grey[600]),
+//                            style: TextStyle(
+//                              fontSize: 14,
+//                              color: Colors.grey[600],
+//                            ),
                           ),
                         ),
                       ],
@@ -125,7 +133,11 @@ class _EditProfileState extends State<EditProfile> {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: TextFormField(
-                        style: (TextStyle(color: blackColor, fontSize: 16)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 16.0, color: blackColor),
+                        //style: (TextStyle(color: blackColor, fontSize: 16)),
                         textInputAction: TextInputAction.next,
                         autocorrect: false,
                         focusNode: nameFocusNode,
@@ -149,10 +161,12 @@ class _EditProfileState extends State<EditProfile> {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             hintEmail,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
+                            style: Theme.of(context).textTheme.body1.copyWith(
+                                fontSize: 14.0, color: Colors.grey[600]),
+//                            style: TextStyle(
+//                              fontSize: 14,
+//                              color: Colors.grey[600],
+//                            ),
                           ),
                         ),
                       ],
@@ -167,7 +181,11 @@ class _EditProfileState extends State<EditProfile> {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: TextFormField(
-                        style: (TextStyle(color: blackColor, fontSize: 16)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 16.0, color: blackColor),
+                        //style: (TextStyle(color: blackColor, fontSize: 16)),
                         textInputAction: TextInputAction.next,
                         autocorrect: false,
                         keyboardType: TextInputType.emailAddress,
@@ -192,10 +210,12 @@ class _EditProfileState extends State<EditProfile> {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             hintPhoneNumber,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
+                            style: Theme.of(context).textTheme.body1.copyWith(
+                                fontSize: 14.0, color: Colors.grey[600]),
+//                            style: TextStyle(
+//                              fontSize: 14,
+//                              color: Colors.grey[600],
+//                            ),
                           ),
                         ),
                       ],
@@ -210,7 +230,11 @@ class _EditProfileState extends State<EditProfile> {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: TextFormField(
-                        style: (TextStyle(color: blackColor, fontSize: 16)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 16.0, color: blackColor),
+                        //style: (TextStyle(color: blackColor, fontSize: 16)),
                         textInputAction: TextInputAction.next,
                         autocorrect: false,
                         keyboardType: TextInputType.number,
@@ -235,10 +259,12 @@ class _EditProfileState extends State<EditProfile> {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             hintEmergencyContactName,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
+                            style: Theme.of(context).textTheme.body1.copyWith(
+                                fontSize: 14.0, color: Colors.grey[600]),
+//                            style: TextStyle(
+//                              fontSize: 14,
+//                              color: Colors.grey[600],
+//                            ),
                           ),
                         ),
                       ],
@@ -253,7 +279,11 @@ class _EditProfileState extends State<EditProfile> {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: TextFormField(
-                        style: (TextStyle(color: blackColor, fontSize: 16)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 16.0, color: blackColor),
+                        //style: (TextStyle(color: blackColor, fontSize: 16)),
                         textInputAction: TextInputAction.next,
                         autocorrect: false,
                         focusNode: nameFocusNode,
@@ -277,10 +307,12 @@ class _EditProfileState extends State<EditProfile> {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             hintEmergencyContact,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
+                            style: Theme.of(context).textTheme.body1.copyWith(
+                                fontSize: 14.0, color: Colors.grey[600]),
+//                            style: TextStyle(
+//                              fontSize: 14,
+//                              color: Colors.grey[600],
+//                            ),
                           ),
                         ),
                       ],
@@ -295,7 +327,11 @@ class _EditProfileState extends State<EditProfile> {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: TextFormField(
-                        style: (TextStyle(color: blackColor, fontSize: 16)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 16.0, color: blackColor),
+                        //style: (TextStyle(color: blackColor, fontSize: 16)),
                         textInputAction: TextInputAction.next,
                         autocorrect: false,
                         keyboardType: TextInputType.number,
@@ -314,7 +350,14 @@ class _EditProfileState extends State<EditProfile> {
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                      child: Text(txtSave, style: TextStyle(fontSize: 20)),
+                      child: Text(
+                        txtSave,
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 20.0),
+                        //style: TextStyle(fontSize: 20)
+                      ),
                       color: orangeColor,
                       padding: EdgeInsets.only(
                           left: 50.0, right: 50.0, top: 10.0, bottom: 10.0),
