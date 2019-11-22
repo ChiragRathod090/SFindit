@@ -355,7 +355,7 @@ class _EditProfileState extends State<EditProfile> {
                         style: Theme.of(context)
                             .textTheme
                             .body1
-                            .copyWith(fontSize: 20.0),
+                            .copyWith(fontSize: 20.0, color: whiteColor),
                         //style: TextStyle(fontSize: 20)
                       ),
                       color: orangeColor,

@@ -69,7 +69,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      InvoiceScreen(title: list[index].name)));
+                      InvoiceScreen(title: list[index].name + " invoice")));
         },
         child: Card(
           shape: RoundedRectangleBorder(

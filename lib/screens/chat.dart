@@ -225,6 +225,7 @@ class _ChatState extends State<Chat> {
                         children: <Widget>[
                           Text(
                             'Upcoming Match \n vs. All That Talent',
+                            textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
                                 .body2
@@ -315,7 +316,7 @@ class _ChatState extends State<Chat> {
                         style: Theme.of(context)
                             .textTheme
                             .body1
-                            .copyWith(fontSize: 14.0),
+                            .copyWith(fontSize: 14.0, color: whiteColor),
                         //style: TextStyle(fontSize: 14)
                       ),
                       onPressed: () {},

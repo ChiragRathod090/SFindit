@@ -51,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 .copyWith(fontSize: 20.0),
                           ),
                           Text(
-                            'Nick Name',
+                            'Nick name',
                             style: Theme.of(context)
                                 .textTheme
                                 .body1
@@ -224,7 +224,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: Theme.of(context)
                     .textTheme
                     .body1
-                    .copyWith(fontSize: 20.0, color: Colors.grey[600]),
+                    .copyWith(fontSize: 20.0, color: Colors.grey[800]),
                 //style: TextStyle(fontSize: 20, color: Colors.grey[600]),
               ),
             ),

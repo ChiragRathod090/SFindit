@@ -120,7 +120,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
-                                  "133.0",
+                                  "\$133.0",
                                   style: Theme.of(context)
                                       .textTheme
                                       .body1
@@ -148,7 +148,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
-                                  "133.0",
+                                  "\$133.0",
                                   style: Theme.of(context)
                                       .textTheme
                                       .body1
@@ -176,7 +176,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
-                                  '0.0',
+                                  '\$0.0',
                                   style: Theme.of(context)
                                       .textTheme
                                       .body1
@@ -312,7 +312,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
-                                  "125.0",
+                                  "\$125.0",
                                   style: Theme.of(context)
                                       .textTheme
                                       .body1
@@ -340,7 +340,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
-                                  "0.0",
+                                  "\$0.0",
                                   style: Theme.of(context)
                                       .textTheme
                                       .body1
@@ -368,7 +368,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
-                                  '125.0',
+                                  '\$125.0',
                                   style: Theme.of(context)
                                       .textTheme
                                       .body1
@@ -460,7 +460,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                             Text(
-                              '258.0',
+                              '\$258.0',
                               style: Theme.of(context)
                                   .textTheme
                                   .body1
@@ -484,7 +484,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                             Text(
-                              '23.45',
+                              '\$23.45',
                               style: Theme.of(context)
                                   .textTheme
                                   .body1
@@ -508,7 +508,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                             Text(
-                              '133.0',
+                              '\$133.0',
                               style: Theme.of(context)
                                   .textTheme
                                   .body1
@@ -532,7 +532,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                             Text(
-                              '125.0',
+                              '\$125.0',
                               style: Theme.of(context)
                                   .textTheme
                                   .body1
@@ -555,7 +555,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               style: Theme.of(context)
                                   .textTheme
                                   .body1
-                                  .copyWith(fontSize: 18.0),
+                                  .copyWith(fontSize: 18.0, color: whiteColor),
                               //style: TextStyle(fontSize: 18)
                             ),
                             color: orangeColor,

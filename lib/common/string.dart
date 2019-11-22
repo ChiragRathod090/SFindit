@@ -18,11 +18,11 @@ const String txtNotifications = "Notifications";
 const String txtTeams = "Teams";
 const String txtFixturesAndLadders = "Fixtures & Ladders";
 const String txtInvoices = "Invoices";
-const String txtLiveSupport = "Live Support";
+const String txtLiveSupport = "Live support";
 const String txtEditProfile = "Edit Profile";
 const String txtNotification = "Notification";
 const String txtUpcomingMatch = "Upcoming match";
-const String txtSelectSeason = "Select Season";
+const String txtSelectSeason = "Select season";
 const String txtSelectTeam = "Select team";
 
 // Hints

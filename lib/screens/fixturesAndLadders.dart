@@ -236,6 +236,9 @@ Widget fixturesItem(String list, BuildContext context) {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  SizedBox(
+                    height: 4.0,
+                  ),
                   Text(
                     "RND-R1",
                     style: Theme.of(context)
