@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sfindit/common/color.dart';
+import 'package:sfindit/common/images.dart';
 import 'package:sfindit/screens/login.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -12,7 +12,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    new Future.delayed(Duration(microseconds: 3), () {
+    Future.delayed(Duration(microseconds: 3), () {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => LoginScreen()));
     });
@@ -20,21 +20,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: primaryColor,
-        child: Image.asset(
-          "assets/images/splash_background.jpg",
-          height: double.infinity,
-          width: double.infinity,
-          fit: BoxFit.fill,
-        )
-        /* Image(
-        image: ,
-       // image: AssetImage(Images.SPLASH_BACKGROUND),
-        height: double.infinity,
-        width: double.infinity,
-        fit: BoxFit.fill,
-      ),*/
-        );
+    return Image(
+      image: AssetImage(Images.SPLASH_BACKGROUND),
+      height: double.infinity,
+      width: double.infinity,
+      fit: BoxFit.fill,
+    );
   }
 }

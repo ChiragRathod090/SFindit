@@ -39,17 +39,6 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return listItem(index);
-//                    case 1:
-//                  switch (index) {
-//                    case 0:
-//                      return listItem(Images.AUTUMN, 'Autumn 2019', autumnColor);
-//                    case 1:
-//                      return listItem(Images.SPRING, 'Spring 2019', springColor);
-//                    case 2:
-//                      return listItem(Images.SUMMER, 'Summer 2019/2020', summerColor);
-//                    default:
-//                      return listItem(Images.AUTUMN, 'Autumn 2019', autumnColor);
-//                  }
                 },
               ),
             ),
@@ -59,7 +48,6 @@ class _SeasonScreenState extends State<SeasonScreen> {
     );
   }
 
-//  Widget listItem(String imagePath, String name, Color color) {
   Widget listItem(int index) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
@@ -71,33 +59,36 @@ class _SeasonScreenState extends State<SeasonScreen> {
                   builder: (context) =>
                       InvoiceScreen(title: list[index].name + " invoice")));
         },
-        child: Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: Container(
-            color: list[index].color,
-            height: 165,
-            child: Center(
-                child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Image(
-                  image: AssetImage(list[index].imagePath),
-                  height: 110.0,
-                  width: 110.0,
-                  fit: BoxFit.fill,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(list[index].name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .body1
-                          .copyWith(fontSize: 18.0)),
-                  //style: TextStyle(color: blackColor, fontSize: 18)),
-                )
-              ],
-            )),
+        child: Container(
+          child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: list[index].color,
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              height: 165.0,
+              child: Center(
+                  child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Image(
+                    image: AssetImage(list[index].imagePath),
+                    height: 110.0,
+                    width: 110.0,
+                    fit: BoxFit.fill,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(list[index].name,
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 18.0)),
+                  )
+                ],
+              )),
+            ),
           ),
         ),
       ),

@@ -103,7 +103,6 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
         children: <Widget>[
           Expanded(
             child: Card(
-              //color: Colors.white,
               color: primaryColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
@@ -114,7 +113,6 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                         .textTheme
                         .body1
                         .copyWith(color: whiteColor)),
-                //style: TextStyle(color: whiteColor)),
               ),
               margin: EdgeInsets.only(top: 6.0, bottom: 6.0),
             ),

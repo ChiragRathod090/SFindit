@@ -56,7 +56,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 .textTheme
                                 .body1
                                 .copyWith(fontSize: 12.0, color: primaryColor),
-                            //style: TextStyle(color: primaryColor, fontSize: 12),
                           ),
                         ],
                       ),
@@ -89,7 +88,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               .textTheme
                               .body1
                               .copyWith(color: Colors.grey[600]),
-                          //style: TextStyle(color: Colors.grey[600],),
                         )),
                   ],
                 ),
@@ -116,7 +114,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               .textTheme
                               .body1
                               .copyWith(color: Colors.grey[600]),
-                          //style: TextStyle(color: Colors.grey[600],),
                         )),
                   ],
                 ),
@@ -133,7 +130,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       height: 1.0,
                       width: MediaQuery.of(context).size.width / 5,
-                      //width: MediaQuery.of(context).size.width * 0.24,
                       color: Colors.grey,
                     ),
                     Padding(
@@ -144,13 +140,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             .textTheme
                             .body1
                             .copyWith(backgroundColor: whiteColor),
-                        //style: TextStyle(backgroundColor: whiteColor),
                       ),
                     ),
                     Container(
                       height: 1.0,
                       width: MediaQuery.of(context).size.width / 5,
-                      //width: MediaQuery.of(context).size.width * 0.24,
                       color: Colors.grey,
                     ),
                   ],
@@ -181,7 +175,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               .textTheme
                               .body1
                               .copyWith(color: Colors.grey[600]),
-                          //style: TextStyle(color: Colors.grey[600],),
                         )),
                   ],
                 ),
@@ -208,7 +201,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               .textTheme
                               .body1
                               .copyWith(color: Colors.grey[600]),
-                          //style: TextStyle(color: Colors.grey[600],),
                         )),
                   ],
                 ),
@@ -225,7 +217,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     .textTheme
                     .body1
                     .copyWith(fontSize: 20.0, color: Colors.grey[800]),
-                //style: TextStyle(fontSize: 20, color: Colors.grey[600]),
               ),
             ),
           ),

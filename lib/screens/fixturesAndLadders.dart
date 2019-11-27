@@ -110,7 +110,6 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
               elevation: 16,
               style:
                   Theme.of(context).textTheme.body1.copyWith(color: blackColor),
-              //style: TextStyle(color: blackColor),
               items: list.map((String value) {
                 return new DropdownMenuItem<String>(
                   value: value,
@@ -166,7 +165,6 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
               height: 50.0,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                // padding: EdgeInsets.all(10.0),
                 itemCount: list.length,
                 itemBuilder: (context, index) =>
                     laddersItem(list[index], context),
@@ -344,7 +342,6 @@ class CustomDialog extends StatelessWidget {
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.all(Radius.circular(16.0))),
       child: Column(
-        //mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
@@ -359,7 +356,6 @@ class CustomDialog extends StatelessWidget {
                       .textTheme
                       .body1
                       .copyWith(fontSize: 20.0, color: blackColor),
-                  //style: TextStyle(fontSize: 20, color: blackColor),
                 ),
                 GestureDetector(
                   onTap: () {

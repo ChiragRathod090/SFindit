@@ -98,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 list[index].title,
                 style:
                     Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
-                //style: TextStyle(fontSize: 16),
               ),
             ),
           ],

@@ -60,7 +60,6 @@ class _TeamsScreenState extends State<TeamsScreen> {
                             .textTheme
                             .body2
                             .copyWith(fontSize: 16.0)),
-                    //style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     SizedBox(
                       height: 4.0,
                     ),
@@ -81,7 +80,6 @@ class _TeamsScreenState extends State<TeamsScreen> {
                                 .textTheme
                                 .body1
                                 .copyWith(fontSize: 13.0)),
-                        //style: TextStyle(fontSize: 13))
                       ],
                     ),
                   ],

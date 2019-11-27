@@ -70,16 +70,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   .textTheme
                                   .body2
                                   .copyWith(fontSize: 16.0, color: blackColor)),
-//                            style: TextStyle(
-//                                color: blackColor,
-//                                fontSize: 16.0,
-//                                fontWeight: FontWeight.bold)),
                           Text("18/09/2018",
                               style: Theme.of(context)
                                   .textTheme
                                   .body1
                                   .copyWith(fontSize: 13.0)),
-                          //style: TextStyle(fontSize: 13)),
                         ],
                       ),
                       SizedBox(
@@ -90,7 +85,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               .textTheme
                               .body1
                               .copyWith(fontSize: 14.0)),
-                      //style: TextStyle(fontSize: 14))
                     ],
                   ),
                 )

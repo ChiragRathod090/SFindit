@@ -44,7 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         .textTheme
                         .body1
                         .copyWith(fontSize: 35.0)),
-                //style: TextStyle(fontSize: 35)),
               ],
             ),
             SizedBox(
@@ -97,7 +96,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       .textTheme
                       .body1
                       .copyWith(fontSize: 20.0, color: whiteColor)),
-              //style: TextStyle(fontSize: 20)),
               color: orangeColor,
               padding: EdgeInsets.only(left: 50.0, right: 50.0),
               textColor: whiteColor,

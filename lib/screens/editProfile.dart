@@ -67,10 +67,6 @@ class _EditProfileState extends State<EditProfile> {
                             hintName,
                             style: Theme.of(context).textTheme.body1.copyWith(
                                 fontSize: 14.0, color: Colors.grey[600]),
-//                            style: TextStyle(
-//                              fontSize: 14,
-//                              color: Colors.grey[600],
-//                            ),
                           ),
                         ),
                       ],
@@ -89,7 +85,6 @@ class _EditProfileState extends State<EditProfile> {
                             .textTheme
                             .body1
                             .copyWith(fontSize: 16.0, color: blackColor),
-                        //style: (TextStyle(color: blackColor, fontSize: 16)),
                         textInputAction: TextInputAction.next,
                         autocorrect: false,
                         focusNode: nameFocusNode,
@@ -115,10 +110,6 @@ class _EditProfileState extends State<EditProfile> {
                             hintNickName,
                             style: Theme.of(context).textTheme.body1.copyWith(
                                 fontSize: 14.0, color: Colors.grey[600]),
-//                            style: TextStyle(
-//                              fontSize: 14,
-//                              color: Colors.grey[600],
-//                            ),
                           ),
                         ),
                       ],
@@ -137,7 +128,6 @@ class _EditProfileState extends State<EditProfile> {
                             .textTheme
                             .body1
                             .copyWith(fontSize: 16.0, color: blackColor),
-                        //style: (TextStyle(color: blackColor, fontSize: 16)),
                         textInputAction: TextInputAction.next,
                         autocorrect: false,
                         focusNode: nameFocusNode,
@@ -163,10 +153,6 @@ class _EditProfileState extends State<EditProfile> {
                             hintEmail,
                             style: Theme.of(context).textTheme.body1.copyWith(
                                 fontSize: 14.0, color: Colors.grey[600]),
-//                            style: TextStyle(
-//                              fontSize: 14,
-//                              color: Colors.grey[600],
-//                            ),
                           ),
                         ),
                       ],
@@ -185,7 +171,6 @@ class _EditProfileState extends State<EditProfile> {
                             .textTheme
                             .body1
                             .copyWith(fontSize: 16.0, color: blackColor),
-                        //style: (TextStyle(color: blackColor, fontSize: 16)),
                         textInputAction: TextInputAction.next,
                         autocorrect: false,
                         keyboardType: TextInputType.emailAddress,
@@ -212,10 +197,6 @@ class _EditProfileState extends State<EditProfile> {
                             hintPhoneNumber,
                             style: Theme.of(context).textTheme.body1.copyWith(
                                 fontSize: 14.0, color: Colors.grey[600]),
-//                            style: TextStyle(
-//                              fontSize: 14,
-//                              color: Colors.grey[600],
-//                            ),
                           ),
                         ),
                       ],
@@ -234,7 +215,6 @@ class _EditProfileState extends State<EditProfile> {
                             .textTheme
                             .body1
                             .copyWith(fontSize: 16.0, color: blackColor),
-                        //style: (TextStyle(color: blackColor, fontSize: 16)),
                         textInputAction: TextInputAction.next,
                         autocorrect: false,
                         keyboardType: TextInputType.number,
@@ -261,10 +241,6 @@ class _EditProfileState extends State<EditProfile> {
                             hintEmergencyContactName,
                             style: Theme.of(context).textTheme.body1.copyWith(
                                 fontSize: 14.0, color: Colors.grey[600]),
-//                            style: TextStyle(
-//                              fontSize: 14,
-//                              color: Colors.grey[600],
-//                            ),
                           ),
                         ),
                       ],
@@ -283,7 +259,6 @@ class _EditProfileState extends State<EditProfile> {
                             .textTheme
                             .body1
                             .copyWith(fontSize: 16.0, color: blackColor),
-                        //style: (TextStyle(color: blackColor, fontSize: 16)),
                         textInputAction: TextInputAction.next,
                         autocorrect: false,
                         focusNode: nameFocusNode,
@@ -309,10 +284,6 @@ class _EditProfileState extends State<EditProfile> {
                             hintEmergencyContact,
                             style: Theme.of(context).textTheme.body1.copyWith(
                                 fontSize: 14.0, color: Colors.grey[600]),
-//                            style: TextStyle(
-//                              fontSize: 14,
-//                              color: Colors.grey[600],
-//                            ),
                           ),
                         ),
                       ],
@@ -331,7 +302,6 @@ class _EditProfileState extends State<EditProfile> {
                             .textTheme
                             .body1
                             .copyWith(fontSize: 16.0, color: blackColor),
-                        //style: (TextStyle(color: blackColor, fontSize: 16)),
                         textInputAction: TextInputAction.next,
                         autocorrect: false,
                         keyboardType: TextInputType.number,
@@ -356,7 +326,6 @@ class _EditProfileState extends State<EditProfile> {
                             .textTheme
                             .body1
                             .copyWith(fontSize: 20.0, color: whiteColor),
-                        //style: TextStyle(fontSize: 20)
                       ),
                       color: orangeColor,
                       padding: EdgeInsets.only(

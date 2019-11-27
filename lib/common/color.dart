@@ -6,6 +6,7 @@ const Color greenColor = Color(0xFF39870F);
 const Color autumnColor = Color(0xFFFDECE5);
 const Color springColor = Color(0xFFFEF5F6);
 const Color summerColor = Color(0xFFFDFAE7);
+const Color googleBackgroundColor = Color(0xFFf1f3f3);
 const Color whiteColor = Colors.white;
 const Color blackColor = Colors.black;
 

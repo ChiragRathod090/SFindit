@@ -111,7 +111,6 @@ class _ChatState extends State<Chat> {
         children: <Widget>[
           Expanded(
             child: Card(
-              //color: Colors.white,
               color: primaryColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
@@ -123,7 +122,6 @@ class _ChatState extends State<Chat> {
                       .textTheme
                       .body1
                       .copyWith(color: whiteColor),
-                  //style: TextStyle(color: whiteColor)
                 ),
               ),
               margin: EdgeInsets.only(top: 6.0, bottom: 6.0),
@@ -230,10 +228,6 @@ class _ChatState extends State<Chat> {
                                 .textTheme
                                 .body2
                                 .copyWith(fontSize: 16.0, color: blackColor),
-//                          style: TextStyle(
-//                              fontWeight: FontWeight.bold,
-//                              color: blackColor,
-//                              fontSize: 16),
                           ),
                           SizedBox(
                             height: 8.0,
@@ -248,7 +242,6 @@ class _ChatState extends State<Chat> {
                                     .copyWith(
                                         fontSize: 12.0,
                                         color: Colors.grey[600]),
-                                //style: TextStyle(color: Colors.grey[600], fontSize: 12)
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 20.0),
@@ -260,7 +253,6 @@ class _ChatState extends State<Chat> {
                                       .copyWith(
                                           fontSize: 12.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(color: Colors.grey[600], fontSize: 12)
                                 ),
                               ),
                             ],
@@ -294,10 +286,6 @@ class _ChatState extends State<Chat> {
                       .textTheme
                       .body2
                       .copyWith(fontSize: 16.0, color: blackColor),
-//                style: TextStyle(
-//                    color: blackColor,
-//                    fontSize: 16,
-//                    fontWeight: FontWeight.bold),
                 ),
               ),
               Row(
@@ -317,7 +305,6 @@ class _ChatState extends State<Chat> {
                             .textTheme
                             .body1
                             .copyWith(fontSize: 14.0, color: whiteColor),
-                        //style: TextStyle(fontSize: 14)
                       ),
                       onPressed: () {},
                     ),
@@ -334,7 +321,6 @@ class _ChatState extends State<Chat> {
                         style: Theme.of(context).textTheme.body1.copyWith(
                               fontSize: 14.0,
                             ),
-                        //style: TextStyle(fontSize: 14)
                       ),
                       onPressed: () {},
                     ),
@@ -379,7 +365,6 @@ class CustomDialog extends StatelessWidget {
                       .textTheme
                       .body1
                       .copyWith(fontSize: 20.0, color: blackColor),
-                  //style: TextStyle(fontSize: 20, color: blackColor),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -404,7 +389,6 @@ class CustomDialog extends StatelessWidget {
                   .textTheme
                   .body1
                   .copyWith(fontSize: 14.0, color: Colors.grey[500]),
-              //style: TextStyle(fontSize: 14, color: Colors.grey[500]),
             ),
           ),
           Divider(),
@@ -450,7 +434,6 @@ class CustomDialog extends StatelessWidget {
                           .textTheme
                           .body2
                           .copyWith(color: blackColor, fontSize: 16.0),
-                      //style: TextStyle(color: blackColor, fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -463,7 +446,6 @@ class CustomDialog extends StatelessWidget {
                       .textTheme
                       .body1
                       .copyWith(fontSize: 14.0, color: greenColor),
-                  //style: TextStyle(fontSize: 14, color: greenColor),
                 )
               ],
             ),

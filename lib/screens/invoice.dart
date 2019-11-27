@@ -43,22 +43,16 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   .textTheme
                                   .body2
                                   .copyWith(fontSize: 18.0, color: blackColor),
-//                              style: TextStyle(
-//                                  color: blackColor,
-//                                  fontSize: 18,
-//                                  fontWeight: FontWeight.bold),
                             ),
                             Text(
                               'Full Court Metball:',
                               style: Theme.of(context).textTheme.body1.copyWith(
                                   fontSize: 13.0, color: Colors.grey[600]),
-                              //style: TextStyle(color: Colors.grey[600], fontSize: 13),
                             ),
                             Text(
                               'Wednesday Ladies',
                               style: Theme.of(context).textTheme.body1.copyWith(
                                   fontSize: 13.0, color: Colors.grey[600]),
-                              //style: TextStyle(color: Colors.grey[600], fontSize: 13),
                             ),
                           ],
                         ),
@@ -89,7 +83,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   '15',
@@ -99,7 +92,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -117,7 +109,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   "\$133.0",
@@ -127,7 +118,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -145,7 +135,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   "\$133.0",
@@ -155,7 +144,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -173,7 +161,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   '\$0.0',
@@ -183,7 +170,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -201,7 +187,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   '12/12/2019',
@@ -211,7 +196,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -235,22 +219,16 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   .textTheme
                                   .body2
                                   .copyWith(fontSize: 18.0, color: blackColor),
-//                              style: TextStyle(
-//                                  color: blackColor,
-//                                  fontSize: 18,
-//                                  fontWeight: FontWeight.bold),
                             ),
                             Text(
                               'Full Court Metball:',
                               style: Theme.of(context).textTheme.body1.copyWith(
                                   fontSize: 13.0, color: Colors.grey[600]),
-                              //style: TextStyle(color: Colors.grey[600], fontSize: 13),
                             ),
                             Text(
                               'Thursday Ladies',
                               style: Theme.of(context).textTheme.body1.copyWith(
                                   fontSize: 13.0, color: Colors.grey[600]),
-                              //style: TextStyle(color: Colors.grey[600], fontSize: 13),
                             ),
                           ],
                         ),
@@ -281,7 +259,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   '14',
@@ -291,7 +268,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -309,7 +285,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   "\$125.0",
@@ -319,7 +294,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -337,7 +311,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   "\$0.0",
@@ -347,7 +320,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -365,7 +337,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   '\$125.0',
@@ -375,7 +346,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -393,7 +363,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 Text(
                                   '19/12/2019',
@@ -403,7 +372,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       .copyWith(
                                           fontSize: 16.0,
                                           color: Colors.grey[600]),
-                                  //style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
@@ -433,7 +401,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                             "Total payable amount",
                             style: Theme.of(context).textTheme.body1.copyWith(
                                 fontSize: 16.0, backgroundColor: whiteColor),
-                            //style: TextStyle(backgroundColor: whiteColor, fontSize: 18),
                           ),
                         ),
                         Container(
@@ -457,7 +424,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   .textTheme
                                   .body1
                                   .copyWith(fontSize: 17.0, color: blackColor),
-                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                             Text(
                               '\$258.0',
@@ -465,7 +431,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   .textTheme
                                   .body1
                                   .copyWith(fontSize: 17.0, color: blackColor),
-                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                           ],
                         ),
@@ -481,7 +446,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   .textTheme
                                   .body1
                                   .copyWith(fontSize: 17.0, color: blackColor),
-                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                             Text(
                               '\$23.45',
@@ -489,7 +453,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   .textTheme
                                   .body1
                                   .copyWith(fontSize: 17.0, color: blackColor),
-                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                           ],
                         ),
@@ -505,7 +468,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   .textTheme
                                   .body1
                                   .copyWith(fontSize: 17.0, color: blackColor),
-                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                             Text(
                               '\$133.0',
@@ -513,7 +475,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   .textTheme
                                   .body1
                                   .copyWith(fontSize: 17.0, color: blackColor),
-                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                           ],
                         ),
@@ -529,7 +490,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   .textTheme
                                   .body1
                                   .copyWith(fontSize: 17.0, color: blackColor),
-                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                             Text(
                               '\$125.0',
@@ -537,7 +497,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   .textTheme
                                   .body1
                                   .copyWith(fontSize: 17.0, color: blackColor),
-                              //style: TextStyle(fontSize: 17, color: blackColor),
                             ),
                           ],
                         ),
@@ -556,7 +515,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   .textTheme
                                   .body1
                                   .copyWith(fontSize: 18.0, color: whiteColor),
-                              //style: TextStyle(fontSize: 18)
                             ),
                             color: orangeColor,
                             padding: EdgeInsets.only(
