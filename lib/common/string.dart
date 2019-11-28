@@ -35,3 +35,10 @@ const String hintPhoneNumber = "Phone no.";
 const String hintEmergencyContactName = "Emergency contact name";
 const String hintEmergencyContact = "Emergency contact";
 const String hintWriteMessage = "Write Message";
+
+// Dialogs Labels
+const String txtOk = "Ok";
+const String txtYes = "Yes";
+const String txtNo = "No";
+const String txtCamera = "Camera";
+const String txtGallery = "Gallery";

@@ -1,13 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sfindit/common/color.dart';
+import 'package:sfindit/common/constants.dart';
+import 'package:sfindit/common/custom_dialog.dart';
 import 'package:sfindit/common/images.dart';
+import 'package:sfindit/common/input_type_validation.dart';
+import 'package:sfindit/common/keys.dart';
+import 'package:sfindit/common/loding.dart';
 import 'package:sfindit/common/string.dart';
+import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/screens/home.dart';
-
-const CURVE_HEIGHT = 160.0;
-const AVATAR_RADIUS = CURVE_HEIGHT * 0.28;
-const AVATAR_DIAMETER = AVATAR_RADIUS * 2;
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -17,97 +21,162 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   FocusNode userNameFocusNode;
   FocusNode passwordFocusNode;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  var isValidation = false;
+  String _userName;
+  String _password;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            RoundedAppBar(),
-            SizedBox(
-              height: 30,
-            ),
-            Row(
-              children: <Widget>[
-                Container(
-                  color: orangeColor,
-                  height: 60,
-                  width: 8,
+        child: Form(
+          key: _formKey,
+          autovalidate: isValidation,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              RoundedAppBar(),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: <Widget>[
+                  Container(
+                    color: orangeColor,
+                    height: 60,
+                    width: 8,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(lblLogin,
+                      style: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(fontSize: 35.0)),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                margin: new EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: TextFormField(
+                    textInputAction: TextInputAction.next,
+                    focusNode: userNameFocusNode,
+                    autocorrect: false,
+                    decoration:
+                        InputDecoration.collapsed(hintText: hintUsername),
+                    validator: InputValidation.validateEmail,
+                    onSaved: (val) {
+                      _userName = val;
+                    },
+                    onFieldSubmitted: (term) {
+                      _fieldFocusChange(
+                          context, userNameFocusNode, passwordFocusNode);
+                    },
+                  ),
                 ),
-                SizedBox(
-                  width: 10,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                margin: new EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                child: TextFormField(
+                  validator: InputValidation.validatePassword,
+                  onSaved: (val) {
+                    _password = val;
+                  },
+                  onFieldSubmitted: (term) {},
+                  obscureText: true,
+                  focusNode: passwordFocusNode,
+                  textInputAction: TextInputAction.done,
+                  autocorrect: false,
+                  decoration: InputDecoration.collapsed(hintText: hintPassword),
                 ),
-                Text(lblLogin,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                child: Text(txtLogin,
                     style: Theme.of(context)
                         .textTheme
                         .body1
-                        .copyWith(fontSize: 35.0)),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              margin: new EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  textInputAction: TextInputAction.next,
-                  autocorrect: false,
-                  focusNode: userNameFocusNode,
-                  decoration: InputDecoration.collapsed(hintText: hintUsername),
-                  onFieldSubmitted: (term) {
-                    _fieldFocusChange(
-                        context, userNameFocusNode, passwordFocusNode);
-                  },
-                ),
+                        .copyWith(fontSize: 20.0, color: whiteColor)),
+                color: orangeColor,
+                padding: EdgeInsets.only(left: 50.0, right: 50.0),
+                textColor: whiteColor,
+                onPressed: () {
+                  showDialog(context: context, builder: (context) => Loading());
+                  if (isValidate()) {
+                    loginApi();
+                  }
+                },
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              margin: new EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              child: TextFormField(
-                obscureText: true,
-                focusNode: passwordFocusNode,
-                textInputAction: TextInputAction.done,
-                autocorrect: false,
-                decoration: InputDecoration.collapsed(hintText: hintPassword),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
-              child: Text(txtLogin,
-                  style: Theme.of(context)
-                      .textTheme
-                      .body1
-                      .copyWith(fontSize: 20.0, color: whiteColor)),
-              color: orangeColor,
-              padding: EdgeInsets.only(left: 50.0, right: 50.0),
-              textColor: whiteColor,
-              onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()));
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  bool isValidate() {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      return true;
+    } else {
+      isValidation = true;
+      return false;
+    }
+  }
+
+  void loginApi() {
+    print(getParameters());
+    login(getParameters()).then((response) {
+      var data = json.decode(response.body);
+      print(data);
+      Navigator.pop(context);
+      if (data['success'] == 1) {
+        print("USER ID : " + data['result']['user_id']);
+        setPrefValue(Keys.USER_ID, data['result']['user_id']);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      } else {
+        dialog(data['message'].toString());
+      }
+    });
+  }
+
+  getParameters() {
+    return {
+      'email': '$_userName',
+      'password': '$_password',
+    };
+  }
+
+  void dialog(String msg) {
+    showDialog(
+        context: context,
+        builder: (context) => CustomDialog(
+              msg: msg,
+              callBack: () {
+                Navigator.pop(context);
+              },
+            ));
   }
 }
 

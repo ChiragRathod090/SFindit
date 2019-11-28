@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
+import 'package:sfindit/common/keys.dart';
+import 'package:sfindit/common/pref.dart';
+import 'package:sfindit/screens/home.dart';
 import 'package:sfindit/screens/login.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -10,12 +14,27 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
+    Pref.init();
     super.initState();
-    Future.delayed(Duration(microseconds: 3), () {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    Future.delayed(Duration(seconds: 5), () {
+      checkLogin();
     });
+  }
+
+  checkLogin() async {
+    String userId = await getPrefValue(Keys.USER_ID);
+    print("USER ID : " + userId);
+    if (userId != "") {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    } else {
+      goToLoginScreen();
+    }
+  }
+
+  goToLoginScreen() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
   @override

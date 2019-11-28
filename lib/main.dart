@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sfindit/screens/splash.dart';
 
 import 'common/color.dart';
-import 'common/pref.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,9 +13,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Pref.init();
   }
 
   @override

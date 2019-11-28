@@ -1,6 +1,6 @@
 import 'package:sfindit/common/pref.dart';
 
-String getPrefValue(String key) {
+getPrefValue(String key) {
   return Pref.getString(key, "");
 }
 
