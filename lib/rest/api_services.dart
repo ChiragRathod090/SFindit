@@ -6,26 +6,55 @@ const String BASE_URL =
 
 //Api lists
 const String LOGIN = "login";
+const String GET_TEAMS_LIST = "getTeamList";
 const String GET_SEASON_LIST = "getSeasonList";
+const String GET_LADDERS_FIXTURES = "getLaddersFixtures";
 
-//Login API
-Future<http.Response> login(pram) async {
+// 1. Login API
+Future<http.Response> login(param) async {
   var client = new http.Client();
   try {
     http.Response data = await client.post(
-      BASE_URL + LOGIN + '&email=${pram['email']}&password=${pram['password']}',
+      BASE_URL + LOGIN + param,
     );
     return data;
   } finally {
     client.close();
   }
-} //Login API
+}
 
+// 2. Get Season List API
 Future<http.Response> getSeasonList() async {
   var client = new http.Client();
   try {
     http.Response data = await client.post(
       BASE_URL + GET_SEASON_LIST,
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 3. Get Season List API
+Future<http.Response> getTeamsList(param) async {
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + GET_TEAMS_LIST + '&user_id=$param',
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 4. Get Ladders And Fixtures API
+Future<http.Response> getLaddersFixtures(param) async {
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + GET_LADDERS_FIXTURES + '&team_id=$param',
     );
     return data;
   } finally {

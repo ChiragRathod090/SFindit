@@ -42,3 +42,4 @@ const String txtYes = "Yes";
 const String txtNo = "No";
 const String txtCamera = "Camera";
 const String txtGallery = "Gallery";
+const String txtNoDataFound = "No Data Found";

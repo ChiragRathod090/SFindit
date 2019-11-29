@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sfindit/Model/seasonList.dart';
 import 'package:sfindit/common/color.dart';
-import 'package:sfindit/common/custom_dialog.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/string.dart';
 import 'package:sfindit/rest/api_services.dart';
@@ -15,18 +14,9 @@ class SeasonScreen extends StatefulWidget {
   _SeasonScreenState createState() => _SeasonScreenState();
 }
 
-class Seasons {
-  String imagePath;
-  String name;
-  Color color;
-
-  Seasons(this.imagePath, this.name, this.color);
-}
-
 class _SeasonScreenState extends State<SeasonScreen> {
-  var list;
-
-  GetSeasonList bgfgfgf;
+  //var list;
+  GetSeasonList seasonListResponse;
 
   @override
   void initState() {
@@ -47,29 +37,39 @@ class _SeasonScreenState extends State<SeasonScreen> {
             Images.APPBAR_HEADER,
           ),
           Expanded(
-            child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: list == null
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : ListView.builder(
-                        itemCount: list.length,
+              child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: seasonListResponse == null
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : seasonListResponse.result.length > 0
+                    ? ListView.builder(
+                        itemCount: seasonListResponse.result.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          return listItem(index);
+                          return listItem(seasonListResponse.result, index);
                         },
-                        /*  itemBuilder: (BuildContext context, int index) {
-                  return listItem(index);
-                },*/
-                      )),
-          )
+                      )
+                    : Container(
+                        child: Center(child: Text(txtNoDataFound)),
+                      ),
+          ))
         ],
       ),
     );
   }
 
-  Widget listItem(int index) {
+  void getSeasonListApi() {
+    getSeasonList().then((response) {
+      print(json.decode(response.body));
+      setState(() {
+        seasonListResponse = GetSeasonList.fromMap(json.decode(response.body));
+      });
+    });
+  }
+
+  Widget listItem(List<Result> list, int index) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: InkWell(
@@ -78,7 +78,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      InvoiceScreen(title: list[index]['name'] + " invoice")));
+                      InvoiceScreen(title: list[index].name + " invoice")));
         },
         child: Container(
           child: Card(
@@ -103,7 +103,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(list[index]['name'],
+                    child: Text(list[index].name,
                         style: Theme.of(context)
                             .textTheme
                             .body1
@@ -116,27 +116,5 @@ class _SeasonScreenState extends State<SeasonScreen> {
         ),
       ),
     );
-  }
-
-  void getSeasonListApi() {
-    getSeasonList().then((response) {
-      var data = json.decode(response.body);
-     bgfgfgf = getSeasonListFromJson(data);
-      print(data);
-      setState(() {
-        list = data['result'];
-      });
-    });
-  }
-
-  void dialog(String msg) {
-    showDialog(
-        context: context,
-        builder: (context) => CustomDialog(
-              msg: msg,
-              callBack: () {
-                Navigator.pop(context);
-              },
-            ));
   }
 }

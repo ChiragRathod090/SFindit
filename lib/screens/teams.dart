@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:sfindit/Model/teamsList.dart';
+import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
+import 'package:sfindit/common/keys.dart';
 import 'package:sfindit/common/string.dart';
+import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/utils/appbar.dart';
 
 import 'chat.dart';
@@ -11,6 +17,17 @@ class TeamsScreen extends StatefulWidget {
 }
 
 class _TeamsScreenState extends State<TeamsScreen> {
+  GetTeamsList teamsListResponse;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      getTeamsListApi();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,20 +39,37 @@ class _TeamsScreenState extends State<TeamsScreen> {
             Images.APPBAR_HEADER,
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: 10,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                return listItem();
-              },
-            ),
+            child: teamsListResponse == null
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : teamsListResponse.result.length > 0
+                    ? ListView.builder(
+                        itemCount: teamsListResponse.result.length,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return listItem(teamsListResponse.result, index);
+                        },
+                      )
+                    : Container(
+                        child: Center(child: Text(txtNoDataFound)),
+                      ),
           ),
         ],
       ),
     );
   }
 
-  Widget listItem() {
+  void getTeamsListApi() {
+    getTeamsList(getPrefValue(Keys.USER_ID)).then((response) {
+      print(json.decode(response.body));
+      setState(() {
+        teamsListResponse = GetTeamsList.fromMap(json.decode(response.body));
+      });
+    });
+  }
+
+  Widget listItem(List<Result> list, int index) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -55,7 +89,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('SFindit Flyers',
+                    Text(list[index].teamName,
                         style: Theme.of(context)
                             .textTheme
                             .body2
@@ -75,7 +109,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                         SizedBox(
                           width: 4.0,
                         ),
-                        Text('09',
+                        Text(list[index].playerCount,
                             style: Theme.of(context)
                                 .textTheme
                                 .body1

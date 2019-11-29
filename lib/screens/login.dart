@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sfindit/Model/login.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/constants.dart';
-import 'package:sfindit/common/custom_dialog.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/input_type_validation.dart';
 import 'package:sfindit/common/keys.dart';
@@ -19,12 +19,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  Login loginResponse;
+
   FocusNode userNameFocusNode;
   FocusNode passwordFocusNode;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var isValidation = false;
-  String _userName;
+  String _email;
   String _password;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         InputDecoration.collapsed(hintText: hintUsername),
                     validator: InputValidation.validateEmail,
                     onSaved: (val) {
-                      _userName = val;
+                      _email = val;
                     },
                     onFieldSubmitted: (term) {
                       _fieldFocusChange(
@@ -121,7 +129,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: EdgeInsets.only(left: 50.0, right: 50.0),
                 textColor: whiteColor,
                 onPressed: () {
-                  showDialog(context: context, builder: (context) => Loading());
                   if (isValidate()) {
                     loginApi();
                   }
@@ -145,38 +152,33 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginApi() {
+    showDialog(context: context, builder: (context) => Loading());
     print(getParameters());
     login(getParameters()).then((response) {
       var data = json.decode(response.body);
       print(data);
-      Navigator.pop(context);
+      //Navigator.pop(context);
       if (data['success'] == 1) {
-        print("USER ID : " + data['result']['user_id']);
-        setPrefValue(Keys.USER_ID, data['result']['user_id']);
+        loginResponse = Login.fromMap(json.decode(response.body));
+        setPrefValue(Keys.USER_ID, loginResponse.result.userId);
+        setPrefValue(Keys.NAME, loginResponse.result.name);
+        setPrefValue(Keys.NICK_NAME, loginResponse.result.nickname);
+        setPrefValue(Keys.PROFILE_PIC, loginResponse.result.profilePic);
+        setPrefValue(Keys.EMAIL, loginResponse.result.email);
+        setPrefValue(
+            Keys.EMERGENCY_CONTACT, loginResponse.result.emergencyContact);
+        setPrefValue(Keys.MOBILE, loginResponse.result.mobile);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomeScreen()));
       } else {
-        dialog(data['message'].toString());
+        dialog(data['message'].toString(), context);
       }
     });
   }
 
   getParameters() {
-    return {
-      'email': '$_userName',
-      'password': '$_password',
-    };
-  }
-
-  void dialog(String msg) {
-    showDialog(
-        context: context,
-        builder: (context) => CustomDialog(
-              msg: msg,
-              callBack: () {
-                Navigator.pop(context);
-              },
-            ));
+    String param = "&email=$_email&password=$_password";
+    return param;
   }
 }
 

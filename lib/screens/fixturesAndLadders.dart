@@ -1,7 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:sfindit/Model/getLaddersFixtures.dart';
+import 'package:sfindit/Model/teamsList.dart';
 import 'package:sfindit/common/color.dart';
+import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
+import 'package:sfindit/common/keys.dart';
+import 'package:sfindit/common/loding.dart';
 import 'package:sfindit/common/string.dart';
+import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/utils/appbar.dart';
 
 class FixtureAndLaddersScreen extends StatefulWidget {
@@ -11,7 +19,11 @@ class FixtureAndLaddersScreen extends StatefulWidget {
 }
 
 class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
+  GetTeamsList teamsListResponse;
+  List<Result> teamsList;
+  Result teamData;
   bool isSelected = true;
+  GetLaddersFixtures getLaddersFixturesResponse;
   List<String> list = <String>[
     'SFindit Cruisers',
     'B',
@@ -23,12 +35,8 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(milliseconds: 500), () {
-      showDialog(
-          context: context, builder: (BuildContext context) => CustomDialog());
-    });
+    getTeamsListApi();
   }
 
   @override
@@ -99,26 +107,37 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
       child: Column(
         children: <Widget>[
           Container(
-            color: Colors.grey[400],
-            height: 30.0,
-            alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width,
-            child: DropdownButton<String>(
-              value: "SFindit Cruisers",
-              icon: Icon(Icons.keyboard_arrow_down),
-              iconSize: 24,
-              elevation: 16,
-              style:
-                  Theme.of(context).textTheme.body1.copyWith(color: blackColor),
-              items: list.map((String value) {
-                return new DropdownMenuItem<String>(
-                  value: value,
-                  child: new Text(value),
-                );
-              }).toList(),
-              onChanged: (_) {},
-            ),
-          ),
+              color: Colors.grey[400],
+              height: 30.0,
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              child: teamsListResponse != null
+                  ? teamsList.length > 0
+                      ? DropdownButton<Result>(
+                          hint: Text(txtSelectTeam),
+                          value: teamData,
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(color: blackColor),
+                          items: teamsList.map((Result value) {
+                            return new DropdownMenuItem<Result>(
+                              value: value,
+                              child: new Text(value.teamName),
+                            );
+                          }).toList(),
+                          onChanged: (Result result) {
+                            setState(() {
+                              teamData = result;
+                            });
+                            getLaddersFixturesApi(teamData.teamId);
+                          },
+                        )
+                      : Container()
+                  : Container()),
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.all(10.0),
@@ -211,6 +230,35 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
         ),
       ),
     );
+  }
+
+  void getTeamsListApi() async {
+    //await showDialog(context: context, builder: (context) => Loading());
+    await getTeamsList(getPrefValue(Keys.USER_ID)).then((response) {
+      print(json.decode(response.body));
+      setState(() {
+        teamsListResponse = GetTeamsList.fromMap(json.decode(response.body));
+        teamsList = teamsListResponse.result;
+        showDialog(
+            context: context,
+            builder: (BuildContext context) =>
+                SelectTeamDialog(teamsList, teamData));
+      });
+    });
+  }
+
+  void getLaddersFixturesApi(String teamId) {
+    showDialog(context: context, builder: (context) => Loading());
+    getLaddersFixtures(teamId).then((response) {
+      var data = json.decode(response.body);
+      print(data);
+      Navigator.pop(context);
+      if (data['success'] == 1) {
+        //getLaddersFixturesResponse = GetLaddersFixtures.fromMap(data);
+      } else {
+        dialog(data['message'].toString(), context);
+      }
+    });
   }
 }
 
@@ -326,7 +374,20 @@ Widget laddersItem(String leaderList, BuildContext context) {
   );
 }
 
-class CustomDialog extends StatelessWidget {
+class SelectTeamDialog extends StatefulWidget {
+  List<Result> teamsList;
+  Result teamData;
+
+  SelectTeamDialog(List<Result> teamsList, Result teamData) {
+    this.teamsList = teamsList;
+    this.teamData = teamData;
+  }
+
+  @override
+  _SelectTeamDialogState createState() => _SelectTeamDialogState();
+}
+
+class _SelectTeamDialogState extends State<SelectTeamDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -375,9 +436,10 @@ class CustomDialog extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: 10,
+              itemCount: widget.teamsList.length,
               itemBuilder: (BuildContext context, int index) {
-                return listItem(context);
+                return listItem(
+                    context, widget.teamsList, index, widget.teamData);
               },
             ),
           ),
@@ -386,15 +448,26 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  Widget listItem(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Text(
-        'SFindit Cruisers',
-        style: Theme.of(context)
-            .textTheme
-            .body1
-            .copyWith(fontSize: 16.0, color: blackColor),
+  Widget listItem(BuildContext context, List<Result> teamsList, int index,
+      Result teamData) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          setPrefValue(Keys.TEAM_ID, teamsList[index].teamId);
+          setPrefValue(Keys.TEAM_NAME, teamsList[index].teamName);
+          Navigator.pop(context);
+          teamData = teamsList[index];
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          teamsList[index].teamName,
+          style: Theme.of(context)
+              .textTheme
+              .body1
+              .copyWith(fontSize: 16.0, color: blackColor),
+        ),
       ),
     );
   }
