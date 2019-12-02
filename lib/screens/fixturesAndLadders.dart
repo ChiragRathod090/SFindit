@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:sfindit/Model/getLaddersFixtures.dart';
 import 'package:sfindit/Model/teamsList.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/keys.dart';
-import 'package:sfindit/common/loding.dart';
 import 'package:sfindit/common/string.dart';
 import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/utils/appbar.dart';
@@ -19,11 +17,16 @@ class FixtureAndLaddersScreen extends StatefulWidget {
 }
 
 class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
+  bool isSelected = true;
+  bool isShowTeamSelectionDialog = false;
+
   GetTeamsList teamsListResponse;
   List<Result> teamsList;
   Result teamData;
-  bool isSelected = true;
-  GetLaddersFixtures getLaddersFixturesResponse;
+
+  var ladderList;
+  var fixturesList;
+
   List<String> list = <String>[
     'SFindit Cruisers',
     'B',
@@ -45,55 +48,59 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
       appBar: Appbar(txtFixturesAndLadders, false),
       body: Stack(
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        isSelected = true;
-                      });
-                    },
-                    child: Container(
-                        color: isSelected ? Colors.grey[200] : whiteColor,
-                        height: 60.0,
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: Center(
-                          child: Text(
-                            txtFixtures,
-                            style: Theme.of(context)
-                                .textTheme
-                                .body1
-                                .copyWith(fontSize: 16.0),
-                          ),
-                        )),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        isSelected = false;
-                      });
-                    },
-                    child: Container(
-                        color: isSelected ? whiteColor : Colors.grey[200],
-                        height: 60.0,
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: Center(
-                          child: Text(
-                            txtLadders,
-                            style: Theme.of(context)
-                                .textTheme
-                                .body1
-                                .copyWith(fontSize: 16.0),
-                          ),
-                        )),
-                  )
-                ],
-              ),
-              isSelected ? fixturesLayout() : laddersLayout()
-            ],
-          ),
+          ladderList != null
+              ? Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              isSelected = true;
+                            });
+                          },
+                          child: Container(
+                              color: isSelected ? Colors.grey[200] : whiteColor,
+                              height: 60.0,
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: Center(
+                                child: Text(
+                                  txtFixtures,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(fontSize: 16.0),
+                                ),
+                              )),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              isSelected = false;
+                            });
+                          },
+                          child: Container(
+                              color: isSelected ? whiteColor : Colors.grey[200],
+                              height: 60.0,
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: Center(
+                                child: Text(
+                                  txtLadders,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(fontSize: 16.0),
+                                ),
+                              )),
+                        )
+                      ],
+                    ),
+                    isSelected ? fixturesLayout() : laddersLayout()
+                  ],
+                )
+              : Container(
+                  child: Center(child: CircularProgressIndicator()),
+                ),
           Image.asset(
             Images.APPBAR_HEADER,
           ),
@@ -139,16 +146,25 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
                       : Container()
                   : Container()),
           Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(10.0),
-              itemCount: list.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) =>
-                  fixturesItem(list[index], context),
-            ),
-          ),
+              child: fixturesList != null
+                  ? fixturesList.length > 0
+                      ? ListView.builder(
+                          padding: EdgeInsets.all(10.0),
+                          itemCount: fixturesList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) =>
+                              fixturesItem(context, fixturesList, index),
+                        )
+                      : noDataFound()
+                  : noDataFound()),
         ],
       ),
+    );
+  }
+
+  Widget noDataFound() {
+    return Container(
+      child: Center(child: Text(txtNoDataFound)),
     );
   }
 
@@ -191,40 +207,45 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: list.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text('SFindit Cruisers',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .body2
-                                    .copyWith(fontSize: 16.0)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text('63.64%',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .body1
-                                    .copyWith(
-                                        fontSize: 12.0,
-                                        color: Colors.grey[600])),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: ladderList != null
+                      ? ladderList.length > 0
+                          ? ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: ladderList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text(
+                                            ladderList[index]['team_name'],
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .body2
+                                                .copyWith(fontSize: 16.0)),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text('63.64%',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .body1
+                                                .copyWith(
+                                                    fontSize: 12.0,
+                                                    color: Colors.grey[600])),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            )
+                          : noDataFound()
+                      : noDataFound()),
             ),
           ],
         ),
@@ -233,28 +254,36 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
   }
 
   void getTeamsListApi() async {
-    //await showDialog(context: context, builder: (context) => Loading());
     await getTeamsList(getPrefValue(Keys.USER_ID)).then((response) {
       print(json.decode(response.body));
       setState(() {
         teamsListResponse = GetTeamsList.fromMap(json.decode(response.body));
         teamsList = teamsListResponse.result;
+        isShowTeamSelectionDialog = true;
         showDialog(
             context: context,
             builder: (BuildContext context) =>
-                SelectTeamDialog(teamsList, teamData));
+                SelectTeamDialog(teamsList, (Result data) {
+                  setState(() {
+                    teamData = data;
+                    getLaddersFixturesApi(teamData.teamId);
+                  });
+                }));
       });
     });
   }
 
-  void getLaddersFixturesApi(String teamId) {
-    showDialog(context: context, builder: (context) => Loading());
+  getLaddersFixturesApi(String teamId) {
+    //showDialog(context: context, builder: (context) => Loading());
     getLaddersFixtures(teamId).then((response) {
+      print(response);
+      //Navigator.pop(context);
       var data = json.decode(response.body);
-      print(data);
-      Navigator.pop(context);
       if (data['success'] == 1) {
-        //getLaddersFixturesResponse = GetLaddersFixtures.fromMap(data);
+        setState(() {
+          ladderList = data['result']['ladderData'];
+          fixturesList = data['result']['fixtureData'];
+        });
       } else {
         dialog(data['message'].toString(), context);
       }
@@ -262,14 +291,14 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
   }
 }
 
-Widget fixturesItem(String list, BuildContext context) {
+Widget fixturesItem(context, fixturesList, index) {
   return Padding(
     padding: const EdgeInsets.all(20.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          list,
+          fixturesList[index]['team_name'],
           style: Theme.of(context).textTheme.body2.copyWith(fontSize: 16.0),
         ),
         SizedBox(
@@ -296,7 +325,7 @@ Widget fixturesItem(String list, BuildContext context) {
                     height: 2.0,
                   ),
                   Text(
-                    "Venue - Brunkswick",
+                    "Venue",
                     style: Theme.of(context)
                         .textTheme
                         .body1
@@ -308,7 +337,9 @@ Widget fixturesItem(String list, BuildContext context) {
             Container(
               margin: EdgeInsets.only(left: 30.0),
               alignment: Alignment.center,
-              child: Text("5 - 0"),
+              child: Text(fixturesList[index]['win'] +
+                  " - " +
+                  fixturesList[index]['loss']),
             ),
             Expanded(
               child: Column(
@@ -332,7 +363,7 @@ Widget fixturesItem(String list, BuildContext context) {
   );
 }
 
-Widget laddersItem(String leaderList, BuildContext context) {
+Widget laddersItem(String list, BuildContext context) {
   return Container(
     width: 60.0,
     child: Row(
@@ -375,13 +406,10 @@ Widget laddersItem(String leaderList, BuildContext context) {
 }
 
 class SelectTeamDialog extends StatefulWidget {
-  List<Result> teamsList;
-  Result teamData;
+  final List<Result> teamsList;
+  final Null Function(Result data) param2;
 
-  SelectTeamDialog(List<Result> teamsList, Result teamData) {
-    this.teamsList = teamsList;
-    this.teamData = teamData;
-  }
+  SelectTeamDialog(this.teamsList, this.param2);
 
   @override
   _SelectTeamDialogState createState() => _SelectTeamDialogState();
@@ -439,7 +467,7 @@ class _SelectTeamDialogState extends State<SelectTeamDialog> {
               itemCount: widget.teamsList.length,
               itemBuilder: (BuildContext context, int index) {
                 return listItem(
-                    context, widget.teamsList, index, widget.teamData);
+                    context, widget.teamsList, index, widget.param2);
               },
             ),
           ),
@@ -449,15 +477,14 @@ class _SelectTeamDialogState extends State<SelectTeamDialog> {
   }
 
   Widget listItem(BuildContext context, List<Result> teamsList, int index,
-      Result teamData) {
+      Null Function(Result data) param2) {
     return InkWell(
       onTap: () {
-        setState(() {
-          setPrefValue(Keys.TEAM_ID, teamsList[index].teamId);
-          setPrefValue(Keys.TEAM_NAME, teamsList[index].teamName);
-          Navigator.pop(context);
-          teamData = teamsList[index];
-        });
+        Navigator.pop(context);
+        setPrefValue(Keys.TEAM_ID, teamsList[index].teamId);
+        setPrefValue(Keys.TEAM_NAME, teamsList[index].teamName);
+        param2(teamsList[index]);
+        setState(() {});
       },
       child: Padding(
         padding: const EdgeInsets.all(20.0),

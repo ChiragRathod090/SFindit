@@ -129,9 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: EdgeInsets.only(left: 50.0, right: 50.0),
                 textColor: whiteColor,
                 onPressed: () {
-                  if (isValidate()) {
-                    loginApi();
-                  }
+                  if (isValidate()) loginApi();
                 },
               ),
             ],

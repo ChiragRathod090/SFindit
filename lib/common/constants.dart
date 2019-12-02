@@ -3,6 +3,8 @@ import 'package:sfindit/common/pref.dart';
 
 import 'custom_dialog.dart';
 
+const int selectTeamDropDownPosition = 0;
+
 getPrefValue(String key) {
   return Pref.getString(key, "");
 }

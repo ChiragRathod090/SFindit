@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:sfindit/common/color.dart';
+import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
+import 'package:sfindit/common/keys.dart';
 import 'package:sfindit/common/string.dart';
+import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/utils/appbar.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -94,5 +99,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
       ),
     );
+  }
+
+  void getTeamsListForChatApi() {
+    getNotification(getPrefValue(Keys.USER_ID)).then((response) {
+      print(json.decode(response.body));
+      setState(() {});
+    });
   }
 }

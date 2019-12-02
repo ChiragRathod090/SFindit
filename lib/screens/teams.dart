@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:sfindit/Model/teamsList.dart';
+import 'package:sfindit/Model/getTeamListForChat.dart';
 import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/keys.dart';
@@ -17,14 +17,14 @@ class TeamsScreen extends StatefulWidget {
 }
 
 class _TeamsScreenState extends State<TeamsScreen> {
-  GetTeamsList teamsListResponse;
+  GetTeamListForChat teamsListForChatResponse;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     setState(() {
-      getTeamsListApi();
+      getTeamsListForChatApi();
     });
   }
 
@@ -39,16 +39,17 @@ class _TeamsScreenState extends State<TeamsScreen> {
             Images.APPBAR_HEADER,
           ),
           Expanded(
-            child: teamsListResponse == null
+            child: teamsListForChatResponse == null
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : teamsListResponse.result.length > 0
+                : teamsListForChatResponse.result.length > 0
                     ? ListView.builder(
-                        itemCount: teamsListResponse.result.length,
+                        itemCount: teamsListForChatResponse.result.length,
                         shrinkWrap: true,
                         itemBuilder: (BuildContext context, int index) {
-                          return listItem(teamsListResponse.result, index);
+                          return listItem(
+                              teamsListForChatResponse.result, index);
                         },
                       )
                     : Container(
@@ -60,11 +61,12 @@ class _TeamsScreenState extends State<TeamsScreen> {
     );
   }
 
-  void getTeamsListApi() {
-    getTeamsList(getPrefValue(Keys.USER_ID)).then((response) {
+  void getTeamsListForChatApi() {
+    getTeamListForChat(getPrefValue(Keys.USER_ID)).then((response) {
       print(json.decode(response.body));
       setState(() {
-        teamsListResponse = GetTeamsList.fromMap(json.decode(response.body));
+        teamsListForChatResponse =
+            GetTeamListForChat.fromMap(json.decode(response.body));
       });
     });
   }
