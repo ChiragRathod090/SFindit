@@ -104,7 +104,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   .textTheme
                                   .body2
                                   .copyWith(fontSize: 16.0, color: blackColor)),
-                          Text("18/09/2018",
+                          Text(list.crtDate,
                               style: Theme.of(context)
                                   .textTheme
                                   .body1
