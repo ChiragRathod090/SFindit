@@ -8,9 +8,11 @@ const String BASE_URL =
 const String LOGIN = "login";
 const String GET_TEAMS_LIST = "getTeamList";
 const String GET_SEASON_LIST = "getSeasonList";
-const String GET_LADDERS_FIXTURES = "getLaddersFixtures";
 const String UPDATE_PROFILE = "updateProfile";
+const String GET_LADDERS_FIXTURES = "getLaddersFixtures";
 const String GET_TEAM_LIST_FOR_CHAT = "getTeamListForChat";
+const String OPEN_TEAM_CHAT = "openTeamChat";
+const String SEND_MESSAGE = "sendMessage";
 const String GET_NOTIFICATION = "getNotificationList";
 
 // 1. Login API
@@ -26,20 +28,7 @@ Future<http.Response> login(param) async {
   }
 }
 
-// 2. Get Season List API
-Future<http.Response> getSeasonList() async {
-  var client = new http.Client();
-  try {
-    http.Response data = await client.post(
-      BASE_URL + GET_SEASON_LIST,
-    );
-    return data;
-  } finally {
-    client.close();
-  }
-}
-
-// 3. Get Season List API
+// 2. Get Teams List API
 Future<http.Response> getTeamsList(param) async {
   var client = new http.Client();
   try {
@@ -52,12 +41,12 @@ Future<http.Response> getTeamsList(param) async {
   }
 }
 
-// 4. Get Ladders And Fixtures API
-Future<http.Response> getLaddersFixtures(param) async {
+// 3. Get Season List API
+Future<http.Response> getSeasonList() async {
   var client = new http.Client();
   try {
     http.Response data = await client.post(
-      BASE_URL + GET_LADDERS_FIXTURES + '&team_id=$param',
+      BASE_URL + GET_SEASON_LIST,
     );
     return data;
   } finally {
@@ -65,12 +54,25 @@ Future<http.Response> getLaddersFixtures(param) async {
   }
 }
 
-// 5. Update Profile API
+// 4. Update Profile API
 Future<http.Response> updateProfile(param) async {
   var client = new http.Client();
   try {
     http.Response data = await client.post(
       BASE_URL + UPDATE_PROFILE + param,
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 5. Get Ladders And Fixtures API
+Future<http.Response> getLaddersFixtures(param) async {
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + GET_LADDERS_FIXTURES + '&team_id=$param',
     );
     return data;
   } finally {
@@ -91,7 +93,33 @@ Future<http.Response> getTeamListForChat(param) async {
   }
 }
 
-// 7. Get Notification
+// 7. Open Team Chat
+Future<http.Response> openTeamChat(param) async {
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + OPEN_TEAM_CHAT + param,
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 8. Send Message
+Future<http.Response> sendMessage(param) async {
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + SEND_MESSAGE + '&user_id=$param',
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 9. Get Notification
 Future<http.Response> getNotification(param) async {
   var client = new http.Client();
   try {

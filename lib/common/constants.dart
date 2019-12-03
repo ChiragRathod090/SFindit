@@ -27,3 +27,22 @@ void dialog(String msg, BuildContext context) {
             },
           ));
 }
+
+bool checkListIsNullAndBlank(list) {
+  bool isTrue = false;
+  list != null
+      ? list.length > 0 ? isTrue = true : isTrue = false
+      : isTrue = false;
+  return isTrue;
+}
+
+String checkBlank(String s) {
+  String data;
+  s != null ? s != "" ? data = s : data = "" : data = "";
+  return data;
+}
+
+void printResponse(String param, String response) {
+  print("Parameters : " + param);
+  print("Response : " + response);
+}

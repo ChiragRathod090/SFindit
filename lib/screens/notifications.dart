@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:sfindit/Model/getNotifications.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
@@ -15,6 +16,16 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  GetNotifications getNotificationsResponse;
+  List<Result> notificationList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getNotificationsApi();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,20 +37,29 @@ class _NotificationScreenState extends State<NotificationScreen> {
             Images.APPBAR_HEADER,
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: 10,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                return listItem();
-              },
-            ),
-          ),
+              child: getNotificationsResponse != null
+                  ? checkListIsNullAndBlank(notificationList)
+                      ? ListView.builder(
+                          itemCount: notificationList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return listItem(notificationList[index]);
+                          },
+                        )
+                      : progressBar()
+                  : progressBar()),
         ],
       ),
     );
   }
 
-  Widget listItem() {
+  Widget progressBar() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget listItem(Result list) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
@@ -54,14 +74,23 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: new ClipRRect(
-                    borderRadius: new BorderRadius.circular(50.0),
-                    child: Image.asset(
-                      "assets/images/jocker.jpg",
-                      height: 62.0,
-                      width: 62.0,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                      borderRadius: new BorderRadius.circular(50.0),
+                      child: checkBlank(list.profilePic) != ""
+                          ? Image.network(
+                              list.profilePic,
+                              height: 62.0,
+                              width: 62.0,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              height: 62.0,
+                              width: 62.0,
+                              color: primaryColor,
+                              child: Image.asset(
+                                Images.LOGO_TRANSPARENT,
+                                fit: BoxFit.cover,
+                              ),
+                            )),
                 ),
                 Expanded(
                   child: Column(
@@ -70,7 +99,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('Andrew Scotch',
+                          Text(checkBlank(list.name),
                               style: Theme.of(context)
                                   .textTheme
                                   .body2
@@ -85,7 +114,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       SizedBox(
                         height: 2.0,
                       ),
-                      Text('Lorem ipsum doler sit amet this is a dummy text.',
+                      Text(checkBlank(list.notification),
                           style: Theme.of(context)
                               .textTheme
                               .body1
@@ -101,9 +130,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-  void getTeamsListForChatApi() {
+  void getNotificationsApi() {
     getNotification(getPrefValue(Keys.USER_ID)).then((response) {
-      print(json.decode(response.body));
+      var data = json.decode(response.body);
+      printResponse(getPrefValue(Keys.USER_ID), data.toString());
+      getNotificationsResponse = GetNotifications.fromMap(data);
+      notificationList = getNotificationsResponse.result;
       setState(() {});
     });
   }

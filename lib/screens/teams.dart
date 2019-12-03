@@ -43,7 +43,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : teamsListForChatResponse.result.length > 0
+                : checkListIsNullAndBlank(teamsListForChatResponse.result)
                     ? ListView.builder(
                         itemCount: teamsListForChatResponse.result.length,
                         shrinkWrap: true,
@@ -75,7 +75,9 @@ class _TeamsScreenState extends State<TeamsScreen> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Chat()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Chat(teamId: list[index].teamId)));
       },
       child: Padding(
         padding: const EdgeInsets.all(10.0),

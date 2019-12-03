@@ -1,23 +1,40 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:sfindit/Model/openTeamChat.dart';
 import 'package:sfindit/common/color.dart';
+import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
+import 'package:sfindit/common/keys.dart';
 import 'package:sfindit/common/string.dart';
+import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/utils/appbar.dart';
 
 class Chat extends StatefulWidget {
+  final String teamId;
+
+  const Chat({Key key, this.teamId}) : super(key: key);
+
   @override
-  _ChatState createState() => _ChatState();
+  _ChatState createState() => _ChatState(teamId);
 }
 
 class _ChatState extends State<Chat> {
-  List<String> list = new List();
-
+  final String teamId;
   String text;
+
+  TextEditingController _messageController = new TextEditingController();
+
+  OpenTeamChat openTeamChatResponse;
+  List<Result> chatList;
+
+  _ChatState(this.teamId);
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    openTeamChatApi();
   }
 
   @override
@@ -31,15 +48,39 @@ class _ChatState extends State<Chat> {
           Expanded(
             child: Stack(
               children: <Widget>[
-                ListView.builder(
-                  reverse: true,
-                  padding: EdgeInsets.only(top: 12.0, bottom: 16.0),
-                  itemCount: list.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return (index % 2) != 0 ? leftSideView() : rightSideView();
-                  },
-                ),
-                upcomingMatchPopUp(),
+                openTeamChatResponse == null
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : checkListIsNullAndBlank(chatList)
+                        ? ListView.builder(
+                            reverse: true,
+                            padding: EdgeInsets.only(top: 12.0, bottom: 16.0),
+                            itemCount: chatList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return chatList[index].sameUser == 1
+                                  ? rightSideView(chatList[index])
+                                  : leftSideView(chatList[index]);
+                            },
+                          )
+                        : Container(
+                            margin: EdgeInsets.all(40.0),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(40.0),
+                                child: Text(
+                                  'write message and hit send to start chat',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          color: blackColor, fontSize: 16.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                //upcomingMatchPopUp(),
                 Image.asset(
                   Images.APPBAR_HEADER,
                 )
@@ -67,6 +108,7 @@ class _ChatState extends State<Chat> {
                       borderRadius: BorderRadius.circular(25.0),
                       color: Colors.grey[200]),
                   child: new TextField(
+                    controller: _messageController,
                     textCapitalization: TextCapitalization.sentences,
                     textInputAction: TextInputAction.done,
                     onChanged: (String text) {
@@ -85,9 +127,7 @@ class _ChatState extends State<Chat> {
                     color: Colors.grey[200]),
                 child: GestureDetector(
                   onTap: () {
-                    setState(() {
-                      if (text != null) if (text.length != 0) list.add(text);
-                    });
+                    if (text != null) if (text.length != 0) sendMessageApi();
                   },
                   child: Icon(
                     Icons.send,
@@ -103,7 +143,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  Widget rightSideView() {
+  Widget rightSideView(final Result list) {
     return Container(
       margin: EdgeInsets.only(left: 40.0, right: 14.0),
       child: Row(
@@ -117,7 +157,7 @@ class _ChatState extends State<Chat> {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Text(
-                  text,
+                  checkBlank(list.message),
                   style: Theme.of(context)
                       .textTheme
                       .body1
@@ -135,12 +175,19 @@ class _ChatState extends State<Chat> {
             child: CircleAvatar(
               child: ClipRRect(
                 borderRadius: new BorderRadius.circular(50.0),
-                child: Image.asset(
-                  "assets/images/jocker.jpg",
-                  height: 40.0,
-                  width: 40.0,
-                  fit: BoxFit.cover,
-                ),
+                child: checkBlank(list.profilePic) != ""
+                    ? Image.network(
+                        list.profilePic,
+                        height: 40.0,
+                        width: 40.0,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        Images.LOGO_TRANSPARENT,
+                        height: 40.0,
+                        width: 40.0,
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
           )
@@ -149,7 +196,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  Widget leftSideView() {
+  Widget leftSideView(final Result list) {
     return Container(
       margin: EdgeInsets.only(left: 14.0, right: 40.0),
       child: Row(
@@ -159,14 +206,23 @@ class _ChatState extends State<Chat> {
           Padding(
             padding: const EdgeInsets.only(top: 6.0),
             child: ClipRRect(
-              borderRadius: new BorderRadius.circular(50.0),
-              child: Image.asset(
-                "assets/images/jocker.jpg",
-                height: 40.0,
-                width: 40.0,
-                fit: BoxFit.cover,
-              ),
-            ),
+                borderRadius: new BorderRadius.circular(50.0),
+                child: checkBlank(list.profilePic) != ""
+                    ? Image.network(
+                        list.profilePic,
+                        height: 40.0,
+                        width: 40.0,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(
+                        height: 40.0,
+                        width: 40.0,
+                        color: primaryColor,
+                        child: Image.asset(
+                          Images.LOGO_TRANSPARENT,
+                          fit: BoxFit.cover,
+                        ),
+                      )),
           ),
           SizedBox(
             width: 12.0,
@@ -182,7 +238,7 @@ class _ChatState extends State<Chat> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Man Moore",
+                      list.name,
                       style: Theme.of(context)
                           .textTheme
                           .body1
@@ -191,7 +247,8 @@ class _ChatState extends State<Chat> {
                     SizedBox(
                       height: 4.0,
                     ),
-                    Text(text, style: Theme.of(context).textTheme.body1),
+                    Text(list.message,
+                        style: Theme.of(context).textTheme.body1),
                   ],
                 ),
               ),
@@ -256,7 +313,7 @@ class _ChatState extends State<Chat> {
                                 ),
                               ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -332,6 +389,46 @@ class _ChatState extends State<Chat> {
         ),
       ),
     );
+  }
+
+  void openTeamChatApi() async {
+    //await showDialog(context: context, builder: (context) => Loading());
+    await openTeamChat(getParametersForGetChat()).then((response) {
+      var data = json.decode(response.body);
+      printResponse(getParametersForGetChat(), data.toString());
+      openTeamChatResponse = OpenTeamChat.fromMap(data);
+      chatList = openTeamChatResponse.result;
+      setState(() {});
+    });
+  }
+
+  void sendMessageApi() async {
+    //await showDialog(context: context, builder: (context) => Loading());
+    await sendMessage(getParametersForSendMessage()).then((response) {
+      var data = json.decode(response.body);
+      printResponse(getParametersForSendMessage(), data.toString());
+      if (data['success'] == 1) {
+        _messageController.text = "";
+        openTeamChatApi();
+      } else {}
+      setState(() {});
+    });
+  }
+
+  getParametersForGetChat() {
+    String param =
+        "&team_id=" + teamId + "&user_id=" + getPrefValue(Keys.USER_ID);
+    return param;
+  }
+
+  getParametersForSendMessage() {
+    String param = "&team_id=" +
+        teamId +
+        "&user_id=" +
+        getPrefValue(Keys.USER_ID) +
+        "&message=" +
+        text;
+    return param;
   }
 }
 

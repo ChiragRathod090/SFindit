@@ -6,6 +6,7 @@ import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/keys.dart';
+import 'package:sfindit/common/loding.dart';
 import 'package:sfindit/common/string.dart';
 import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/utils/appbar.dart';
@@ -18,7 +19,6 @@ class FixtureAndLaddersScreen extends StatefulWidget {
 
 class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
   bool isSelected = true;
-  bool isShowTeamSelectionDialog = false;
 
   GetTeamsList teamsListResponse;
   List<Result> teamsList;
@@ -26,15 +26,6 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
 
   var ladderList;
   var fixturesList;
-
-  List<String> list = <String>[
-    'SFindit Cruisers',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-  ];
 
   @override
   void initState() {
@@ -140,7 +131,7 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
                             setState(() {
                               teamData = result;
                             });
-                            getLaddersFixturesApi(teamData.teamId);
+                            getLaddersFixturesApi(teamData.teamId, true);
                           },
                         )
                       : Container()
@@ -174,82 +165,124 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 30.0, bottom: 10.0, right: 10.0, left: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('SFindit Flyers',
-                      style: Theme.of(context)
-                          .textTheme
-                          .body2
-                          .copyWith(fontSize: 17.0)),
-                  Text(
-                    '100%',
-                    style: Theme.of(context)
-                        .textTheme
-                        .body1
-                        .copyWith(fontSize: 12.0, color: blackColor),
-                  ),
-                ],
-              ),
-            ),
-            Divider(),
-            Container(
-              height: 50.0,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: list.length,
-                itemBuilder: (context, index) =>
-                    laddersItem(list[index], context),
-              ),
-            ),
             Expanded(
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: ladderList != null
-                      ? ladderList.length > 0
-                          ? ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: ladderList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+              child: checkListIsNullAndBlank(ladderList)
+                  ? ListView.builder(
+                      itemCount: ladderList.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Theme(
+                              child: ExpansionTile(
+                                initiallyExpanded: index == 0 ? true : false,
+                                trailing: Container(
+                                  child: Text(''),
+                                ),
+                                title: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(ladderList[index]['team_name'],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .body2
+                                            .copyWith(fontSize: 16.0)),
+                                    Text(ladderList[index]['m%'],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .body1
+                                            .copyWith(
+                                                fontSize: 14.0,
+                                                color: Colors.grey[600])),
+                                  ],
+                                ),
+                                children: <Widget>[
+                                  Column(
                                     children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Text(
-                                            ladderList[index]['team_name'],
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .body2
-                                                .copyWith(fontSize: 16.0)),
+                                      Divider(
+                                        color: Colors.grey[400],
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Text('63.64%',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .body1
-                                                .copyWith(
-                                                    fontSize: 12.0,
-                                                    color: Colors.grey[600])),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          blocks("W", ladderList[index]['win'],
+                                              true),
+                                          blocks("L", ladderList[index]['loss'],
+                                              true),
+                                          blocks("D", ladderList[index]['draw'],
+                                              true),
+                                          blocks(
+                                              "F",
+                                              ladderList[index]['forfeited'],
+                                              true),
+                                          blocks("G%", ladderList[index]['g%'],
+                                              true),
+                                          blocks("M%", ladderList[index]['m%'],
+                                              false),
+                                        ],
                                       ),
                                     ],
-                                  ),
-                                );
-                              },
-                            )
-                          : noDataFound()
-                      : noDataFound()),
-            ),
+                                  )
+                                ],
+                              ),
+                              data: Theme.of(context)
+                                  .copyWith(dividerColor: Colors.transparent),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  : noDataFound(),
+            )
           ],
         ),
       ),
+    );
+  }
+
+  Widget blocks(name, value, isShowDivider) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Container(
+          alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width / 7,
+          height: 60.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                name,
+                style: Theme.of(context)
+                    .textTheme
+                    .body1
+                    .copyWith(color: Colors.grey[600]),
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Text(
+                value,
+                style: Theme.of(context)
+                    .textTheme
+                    .body1
+                    .copyWith(color: Colors.grey[600]),
+              ),
+            ],
+          ),
+        ),
+        isShowDivider
+            ? Container(
+                child: Text(""),
+                width: 1.0,
+                height: 50.0,
+                color: Colors.grey[400],
+              )
+            : Container()
+      ],
     );
   }
 
@@ -259,26 +292,26 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
       setState(() {
         teamsListResponse = GetTeamsList.fromMap(json.decode(response.body));
         teamsList = teamsListResponse.result;
-        isShowTeamSelectionDialog = true;
         showDialog(
             context: context,
             builder: (BuildContext context) =>
                 SelectTeamDialog(teamsList, (Result data) {
                   setState(() {
                     teamData = data;
-                    getLaddersFixturesApi(teamData.teamId);
+                    getLaddersFixturesApi(teamData.teamId, false);
                   });
                 }));
       });
     });
   }
 
-  getLaddersFixturesApi(String teamId) {
-    //showDialog(context: context, builder: (context) => Loading());
+  getLaddersFixturesApi(String teamId, bool isLoading) {
+    if (isLoading)
+      showDialog(context: context, builder: (context) => Loading());
     getLaddersFixtures(teamId).then((response) {
-      print(response);
-      //Navigator.pop(context);
       var data = json.decode(response.body);
+      printResponse(teamId, data.toString());
+      if (isLoading) Navigator.pop(context);
       if (data['success'] == 1) {
         setState(() {
           ladderList = data['result']['ladderData'];
@@ -291,14 +324,23 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
   }
 }
 
-Widget fixturesItem(context, fixturesList, index) {
+Widget fixturesItem(context, final fixturesList, index) {
+  String teamName = checkBlank(fixturesList[index]['opponent_name']);
+  String roundNumber = "RND-" + checkBlank(fixturesList[index]['round_number']);
+  String venueName = checkBlank(fixturesList[index]['venue_name']);
+  String winLoss = checkBlank(fixturesList[index]['home']) +
+      " - " +
+      checkBlank(fixturesList[index]['away']);
+  String dateTime = checkBlank(fixturesList[index]['match_date']) +
+      "\n" +
+      checkBlank(fixturesList[index]['match_time']);
   return Padding(
     padding: const EdgeInsets.all(20.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          fixturesList[index]['team_name'],
+          teamName,
           style: Theme.of(context).textTheme.body2.copyWith(fontSize: 16.0),
         ),
         SizedBox(
@@ -315,7 +357,7 @@ Widget fixturesItem(context, fixturesList, index) {
                     height: 4.0,
                   ),
                   Text(
-                    "RND-R1",
+                    roundNumber,
                     style: Theme.of(context)
                         .textTheme
                         .body1
@@ -325,7 +367,7 @@ Widget fixturesItem(context, fixturesList, index) {
                     height: 2.0,
                   ),
                   Text(
-                    "Venue",
+                    venueName,
                     style: Theme.of(context)
                         .textTheme
                         .body1
@@ -337,16 +379,14 @@ Widget fixturesItem(context, fixturesList, index) {
             Container(
               margin: EdgeInsets.only(left: 30.0),
               alignment: Alignment.center,
-              child: Text(fixturesList[index]['win'] +
-                  " - " +
-                  fixturesList[index]['loss']),
+              child: Text(winLoss),
             ),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Text(
-                    "Aug 15\n7:50 PM",
+                    dateTime,
                     style: Theme.of(context)
                         .textTheme
                         .body1
@@ -357,48 +397,6 @@ Widget fixturesItem(context, fixturesList, index) {
               ),
             ),
           ],
-        ),
-      ],
-    ),
-  );
-}
-
-Widget laddersItem(String list, BuildContext context) {
-  return Container(
-    width: 60.0,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Container(
-          alignment: Alignment.center,
-          width: 59.0,
-          height: 60.0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'E',
-                style: Theme.of(context)
-                    .textTheme
-                    .body1
-                    .copyWith(color: Colors.grey[600]),
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              Text(
-                '11',
-                style: Theme.of(context)
-                    .textTheme
-                    .body1
-                    .copyWith(color: Colors.grey[600]),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          color: Colors.grey[400],
-          width: 1.0,
         ),
       ],
     ),
