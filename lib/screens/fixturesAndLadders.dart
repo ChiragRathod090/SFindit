@@ -446,6 +446,8 @@ class _SelectTeamDialogState extends State<SelectTeamDialog> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    widget.param2(widget.teamsList[0]);
+                    setState(() {});
                     Navigator.pop(context);
                   },
                   child: Image(

@@ -11,7 +11,7 @@ String openTeamChatToJson(OpenTeamChat data) => json.encode(data.toMap());
 
 class OpenTeamChat {
   int success;
-  List<Result> result;
+  Result result;
   String message;
 
   OpenTeamChat({
@@ -22,18 +22,39 @@ class OpenTeamChat {
 
   factory OpenTeamChat.fromMap(Map<String, dynamic> json) => OpenTeamChat(
         success: json["success"],
-        result: List<Result>.from(json["result"].map((x) => Result.fromMap(x))),
+        result: Result.fromMap(json["result"]),
         message: json["message"],
       );
 
   Map<String, dynamic> toMap() => {
         "success": success,
-        "result": List<dynamic>.from(result.map((x) => x.toMap())),
+        "result": result.toMap(),
         "message": message,
       };
 }
 
 class Result {
+  List<Message> messages;
+  UpcomingMatch upcomingMatch;
+
+  Result({
+    this.messages,
+    this.upcomingMatch,
+  });
+
+  factory Result.fromMap(Map<String, dynamic> json) => Result(
+        messages:
+            List<Message>.from(json["messages"].map((x) => Message.fromMap(x))),
+        upcomingMatch: UpcomingMatch.fromMap(json["upcoming_match"]),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "messages": List<dynamic>.from(messages.map((x) => x.toMap())),
+        "upcoming_match": upcomingMatch.toMap(),
+      };
+}
+
+class Message {
   String messageId;
   String teamId;
   String userId;
@@ -41,11 +62,11 @@ class Result {
   String activeFlag;
   String crtDate;
   String name;
-  String nickname;
+  Nickname nickname;
   String profilePic;
   int sameUser;
 
-  Result({
+  Message({
     this.messageId,
     this.teamId,
     this.userId,
@@ -58,7 +79,7 @@ class Result {
     this.sameUser,
   });
 
-  factory Result.fromMap(Map<String, dynamic> json) => Result(
+  factory Message.fromMap(Map<String, dynamic> json) => Message(
         messageId: json["message_id"],
         teamId: json["team_id"],
         userId: json["user_id"],
@@ -66,7 +87,8 @@ class Result {
         activeFlag: json["active_flag"],
         crtDate: json["crt_date"],
         name: json["name"],
-        nickname: json["nickname"],
+        //name: nameValues.map[json["name"]],
+        nickname: nicknameValues.map[json["nickname"]],
         profilePic: json["profile_pic"],
         sameUser: json["same_user"],
       );
@@ -79,8 +101,88 @@ class Result {
         "active_flag": activeFlag,
         "crt_date": crtDate,
         "name": name,
-        "nickname": nickname,
+        "nickname": nicknameValues.reverse[nickname],
         "profile_pic": profilePic,
         "same_user": sameUser,
       };
+}
+
+enum Name { GEOFF_TAYLOR, ALANNA_MYERS }
+
+final nameValues = EnumValues(
+    {"Alanna Myers": Name.ALANNA_MYERS, "Geoff Taylor": Name.GEOFF_TAYLOR});
+
+enum Nickname { GEOFF_T, ALANNA_M }
+
+final nicknameValues =
+    EnumValues({"Alanna M": Nickname.ALANNA_M, "Geoff T": Nickname.GEOFF_T});
+
+class UpcomingMatch {
+  String matchId;
+  String calendarId;
+  String divisionId;
+  String venue;
+  String home;
+  String away;
+  String overwrite;
+  String datestamp;
+  String oponentName;
+  String seasonName;
+  int playStatus;
+
+  UpcomingMatch({
+    this.matchId,
+    this.calendarId,
+    this.divisionId,
+    this.venue,
+    this.home,
+    this.away,
+    this.overwrite,
+    this.datestamp,
+    this.oponentName,
+    this.seasonName,
+    this.playStatus,
+  });
+
+  factory UpcomingMatch.fromMap(Map<String, dynamic> json) => UpcomingMatch(
+        matchId: json["match_id"],
+        calendarId: json["calendar_id"],
+        divisionId: json["division_id"],
+        venue: json["venue"],
+        home: json["home"],
+        away: json["away"],
+        overwrite: json["overwrite"],
+        datestamp: json["datestamp"],
+        oponentName: json["oponent_name"],
+        seasonName: json["season_name"],
+        playStatus: json["play_status"],
+      );
+
+  Map<String, dynamic> toMap() => {
+        "match_id": matchId,
+        "calendar_id": calendarId,
+        "division_id": divisionId,
+        "venue": venue,
+        "home": home,
+        "away": away,
+        "overwrite": overwrite,
+        "datestamp": datestamp,
+        "oponent_name": oponentName,
+        "season_name": seasonName,
+        "play_status": playStatus,
+      };
+}
+
+class EnumValues<T> {
+  Map<String, T> map;
+  Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    if (reverseMap == null) {
+      reverseMap = map.map((k, v) => new MapEntry(v, k));
+    }
+    return reverseMap;
+  }
 }

@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:sfindit/Model/getPlayersPlayingStatus.dart';
 import 'package:sfindit/Model/openTeamChat.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/keys.dart';
+import 'package:sfindit/common/loding.dart';
 import 'package:sfindit/common/string.dart';
 import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/utils/appbar.dart';
@@ -26,7 +28,8 @@ class _ChatState extends State<Chat> {
   TextEditingController _messageController = new TextEditingController();
 
   OpenTeamChat openTeamChatResponse;
-  List<Result> chatList;
+  List<Message> chatList;
+  UpcomingMatch upcomingMatchData;
 
   _ChatState(this.teamId);
 
@@ -80,7 +83,9 @@ class _ChatState extends State<Chat> {
                               ),
                             ),
                           ),
-                //upcomingMatchPopUp(),
+                upcomingMatchData != null
+                    ? upcomingMatchPopUp(upcomingMatchData)
+                    : Container(),
                 Image.asset(
                   Images.APPBAR_HEADER,
                 )
@@ -143,7 +148,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  Widget rightSideView(final Result list) {
+  Widget rightSideView(final Message list) {
     return Container(
       margin: EdgeInsets.only(left: 40.0, right: 14.0),
       child: Row(
@@ -196,7 +201,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  Widget leftSideView(final Result list) {
+  Widget leftSideView(final Message list) {
     return Container(
       margin: EdgeInsets.only(left: 14.0, right: 40.0),
       child: Row(
@@ -260,7 +265,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  Widget upcomingMatchPopUp() {
+  Widget upcomingMatchPopUp(UpcomingMatch list) {
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(top: 10.0),
@@ -279,8 +284,8 @@ class _ChatState extends State<Chat> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Upcoming Match \n vs. All That Talent',
-                            textAlign: TextAlign.center,
+                            'Upcoming Match \nvs. ' + list.oponentName,
+                            textAlign: TextAlign.start,
                             style: Theme.of(context)
                                 .textTheme
                                 .body2
@@ -292,7 +297,7 @@ class _ChatState extends State<Chat> {
                           Row(
                             children: <Widget>[
                               Text(
-                                '07/10/2019',
+                                list.datestamp,
                                 style: Theme.of(context)
                                     .textTheme
                                     .body1
@@ -303,7 +308,7 @@ class _ChatState extends State<Chat> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 20.0),
                                 child: Text(
-                                  '7:10 PM',
+                                  list.overwrite,
                                   style: Theme.of(context)
                                       .textTheme
                                       .body1
@@ -319,10 +324,7 @@ class _ChatState extends State<Chat> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => CustomDialog(),
-                        );
+                        getPlayerPlayingStatusApi();
                       },
                       child: Image(
                         image: AssetImage(Images.INFO),
@@ -352,16 +354,17 @@ class _ChatState extends State<Chat> {
                   Container(
                     width: MediaQuery.of(context).size.width / 2.4,
                     child: RaisedButton(
-                      color: greenColor,
-                      textColor: whiteColor,
+                      color:
+                          list.playStatus == 1 ? greenColor : Colors.grey[500],
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8.0))),
                       child: Text(
                         txtPlaying,
-                        style: Theme.of(context)
-                            .textTheme
-                            .body1
-                            .copyWith(fontSize: 14.0, color: whiteColor),
+                        style: Theme.of(context).textTheme.body1.copyWith(
+                            fontSize: 14.0,
+                            color: list.playStatus == 1
+                                ? whiteColor
+                                : Colors.black54),
                       ),
                       onPressed: () {},
                     ),
@@ -369,15 +372,18 @@ class _ChatState extends State<Chat> {
                   Container(
                     width: MediaQuery.of(context).size.width / 2.4,
                     child: RaisedButton(
-                      color: Colors.grey[500],
+                      color:
+                          list.playStatus == 2 ? Colors.red : Colors.grey[500],
                       textColor: Colors.black54,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8.0))),
                       child: Text(
                         txtUnavailable,
                         style: Theme.of(context).textTheme.body1.copyWith(
-                              fontSize: 14.0,
-                            ),
+                            fontSize: 14.0,
+                            color: list.playStatus == 2
+                                ? whiteColor
+                                : Colors.black54),
                       ),
                       onPressed: () {},
                     ),
@@ -397,7 +403,28 @@ class _ChatState extends State<Chat> {
       var data = json.decode(response.body);
       printResponse(getParametersForGetChat(), data.toString());
       openTeamChatResponse = OpenTeamChat.fromMap(data);
-      chatList = openTeamChatResponse.result;
+      chatList = openTeamChatResponse.result.messages;
+      upcomingMatchData = openTeamChatResponse.result.upcomingMatch;
+      setState(() {});
+    });
+  }
+
+  void getPlayerPlayingStatusApi() {
+    showDialog(context: context, builder: (context) => Loading());
+    getPlayerPlayingStatus(getParametersForGetPlayerPlayingStatus())
+        .then((response) {
+      var data = json.decode(response.body);
+      printResponse(getParametersForGetPlayerPlayingStatus(), data.toString());
+//      GetPlayersPlayingStatus getPlayersPlayingStatus = data;
+//      List<Playingstatus> playingStatusList =
+//          getPlayersPlayingStatus.playingstatus;
+      Navigator.pop(context);
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            CustomDialog(data, upcomingMatchData),
+      );
       setState(() {});
     });
   }
@@ -430,18 +457,34 @@ class _ChatState extends State<Chat> {
         text;
     return param;
   }
+
+  getParametersForGetPlayerPlayingStatus() {
+    String param = "&user_id=" +
+        getPrefValue(Keys.USER_ID) +
+        "&match_id=" +
+        upcomingMatchData.matchId +
+        "&team_id=" +
+        teamId;
+    return param;
+  }
 }
 
 class CustomDialog extends StatelessWidget {
+  GetPlayersPlayingStatus data;
+  UpcomingMatch upcomingMatchData;
+
+  CustomDialog(this.data, this.upcomingMatchData);
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.transparent,
-      child: dialogContent(context),
+      child: dialogContent(context, data, upcomingMatchData),
     );
   }
 
-  dialogContent(BuildContext context) {
+  dialogContent(BuildContext context, GetPlayersPlayingStatus data,
+      UpcomingMatch upcomingMatchData) {
     return Container(
       decoration: BoxDecoration(
           color: whiteColor,
@@ -481,7 +524,7 @@ class CustomDialog extends StatelessWidget {
             padding:
                 const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
             child: Text(
-              '07/10/2019',
+              upcomingMatchData.datestamp,
               style: Theme.of(context)
                   .textTheme
                   .body1
@@ -492,9 +535,9 @@ class CustomDialog extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: 10,
+              itemCount: data.playingstatus.length,
               itemBuilder: (BuildContext context, int index) {
-                return listItem(context);
+                return listItem(context, data.playingstatus[index]);
               },
             ),
           ),
@@ -503,7 +546,7 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  Widget listItem(BuildContext context) {
+  Widget listItem(BuildContext context, Playingstatus playingStatus) {
     return Container(
       child: Row(
         children: <Widget>[
@@ -511,6 +554,19 @@ class CustomDialog extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: new ClipRRect(
               borderRadius: new BorderRadius.circular(50.0),
+              /*                child: checkBlank(list.profilePic) != ""
+                    ? Image.network(
+                  list.profilePic,
+                  height: 40.0,
+                  width: 40.0,
+                  fit: BoxFit.cover,
+                )
+                    : Image.asset(
+                  Images.LOGO_TRANSPARENT,
+                  height: 40.0,
+                  width: 40.0,
+                  fit: BoxFit.cover,
+                ),*/
               child: Image.asset(
                 "assets/images/jocker.jpg",
                 height: 55.0,
@@ -526,7 +582,7 @@ class CustomDialog extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Text(
-                      'Andrew Scotch',
+                      playingStatus.name,
                       style: Theme.of(context)
                           .textTheme
                           .body2
@@ -538,7 +594,7 @@ class CustomDialog extends StatelessWidget {
                   height: 4.0,
                 ),
                 Text(
-                  'Playing',
+                  playingStatus.playStatus.toString(),
                   style: Theme.of(context)
                       .textTheme
                       .body1

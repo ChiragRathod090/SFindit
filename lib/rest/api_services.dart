@@ -14,6 +14,7 @@ const String GET_TEAM_LIST_FOR_CHAT = "getTeamListForChat";
 const String OPEN_TEAM_CHAT = "openTeamChat";
 const String SEND_MESSAGE = "sendMessage";
 const String GET_NOTIFICATION = "getNotificationList";
+const String GET_PLAYER_PLAYING_STATUS = "getPlayersPlayingStatus";
 
 // 1. Login API
 Future<http.Response> login(param) async {
@@ -125,6 +126,19 @@ Future<http.Response> getNotification(param) async {
   try {
     http.Response data = await client.post(
       BASE_URL + GET_NOTIFICATION + '&user_id=$param',
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 9. Get Notification
+Future<http.Response> getPlayerPlayingStatus(param) async {
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + GET_PLAYER_PLAYING_STATUS + '&user_id=$param',
     );
     return data;
   } finally {
