@@ -77,8 +77,10 @@ class _SeasonScreenState extends State<SeasonScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      InvoiceScreen(title: list[index].name + " invoice")));
+                  builder: (context) => InvoiceScreen(
+                        title: list[index].name + " invoice",
+                        seasonId: list[index].id,
+                      )));
         },
         child: Container(
           child: Card(

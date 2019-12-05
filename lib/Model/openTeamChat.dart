@@ -62,7 +62,7 @@ class Message {
   String activeFlag;
   String crtDate;
   String name;
-  Nickname nickname;
+  String nickname;
   String profilePic;
   int sameUser;
 
@@ -88,7 +88,7 @@ class Message {
         crtDate: json["crt_date"],
         name: json["name"],
         //name: nameValues.map[json["name"]],
-        nickname: nicknameValues.map[json["nickname"]],
+        nickname: json["nickname"],
         profilePic: json["profile_pic"],
         sameUser: json["same_user"],
       );
@@ -101,7 +101,7 @@ class Message {
         "active_flag": activeFlag,
         "crt_date": crtDate,
         "name": name,
-        "nickname": nicknameValues.reverse[nickname],
+        "nickname": nickname,
         "profile_pic": profilePic,
         "same_user": sameUser,
       };

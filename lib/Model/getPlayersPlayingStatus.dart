@@ -40,23 +40,27 @@ class GetPlayersPlayingStatus {
 class Playingstatus {
   String indId;
   String name;
+  String profilePic;
   int playStatus;
 
   Playingstatus({
     this.indId,
     this.name,
+    this.profilePic,
     this.playStatus,
   });
 
   factory Playingstatus.fromMap(Map<String, dynamic> json) => Playingstatus(
         indId: json["indID"],
         name: json["name"],
+        profilePic: json["profile_pic"],
         playStatus: json["play_status"],
       );
 
   Map<String, dynamic> toMap() => {
         "indID": indId,
         "name": name,
+        "profile_pic": profilePic,
         "play_status": playStatus,
       };
 }

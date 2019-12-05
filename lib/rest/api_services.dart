@@ -15,6 +15,9 @@ const String OPEN_TEAM_CHAT = "openTeamChat";
 const String SEND_MESSAGE = "sendMessage";
 const String GET_NOTIFICATION = "getNotificationList";
 const String GET_PLAYER_PLAYING_STATUS = "getPlayersPlayingStatus";
+const String GET_LATEST_MESSAGES = "getLatestMessages";
+const String ADD_PLAY_STATUS = "addPlayStatus";
+const String GET_SEASON_INVOICE = "getSeasonInvoice";
 
 // 1. Login API
 Future<http.Response> login(param) async {
@@ -133,12 +136,51 @@ Future<http.Response> getNotification(param) async {
   }
 }
 
-// 9. Get Notification
+// 10. Get Player PlayingStatus
 Future<http.Response> getPlayerPlayingStatus(param) async {
   var client = new http.Client();
   try {
     http.Response data = await client.post(
       BASE_URL + GET_PLAYER_PLAYING_STATUS + '&user_id=$param',
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 11. Get Latest Messages
+Future<http.Response> getLatestMessages(param) async {
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + GET_LATEST_MESSAGES + param,
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 12. Add Play Status
+Future<http.Response> addPlayStatus(param) async {
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + ADD_PLAY_STATUS + param,
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 13. Get Season Invoice
+Future<http.Response> getSeasonInvoice(param) async {
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + GET_SEASON_INVOICE + param,
     );
     return data;
   } finally {

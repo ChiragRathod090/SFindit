@@ -1,7 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:sfindit/Model/getPlayersPlayingStatus.dart';
 import 'package:sfindit/Model/openTeamChat.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/constants.dart';
@@ -31,6 +31,14 @@ class _ChatState extends State<Chat> {
   List<Message> chatList;
   UpcomingMatch upcomingMatchData;
 
+  var playingList;
+  var latestMessageId;
+  Timer timer;
+
+  var playingStatus;
+
+  //GetPlayersPlayingStatus playingStatusData;
+
   _ChatState(this.teamId);
 
   @override
@@ -38,6 +46,7 @@ class _ChatState extends State<Chat> {
     // TODO: implement initState
     super.initState();
     openTeamChatApi();
+    //callLatestMessageApiTimer();
   }
 
   @override
@@ -132,7 +141,25 @@ class _ChatState extends State<Chat> {
                     color: Colors.grey[200]),
                 child: GestureDetector(
                   onTap: () {
-                    if (text != null) if (text.length != 0) sendMessageApi();
+                    if (text != null) if (text.length != 0) {
+                      var messageId = int.parse(latestMessageId) + 1;
+                      Message message = new Message(
+                          messageId: messageId.toString(),
+                          teamId: teamId,
+                          userId: getPrefValue(Keys.USER_ID),
+                          message: text,
+                          activeFlag: "1",
+                          crtDate: "121641",
+                          name: getPrefValue(Keys.NAME),
+                          nickname: getPrefValue(Keys.NICK_NAME),
+                          profilePic: getPrefValue(Keys.PROFILE_PIC),
+                          sameUser: 1);
+                      chatList.insert(0, message);
+                      _messageController.text = "";
+                      setState(() {});
+                      //timer.cancel();
+                      sendMessageApi();
+                    }
                   },
                   child: Icon(
                     Icons.send,
@@ -187,11 +214,14 @@ class _ChatState extends State<Chat> {
                         width: 40.0,
                         fit: BoxFit.cover,
                       )
-                    : Image.asset(
-                        Images.LOGO_TRANSPARENT,
+                    : Container(
                         height: 40.0,
                         width: 40.0,
-                        fit: BoxFit.cover,
+                        color: primaryColor,
+                        child: Image.asset(
+                          Images.LOGO_TRANSPARENT,
+                          fit: BoxFit.cover,
+                        ),
                       ),
               ),
             ),
@@ -266,6 +296,7 @@ class _ChatState extends State<Chat> {
   }
 
   Widget upcomingMatchPopUp(UpcomingMatch list) {
+    playingStatus = list.playStatus;
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(top: 10.0),
@@ -354,26 +385,28 @@ class _ChatState extends State<Chat> {
                   Container(
                     width: MediaQuery.of(context).size.width / 2.4,
                     child: RaisedButton(
-                      color:
-                          list.playStatus == 1 ? greenColor : Colors.grey[500],
+                      color: playingStatus == 1 ? greenColor : Colors.grey[500],
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8.0))),
                       child: Text(
                         txtPlaying,
                         style: Theme.of(context).textTheme.body1.copyWith(
                             fontSize: 14.0,
-                            color: list.playStatus == 1
+                            color: playingStatus == 1
                                 ? whiteColor
                                 : Colors.black54),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          addPlayStatusApi(1);
+                        });
+                      },
                     ),
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width / 2.4,
                     child: RaisedButton(
-                      color:
-                          list.playStatus == 2 ? Colors.red : Colors.grey[500],
+                      color: playingStatus == 2 ? Colors.red : Colors.grey[500],
                       textColor: Colors.black54,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8.0))),
@@ -381,11 +414,13 @@ class _ChatState extends State<Chat> {
                         txtUnavailable,
                         style: Theme.of(context).textTheme.body1.copyWith(
                             fontSize: 14.0,
-                            color: list.playStatus == 2
+                            color: playingStatus == 2
                                 ? whiteColor
                                 : Colors.black54),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        addPlayStatusApi(2);
+                      },
                     ),
                   )
                 ],
@@ -397,7 +432,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  void openTeamChatApi() async {
+  openTeamChatApi() async {
     //await showDialog(context: context, builder: (context) => Loading());
     await openTeamChat(getParametersForGetChat()).then((response) {
       var data = json.decode(response.body);
@@ -405,40 +440,88 @@ class _ChatState extends State<Chat> {
       openTeamChatResponse = OpenTeamChat.fromMap(data);
       chatList = openTeamChatResponse.result.messages;
       upcomingMatchData = openTeamChatResponse.result.upcomingMatch;
+      latestMessageId = chatList[0].messageId;
       setState(() {});
     });
   }
 
-  void getPlayerPlayingStatusApi() {
+  callLatestMessageApiTimer() {
+    timer = Timer.periodic(
+        Duration(seconds: 10), (Timer t) => getLatestMessagesApi(false));
+    /* setState(() {
+              getLatestMessagesApi(false);
+            }));*/
+  }
+
+  getLatestMessagesApi(bool isRemove) async {
+    getLatestMessages(getParametersForGetLatestMessages()).then((response) {
+      var data = json.decode(response.body);
+      printResponse(getParametersForGetLatestMessages(), data.toString());
+      //openTeamChatResponse = OpenTeamChat.fromMap(data);
+      setState(() {
+        if (isRemove) chatList.removeAt(0);
+        for (var messages in data['result']['messages']) {
+          latestMessageId = messages['message_id'];
+          Message messageData = new Message(
+              messageId: messages['message_id'],
+              teamId: messages['team_id'],
+              userId: messages['user_id'],
+              message: messages['message'],
+              activeFlag: messages['active_flag'],
+              crtDate: messages['crt_date'],
+              name: messages['name'],
+              nickname: messages['nickname'],
+              profilePic: messages['profile_pic'],
+              sameUser: messages['same_user']);
+          chatList.insert(0, messageData);
+        }
+      });
+      //callLatestMessageApiTimer();
+    });
+  }
+
+  getPlayerPlayingStatusApi() {
     showDialog(context: context, builder: (context) => Loading());
     getPlayerPlayingStatus(getParametersForGetPlayerPlayingStatus())
         .then((response) {
       var data = json.decode(response.body);
       printResponse(getParametersForGetPlayerPlayingStatus(), data.toString());
-//      GetPlayersPlayingStatus getPlayersPlayingStatus = data;
-//      List<Playingstatus> playingStatusList =
-//          getPlayersPlayingStatus.playingstatus;
+      // playingStatusData = GetPlayersPlayingStatus.fromMap(data);
+      playingList = data['result'];
+
       Navigator.pop(context);
 
       showDialog(
         context: context,
         builder: (BuildContext context) =>
-            CustomDialog(data, upcomingMatchData),
+            CustomDialog(playingList, upcomingMatchData),
       );
       setState(() {});
     });
   }
 
-  void sendMessageApi() async {
-    //await showDialog(context: context, builder: (context) => Loading());
+  sendMessageApi() async {
     await sendMessage(getParametersForSendMessage()).then((response) {
       var data = json.decode(response.body);
       printResponse(getParametersForSendMessage(), data.toString());
       if (data['success'] == 1) {
-        _messageController.text = "";
+        //chatList.removeAt(0);
+        //getLatestMessagesApi(true);
         openTeamChatApi();
-      } else {}
+      }
       setState(() {});
+    });
+  }
+
+  void addPlayStatusApi(int i) {
+    addPlayStatus(getParametersForAddPlayStatus(i)).then((response) {
+      var data = json.decode(response.body);
+      printResponse(getParametersForAddPlayStatus(i), data.toString());
+      setState(() {
+        if (data['success'] == 1) {
+          i == 1 ? playingStatus == 1 : playingStatus == 2;
+        }
+      });
     });
   }
 
@@ -467,23 +550,46 @@ class _ChatState extends State<Chat> {
         teamId;
     return param;
   }
+
+  getParametersForGetLatestMessages() {
+    String param = "&user_id=" +
+        getPrefValue(Keys.USER_ID) +
+        "&team_id=" +
+        teamId +
+        "&message_id=" +
+        chatList[0].messageId;
+    return param;
+  }
+
+  getParametersForAddPlayStatus(final int i) {
+    String param = "&user_id=" +
+        getPrefValue(Keys.USER_ID) +
+        "&match_id=" +
+        upcomingMatchData.matchId +
+        "&status=" +
+        i.toString();
+    return param;
+  }
 }
 
 class CustomDialog extends StatelessWidget {
-  GetPlayersPlayingStatus data;
+  //GetPlayersPlayingStatus data;
   UpcomingMatch upcomingMatchData;
+  var playingList;
 
-  CustomDialog(this.data, this.upcomingMatchData);
+  CustomDialog(final this.playingList, this.upcomingMatchData);
+
+  //CustomDialog(this.data, this.upcomingMatchData);
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.transparent,
-      child: dialogContent(context, data, upcomingMatchData),
+      child: dialogContent(context, playingList, upcomingMatchData),
     );
   }
 
-  dialogContent(BuildContext context, GetPlayersPlayingStatus data,
+  dialogContent(BuildContext context, final playingList,
       UpcomingMatch upcomingMatchData) {
     return Container(
       decoration: BoxDecoration(
@@ -535,9 +641,9 @@ class CustomDialog extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: data.playingstatus.length,
+              itemCount: playingList.length,
               itemBuilder: (BuildContext context, int index) {
-                return listItem(context, data.playingstatus[index]);
+                return listItem(context, playingList, index);
               },
             ),
           ),
@@ -546,7 +652,7 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  Widget listItem(BuildContext context, Playingstatus playingStatus) {
+  Widget listItem(BuildContext context, final playingList, int index) {
     return Container(
       child: Row(
         children: <Widget>[
@@ -554,25 +660,28 @@ class CustomDialog extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: new ClipRRect(
               borderRadius: new BorderRadius.circular(50.0),
-              /*                child: checkBlank(list.profilePic) != ""
-                    ? Image.network(
-                  list.profilePic,
-                  height: 40.0,
-                  width: 40.0,
-                  fit: BoxFit.cover,
-                )
-                    : Image.asset(
-                  Images.LOGO_TRANSPARENT,
-                  height: 40.0,
-                  width: 40.0,
-                  fit: BoxFit.cover,
-                ),*/
-              child: Image.asset(
-                "assets/images/jocker.jpg",
-                height: 55.0,
-                width: 55.0,
-                fit: BoxFit.cover,
-              ),
+              child: checkBlank(playingList[index]['profile_pic']) != ""
+                  ? Image.network(
+                      playingList[index]['profile_pic'],
+                      height: 55.0,
+                      width: 55.0,
+                      fit: BoxFit.cover,
+                    )
+                  : Container(
+                      height: 55.0,
+                      width: 55.0,
+                      color: primaryColor,
+                      child: Image.asset(
+                        Images.LOGO_TRANSPARENT,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+//              child: Image.asset(
+//                "assets/images/jocker.jpg",
+//                height: 55.0,
+//                width: 55.0,
+//                fit: BoxFit.cover,
+//              ),
             ),
           ),
           Expanded(
@@ -582,7 +691,7 @@ class CustomDialog extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Text(
-                      playingStatus.name,
+                      playingList[index]['name'],
                       style: Theme.of(context)
                           .textTheme
                           .body2
@@ -594,11 +703,10 @@ class CustomDialog extends StatelessWidget {
                   height: 4.0,
                 ),
                 Text(
-                  playingStatus.playStatus.toString(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .body1
-                      .copyWith(fontSize: 14.0, color: greenColor),
+                  getStatus(playingList, index),
+                  style: Theme.of(context).textTheme.body1.copyWith(
+                      fontSize: 14.0,
+                      color: getStatusColor(playingList, index)),
                 )
               ],
             ),
@@ -606,5 +714,31 @@ class CustomDialog extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String getStatus(final playingList, final int index) {
+    switch (playingList[index]['play_status']) {
+      case 0:
+        return "Not Confirmed";
+      case 1:
+        return "Playing";
+      case 2:
+        return "Not available";
+      default:
+        return "Not Confirmed";
+    }
+  }
+
+  getStatusColor(final playingList, final int index) {
+    switch (playingList[index]['play_status']) {
+      case 0:
+        return Colors.grey;
+      case 1:
+        return greenColor;
+      case 2:
+        return Colors.red;
+      default:
+        return Colors.grey;
+    }
   }
 }

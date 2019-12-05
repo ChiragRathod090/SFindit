@@ -1,19 +1,32 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:sfindit/common/color.dart';
+import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
+import 'package:sfindit/common/keys.dart';
 import 'package:sfindit/common/string.dart';
+import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/utils/appbar.dart';
 
 class InvoiceScreen extends StatefulWidget {
   final String title;
+  final String seasonId;
 
-  const InvoiceScreen({Key key, this.title}) : super(key: key);
+  const InvoiceScreen({Key key, this.title, this.seasonId}) : super(key: key);
 
   @override
   _InvoiceScreenState createState() => _InvoiceScreenState();
 }
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getSeasonInvoiceApi(widget.seasonId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -536,5 +549,22 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         ],
       ),
     );
+  }
+
+  getSeasonInvoiceApi(final String seasonId) async {
+    await getSeasonInvoice(getParametersForGetSeasonInvoice(seasonId))
+        .then((response) {
+      var data = json.decode(response.body);
+      printResponse(
+          getParametersForGetSeasonInvoice(seasonId), data.toString());
+      if (data['success'] == 1) {}
+      setState(() {});
+    });
+  }
+
+  getParametersForGetSeasonInvoice(final String seasonId) {
+    String param =
+        "&user_id=" + getPrefValue(Keys.USER_ID) + "&season_id=" + seasonId;
+    return param;
   }
 }
