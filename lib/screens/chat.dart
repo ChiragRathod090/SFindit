@@ -448,9 +448,6 @@ class _ChatState extends State<Chat> {
   callLatestMessageApiTimer() {
     timer = Timer.periodic(
         Duration(seconds: 10), (Timer t) => getLatestMessagesApi(false));
-    /* setState(() {
-              getLatestMessagesApi(false);
-            }));*/
   }
 
   getLatestMessagesApi(bool isRemove) async {
