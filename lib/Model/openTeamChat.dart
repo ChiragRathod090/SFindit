@@ -128,7 +128,7 @@ class UpcomingMatch {
   String datestamp;
   String oponentName;
   String seasonName;
-  int playStatus;
+  String playStatus;
 
   UpcomingMatch({
     this.matchId,

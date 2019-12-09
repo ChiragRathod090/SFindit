@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sfindit/common/color.dart';
+import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/string.dart';
 import 'package:sfindit/screens/fixturesAndLadders.dart';
 import 'package:sfindit/screens/liveSupport.dart';
+import 'package:sfindit/screens/noInternetConnection.dart';
 import 'package:sfindit/screens/notifications.dart';
 import 'package:sfindit/screens/profile.dart';
 import 'package:sfindit/screens/season.dart';
@@ -21,12 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    list.add(HomeModel(txtProfile, Images.HOME_PROFILE));
-    list.add(HomeModel(txtNotifications, Images.HOME_NOTIFICATION));
-    list.add(HomeModel(txtTeams, Images.HOME_TEAMS));
-    list.add(HomeModel(txtFixturesAndLadders, Images.HOME_FIXTURE));
-    list.add(HomeModel(txtInvoices, Images.HOME_DOCUMENT));
-    list.add(HomeModel(txtLiveSupport, Images.HOME_LIVE_SUPPORT));
+    addItemsToHome();
+    checkConnection().then((isConnected) {
+      print("checkConnection(){...}");
+      if (!isConnected) {
+        print("!isConnected");
+        NoInternetConnection();
+      }
+    });
   }
 
   @override
@@ -104,6 +108,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void addItemsToHome() {
+    list.add(HomeModel(txtProfile, Images.HOME_PROFILE));
+    list.add(HomeModel(txtNotifications, Images.HOME_NOTIFICATION));
+    list.add(HomeModel(txtTeams, Images.HOME_TEAMS));
+    list.add(HomeModel(txtFixturesAndLadders, Images.HOME_FIXTURE));
+    list.add(HomeModel(txtInvoices, Images.HOME_DOCUMENT));
+    list.add(HomeModel(txtLiveSupport, Images.HOME_LIVE_SUPPORT));
   }
 }
 

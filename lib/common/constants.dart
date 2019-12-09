@@ -1,3 +1,4 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:sfindit/common/pref.dart';
 
@@ -45,4 +46,14 @@ String checkBlank(String s) {
 void printResponse(String param, String response) {
   print("Parameters : " + param);
   print("Response : " + response);
+}
+
+Future<bool> checkConnection() async {
+  var connectivityResult = await (Connectivity().checkConnectivity());
+  if (connectivityResult == ConnectivityResult.mobile) {
+    return true;
+  } else if (connectivityResult == ConnectivityResult.wifi) {
+    return true;
+  }
+  return false;
 }

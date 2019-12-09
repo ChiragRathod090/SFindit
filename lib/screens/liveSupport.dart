@@ -1,7 +1,14 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:sfindit/Model/getSupportMessages.dart';
 import 'package:sfindit/common/color.dart';
+import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
+import 'package:sfindit/common/keys.dart';
 import 'package:sfindit/common/string.dart';
+import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/utils/appbar.dart';
 
 class LiveSupportScreen extends StatefulWidget {
@@ -10,8 +17,22 @@ class LiveSupportScreen extends StatefulWidget {
 }
 
 class _LiveSupportScreenState extends State<LiveSupportScreen> {
-  List<String> list = new List();
   String text;
+
+  GetSupportMessages getSupportLatestMessagesResponse;
+  List<Result> chatList;
+  var latestMessageId;
+  Timer timer;
+
+  TextEditingController _messageController = new TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getSupportMessagesApi();
+    callSupportLatestMessageApiTimer();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +45,38 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
           Expanded(
             child: Stack(
               children: <Widget>[
-                ListView.builder(
-                  reverse: true,
-                  padding: EdgeInsets.only(top: 12.0, bottom: 16.0),
-                  itemCount: list.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return (index % 2) != 0 ? leftSideView() : rightSideView();
-                  },
-                ),
+                getSupportLatestMessagesResponse == null
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : checkListIsNullAndBlank(chatList)
+                        ? ListView.builder(
+                            reverse: true,
+                            padding: EdgeInsets.only(top: 12.0, bottom: 16.0),
+                            itemCount: chatList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return chatList[index].replyFromSupport == "1"
+                                  ? leftSideView(chatList[index])
+                                  : rightSideView(chatList[index]);
+                            },
+                          )
+                        : Container(
+                            margin: EdgeInsets.all(40.0),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(40.0),
+                                child: Text(
+                                  'write message and hit send to start chat',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          color: blackColor, fontSize: 16.0),
+                                ),
+                              ),
+                            ),
+                          ),
                 Image.asset(
                   Images.APPBAR_HEADER,
                 )
@@ -59,6 +104,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                       borderRadius: BorderRadius.circular(25.0),
                       color: Colors.grey[200]),
                   child: new TextField(
+                    controller: _messageController,
                     textCapitalization: TextCapitalization.sentences,
                     textInputAction: TextInputAction.done,
                     onChanged: (String text) {
@@ -77,9 +123,22 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                     color: Colors.grey[200]),
                 child: GestureDetector(
                   onTap: () {
-                    setState(() {
-                      if (text != null) if (text.length != 0) list.add(text);
-                    });
+                    if (text != null) if (text.length != 0) {
+                      var messageId = int.parse(latestMessageId) + 1;
+                      Result message = new Result(
+                          messageId: messageId.toString(),
+                          userId: getPrefValue(Keys.USER_ID),
+                          message: text,
+                          replyFromSupport: "0",
+                          supportName: "",
+                          supportPic: "",
+                          crtDate: "121641");
+                      chatList.insert(0, message);
+                      _messageController.text = "";
+                      timer.cancel();
+                      setState(() {});
+                      sendSupportMessageApi();
+                    }
                   },
                   child: Icon(
                     Icons.send,
@@ -95,7 +154,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
     );
   }
 
-  Widget rightSideView() {
+  Widget rightSideView(Result list) {
     return Container(
       margin: EdgeInsets.only(left: 40.0, right: 14.0),
       child: Row(
@@ -108,7 +167,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Text(text,
+                child: Text(list.message,
                     style: Theme.of(context)
                         .textTheme
                         .body1
@@ -125,12 +184,22 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
             child: CircleAvatar(
               child: ClipRRect(
                 borderRadius: new BorderRadius.circular(50.0),
-                child: Image.asset(
-                  "assets/images/jocker.jpg",
-                  height: 40.0,
-                  width: 40.0,
-                  fit: BoxFit.cover,
-                ),
+                child: checkBlank(list.supportPic) != ""
+                    ? Image.network(
+                        list.supportPic,
+                        height: 40.0,
+                        width: 40.0,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(
+                        height: 40.0,
+                        width: 40.0,
+                        color: primaryColor,
+                        child: Image.asset(
+                          Images.LOGO_TRANSPARENT,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
               ),
             ),
           )
@@ -139,7 +208,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
     );
   }
 
-  Widget leftSideView() {
+  Widget leftSideView(Result list) {
     return Container(
       margin: EdgeInsets.only(left: 14.0, right: 40.0),
       child: Row(
@@ -150,20 +219,22 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
             padding: const EdgeInsets.only(top: 6.0),
             child: ClipRRect(
               borderRadius: new BorderRadius.circular(50.0),
-              child: Container(
-                height: 40.0,
-                width: 40.0,
-                color: primaryColor,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Image.asset(
-                    Images.LOGO_TRANSPARENT,
-                    height: 40.0,
-                    width: 40.0,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+              child: checkBlank(list.supportPic) != ""
+                  ? Image.network(
+                      list.supportPic,
+                      height: 40.0,
+                      width: 40.0,
+                      fit: BoxFit.cover,
+                    )
+                  : Container(
+                      height: 40.0,
+                      width: 40.0,
+                      color: primaryColor,
+                      child: Image.asset(
+                        Images.LOGO_TRANSPARENT,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
             ),
           ),
           SizedBox(
@@ -180,7 +251,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Support",
+                      list.supportName,
                       style: Theme.of(context)
                           .textTheme
                           .body1
@@ -189,7 +260,8 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                     SizedBox(
                       height: 4.0,
                     ),
-                    Text(text, style: Theme.of(context).textTheme.body1),
+                    Text(list.message,
+                        style: Theme.of(context).textTheme.body1),
                   ],
                 ),
               ),
@@ -199,5 +271,82 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
         ],
       ),
     );
+  }
+
+  getSupportMessagesApi() async {
+    await getSupportMessages(getPrefValue(Keys.USER_ID)).then((response) {
+      var data = json.decode(response.body);
+      printResponse(getPrefValue(Keys.USER_ID), data.toString());
+      getSupportLatestMessagesResponse = GetSupportMessages.fromMap(data);
+      chatList = getSupportLatestMessagesResponse.result;
+      latestMessageId = chatList[0].messageId;
+      setState(() {});
+    });
+  }
+
+  sendSupportMessageApi() async {
+    await sendSupportMessage(getParametersForSendSupportMessage())
+        .then((response) {
+      var data = json.decode(response.body);
+      printResponse(getParametersForSendSupportMessage(), data.toString());
+      if (data['success'] == 1) {
+        getSupportLatestMessagesApi(true);
+      }
+      setState(() {});
+    });
+  }
+
+  getParametersForSendSupportMessage() {
+    String param =
+        "&user_id=" + getPrefValue(Keys.USER_ID) + "&message=" + text;
+    return param;
+  }
+
+  callSupportLatestMessageApiTimer() {
+    setState(() {
+      timer = Timer.periodic(Duration(seconds: 10),
+          (Timer t) => getSupportLatestMessagesApi(false));
+    });
+  }
+
+  getSupportLatestMessagesApi(bool isRemove) async {
+    await getSupportLatestMessages(getParametersForGetSupportLatestMessages())
+        .then((response) {
+      var data = json.decode(response.body);
+      printResponse(
+          getParametersForGetSupportLatestMessages(), data.toString());
+      if (isRemove) chatList.removeAt(0);
+      for (var messages in data['result']) {
+        latestMessageId = messages['message_id'];
+        Result messageData = new Result(
+            messageId: messages['message_id'],
+            userId: messages['user_id'],
+            message: messages['message'],
+            replyFromSupport: messages['reply_from_support'],
+            supportName: messages['support_name'],
+            supportPic: messages['support_pic'],
+            crtDate: messages['crt_date']);
+        chatList.insert(0, messageData);
+      }
+      if (isRemove) callSupportLatestMessageApiTimer();
+    });
+  }
+
+  getParametersForGetSupportLatestMessages() {
+    String param = "&user_id=" +
+        getPrefValue(Keys.USER_ID) +
+        "&message_id=" +
+        latestMessageId;
+    print(param);
+    return param;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    setState(() {
+      timer.cancel();
+    });
   }
 }

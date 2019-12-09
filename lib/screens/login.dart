@@ -165,6 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setPrefValue(Keys.EMAIL, loginResponse.result.email);
         setPrefValue(
             Keys.EMERGENCY_CONTACT, loginResponse.result.emergencyContact);
+        setPrefValue(Keys.EMERGENCY_NAME, loginResponse.result.emergencyName);
         setPrefValue(Keys.MOBILE, loginResponse.result.mobile);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomeScreen()));

@@ -40,6 +40,9 @@ const String hintWriteMessage = "Write Message";
 const String txtOk = "Ok";
 const String txtYes = "Yes";
 const String txtNo = "No";
+const String txtTryAgain = "Try Again";
 const String txtCamera = "Camera";
 const String txtGallery = "Gallery";
 const String txtNoDataFound = "No Data Found";
+const String txtInternetConnection =
+    "Please check your internet connection and try again...";

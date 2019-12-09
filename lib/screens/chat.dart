@@ -35,18 +35,15 @@ class _ChatState extends State<Chat> {
   var latestMessageId;
   Timer timer;
 
-  var playingStatus;
-
-  //GetPlayersPlayingStatus playingStatusData;
+  String playingStatus;
 
   _ChatState(this.teamId);
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     openTeamChatApi();
-    //callLatestMessageApiTimer();
+    callLatestMessageApiTimer();
   }
 
   @override
@@ -156,8 +153,8 @@ class _ChatState extends State<Chat> {
                           sameUser: 1);
                       chatList.insert(0, message);
                       _messageController.text = "";
+                      timer.cancel();
                       setState(() {});
-                      //timer.cancel();
                       sendMessageApi();
                     }
                   },
@@ -296,7 +293,6 @@ class _ChatState extends State<Chat> {
   }
 
   Widget upcomingMatchPopUp(UpcomingMatch list) {
-    playingStatus = list.playStatus;
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(top: 10.0),
@@ -382,47 +378,83 @@ class _ChatState extends State<Chat> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width / 2.4,
-                    child: RaisedButton(
-                      color: playingStatus == 1 ? greenColor : Colors.grey[500],
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                      child: Text(
-                        txtPlaying,
-                        style: Theme.of(context).textTheme.body1.copyWith(
-                            fontSize: 14.0,
-                            color: playingStatus == 1
-                                ? whiteColor
-                                : Colors.black54),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          addPlayStatusApi(1);
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 2.4,
-                    child: RaisedButton(
-                      color: playingStatus == 2 ? Colors.red : Colors.grey[500],
-                      textColor: Colors.black54,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                      child: Text(
-                        txtUnavailable,
-                        style: Theme.of(context).textTheme.body1.copyWith(
-                            fontSize: 14.0,
-                            color: playingStatus == 2
-                                ? whiteColor
-                                : Colors.black54),
-                      ),
-                      onPressed: () {
-                        addPlayStatusApi(2);
-                      },
-                    ),
-                  )
+                  playingStatus == "1"
+                      ? Container(
+                          width: MediaQuery.of(context).size.width / 2.4,
+                          child: RaisedButton(
+                            color: greenColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0))),
+                            child: Text(
+                              txtPlaying,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 14.0, color: whiteColor),
+                            ),
+                            onPressed: () {},
+                          ),
+                        )
+                      : Container(
+                          width: MediaQuery.of(context).size.width / 2.4,
+                          child: RaisedButton(
+                            color: Colors.grey[500],
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0))),
+                            child: Text(
+                              txtPlaying,
+                              style: Theme.of(context).textTheme.body1.copyWith(
+                                  fontSize: 14.0, color: Colors.black54),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                timer.cancel();
+                                addPlayStatusApi(1);
+                              });
+                            },
+                          ),
+                        ),
+                  playingStatus == "2"
+                      ? Container(
+                          width: MediaQuery.of(context).size.width / 2.4,
+                          child: RaisedButton(
+                            color: Colors.red,
+                            textColor: Colors.black54,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0))),
+                            child: Text(
+                              txtUnavailable,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 14.0, color: whiteColor),
+                            ),
+                            onPressed: () {},
+                          ),
+                        )
+                      : Container(
+                          width: MediaQuery.of(context).size.width / 2.4,
+                          child: RaisedButton(
+                            color: Colors.grey[500],
+                            textColor: Colors.black54,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0))),
+                            child: Text(
+                              txtUnavailable,
+                              style: Theme.of(context).textTheme.body1.copyWith(
+                                  fontSize: 14.0, color: Colors.black54),
+                            ),
+                            onPressed: () {
+                              timer.cancel();
+                              addPlayStatusApi(2);
+                              setState(() {});
+                            },
+                          ),
+                        )
                 ],
               ),
             ],
@@ -432,8 +464,12 @@ class _ChatState extends State<Chat> {
     );
   }
 
+  callLatestMessageApiTimer() {
+    timer = Timer.periodic(
+        Duration(seconds: 10), (Timer t) => getLatestMessagesApi(false));
+  }
+
   openTeamChatApi() async {
-    //await showDialog(context: context, builder: (context) => Loading());
     await openTeamChat(getParametersForGetChat()).then((response) {
       var data = json.decode(response.body);
       printResponse(getParametersForGetChat(), data.toString());
@@ -441,40 +477,49 @@ class _ChatState extends State<Chat> {
       chatList = openTeamChatResponse.result.messages;
       upcomingMatchData = openTeamChatResponse.result.upcomingMatch;
       latestMessageId = chatList[0].messageId;
+      playingStatus = upcomingMatchData.playStatus;
       setState(() {});
     });
   }
 
-  callLatestMessageApiTimer() {
-    timer = Timer.periodic(
-        Duration(seconds: 10), (Timer t) => getLatestMessagesApi(false));
+  getParametersForGetChat() {
+    String param =
+        "&team_id=" + teamId + "&user_id=" + getPrefValue(Keys.USER_ID);
+    return param;
   }
 
   getLatestMessagesApi(bool isRemove) async {
     getLatestMessages(getParametersForGetLatestMessages()).then((response) {
       var data = json.decode(response.body);
       printResponse(getParametersForGetLatestMessages(), data.toString());
-      //openTeamChatResponse = OpenTeamChat.fromMap(data);
-      setState(() {
-        if (isRemove) chatList.removeAt(0);
-        for (var messages in data['result']['messages']) {
-          latestMessageId = messages['message_id'];
-          Message messageData = new Message(
-              messageId: messages['message_id'],
-              teamId: messages['team_id'],
-              userId: messages['user_id'],
-              message: messages['message'],
-              activeFlag: messages['active_flag'],
-              crtDate: messages['crt_date'],
-              name: messages['name'],
-              nickname: messages['nickname'],
-              profilePic: messages['profile_pic'],
-              sameUser: messages['same_user']);
-          chatList.insert(0, messageData);
-        }
-      });
-      //callLatestMessageApiTimer();
+      if (isRemove) chatList.removeAt(0);
+      for (var messages in data['result']['messages']) {
+        latestMessageId = messages['message_id'];
+        Message messageData = new Message(
+            messageId: messages['message_id'],
+            teamId: messages['team_id'],
+            userId: messages['user_id'],
+            message: messages['message'],
+            activeFlag: messages['active_flag'],
+            crtDate: messages['crt_date'],
+            name: messages['name'],
+            nickname: messages['nickname'],
+            profilePic: messages['profile_pic'],
+            sameUser: messages['same_user']);
+        chatList.insert(0, messageData);
+      }
+      if (isRemove) callLatestMessageApiTimer();
     });
+  }
+
+  getParametersForGetLatestMessages() {
+    String param = "&user_id=" +
+        getPrefValue(Keys.USER_ID) +
+        "&team_id=" +
+        teamId +
+        "&message_id=" +
+        latestMessageId;
+    return param;
   }
 
   getPlayerPlayingStatusApi() {
@@ -483,7 +528,6 @@ class _ChatState extends State<Chat> {
         .then((response) {
       var data = json.decode(response.body);
       printResponse(getParametersForGetPlayerPlayingStatus(), data.toString());
-      // playingStatusData = GetPlayersPlayingStatus.fromMap(data);
       playingList = data['result'];
 
       Navigator.pop(context);
@@ -497,35 +541,25 @@ class _ChatState extends State<Chat> {
     });
   }
 
+  getParametersForGetPlayerPlayingStatus() {
+    String param = "&user_id=" +
+        getPrefValue(Keys.USER_ID) +
+        "&match_id=" +
+        upcomingMatchData.matchId +
+        "&team_id=" +
+        teamId;
+    return param;
+  }
+
   sendMessageApi() async {
     await sendMessage(getParametersForSendMessage()).then((response) {
       var data = json.decode(response.body);
       printResponse(getParametersForSendMessage(), data.toString());
       if (data['success'] == 1) {
-        //chatList.removeAt(0);
-        //getLatestMessagesApi(true);
-        openTeamChatApi();
+        getLatestMessagesApi(true);
       }
       setState(() {});
     });
-  }
-
-  void addPlayStatusApi(int i) {
-    addPlayStatus(getParametersForAddPlayStatus(i)).then((response) {
-      var data = json.decode(response.body);
-      printResponse(getParametersForAddPlayStatus(i), data.toString());
-      setState(() {
-        if (data['success'] == 1) {
-          i == 1 ? playingStatus == 1 : playingStatus == 2;
-        }
-      });
-    });
-  }
-
-  getParametersForGetChat() {
-    String param =
-        "&team_id=" + teamId + "&user_id=" + getPrefValue(Keys.USER_ID);
-    return param;
   }
 
   getParametersForSendMessage() {
@@ -538,24 +572,19 @@ class _ChatState extends State<Chat> {
     return param;
   }
 
-  getParametersForGetPlayerPlayingStatus() {
-    String param = "&user_id=" +
-        getPrefValue(Keys.USER_ID) +
-        "&match_id=" +
-        upcomingMatchData.matchId +
-        "&team_id=" +
-        teamId;
-    return param;
-  }
-
-  getParametersForGetLatestMessages() {
-    String param = "&user_id=" +
-        getPrefValue(Keys.USER_ID) +
-        "&team_id=" +
-        teamId +
-        "&message_id=" +
-        chatList[0].messageId;
-    return param;
+  void addPlayStatusApi(int i) {
+    showDialog(context: context, builder: (context) => Loading());
+    addPlayStatus(getParametersForAddPlayStatus(i)).then((response) {
+      var data = json.decode(response.body);
+      printResponse(getParametersForAddPlayStatus(i), data.toString());
+      Navigator.pop(context);
+      setState(() {
+        if (data['success'] == 1) {
+          playingStatus = i.toString();
+        }
+      });
+      callLatestMessageApiTimer();
+    });
   }
 
   getParametersForAddPlayStatus(final int i) {
@@ -567,16 +596,19 @@ class _ChatState extends State<Chat> {
         i.toString();
     return param;
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
+  }
 }
 
 class CustomDialog extends StatelessWidget {
-  //GetPlayersPlayingStatus data;
   UpcomingMatch upcomingMatchData;
   var playingList;
 
   CustomDialog(final this.playingList, this.upcomingMatchData);
-
-  //CustomDialog(this.data, this.upcomingMatchData);
 
   @override
   Widget build(BuildContext context) {
@@ -673,12 +705,6 @@ class CustomDialog extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ),
-//              child: Image.asset(
-//                "assets/images/jocker.jpg",
-//                height: 55.0,
-//                width: 55.0,
-//                fit: BoxFit.cover,
-//              ),
             ),
           ),
           Expanded(

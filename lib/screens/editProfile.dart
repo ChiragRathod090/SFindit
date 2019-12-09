@@ -20,6 +20,14 @@ class _EditProfileState extends State<EditProfile> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var isValidation = false;
 
+//  TextEditingController _nameController = new TextEditingController();
+//  TextEditingController _nickNameController = new TextEditingController();
+//  TextEditingController _emailController = new TextEditingController();
+//  TextEditingController _phoneNoController = new TextEditingController();
+//  TextEditingController _emergencyNameController = new TextEditingController();
+//  TextEditingController _emergencyContactController =
+//      new TextEditingController();
+
   FocusNode nameFocusNode,
       nickNameFocusNode,
       emailFocusNode,
@@ -104,6 +112,8 @@ class _EditProfileState extends State<EditProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
+                          //controller: _nameController,
+                          initialValue: checkBlank(getPrefValue(Keys.NAME)),
                           validator: InputValidation.validateName,
                           onSaved: (val) {
                             _name = val;
@@ -152,6 +162,9 @@ class _EditProfileState extends State<EditProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
+                          //controller: _nickNameController,
+                          initialValue:
+                              checkBlank(getPrefValue(Keys.NICK_NAME)),
                           validator: InputValidation.validateNickName,
                           onSaved: (val) {
                             _nickName = val;
@@ -200,6 +213,8 @@ class _EditProfileState extends State<EditProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
+                          //controller: _emailController,
+                          initialValue: checkBlank(getPrefValue(Keys.EMAIL)),
                           validator: InputValidation.validateEmail,
                           onSaved: (val) {
                             _email = val;
@@ -249,6 +264,8 @@ class _EditProfileState extends State<EditProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
+                          //controller: _phoneNoController,
+                          initialValue: checkBlank(getPrefValue(Keys.MOBILE)),
                           validator: InputValidation.validateMobile,
                           onSaved: (val) {
                             _phoneNo = val;
@@ -299,6 +316,9 @@ class _EditProfileState extends State<EditProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
+                          //controller: _emergencyNameController,
+                          initialValue:
+                              checkBlank(getPrefValue(Keys.EMERGENCY_NAME)),
                           validator: InputValidation.validateEmergencyName,
                           onSaved: (val) {
                             _emergencyContactName = val;
@@ -347,6 +367,9 @@ class _EditProfileState extends State<EditProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
+                          //controller: _emergencyContactController,
+                          initialValue:
+                              checkBlank(getPrefValue(Keys.EMERGENCY_CONTACT)),
                           validator:
                               InputValidation.validateEmergencyContactNumber,
                           onSaved: (val) {
@@ -385,7 +408,7 @@ class _EditProfileState extends State<EditProfile> {
                             left: 50.0, right: 50.0, top: 10.0, bottom: 10.0),
                         textColor: whiteColor,
                         onPressed: () {
-                          if (isValidate()) editProfileApi();
+                          if (isValidate()) if (isChanged()) editProfileApi();
                         },
                       ),
                     ),
@@ -397,6 +420,31 @@ class _EditProfileState extends State<EditProfile> {
         ],
       ),
     );
+  }
+
+  bool isChanged() {
+    bool isChanged = false;
+    if (checkBlank(getPrefValue(Keys.NAME)) != _name) {
+      isChanged = true;
+    }
+    if (checkBlank(getPrefValue(Keys.NICK_NAME)) != _nickName) {
+      isChanged = true;
+    }
+    if (checkBlank(getPrefValue(Keys.EMAIL)) != _email) {
+      isChanged = true;
+    }
+    if (checkBlank(getPrefValue(Keys.MOBILE)) != _phoneNo) {
+      isChanged = true;
+    }
+    if (checkBlank(getPrefValue(Keys.EMERGENCY_NAME)) !=
+        _emergencyContactName) {
+      isChanged = true;
+    }
+    if (checkBlank(getPrefValue(Keys.EMERGENCY_CONTACT)) !=
+        _emergencyContactNumber) {
+      isChanged = true;
+    }
+    return isChanged;
   }
 
   bool isValidate() {

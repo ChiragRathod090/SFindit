@@ -6,6 +6,7 @@ import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/keys.dart';
+import 'package:sfindit/common/loding.dart';
 import 'package:sfindit/common/string.dart';
 import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/utils/appbar.dart';
@@ -229,7 +230,9 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                         top: 10.0,
                                         bottom: 10.0),
                                     textColor: whiteColor,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      payInvoiceApi(widget.seasonId);
+                                    },
                                   ),
                                 ),
                               ],
@@ -254,11 +257,11 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   }
 
   getSeasonInvoiceApi(final String seasonId) async {
-    await getSeasonInvoice(getParametersForGetSeasonInvoice(seasonId))
+    await getSeasonInvoice(getParametersForAllApiInThisPage(seasonId))
         .then((response) {
       var data = json.decode(response.body);
       printResponse(
-          getParametersForGetSeasonInvoice(seasonId), data.toString());
+          getParametersForAllApiInThisPage(seasonId), data.toString());
       if (data['success'] == 1) {
         getSeasonInvoiceResponse = GetSeasonInvoice.fromMap(data);
         cardList = getSeasonInvoiceResponse.result.cardList;
@@ -268,7 +271,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     });
   }
 
-  getParametersForGetSeasonInvoice(final String seasonId) {
+  payInvoiceApi(final String seasonId) {
+    showDialog(context: context, builder: (context) => Loading());
+    payInvoice(getParametersForAllApiInThisPage(seasonId)).then((response) {
+      Navigator.pop(context);
+      var data = json.decode(response.body);
+      printResponse(
+          getParametersForAllApiInThisPage(seasonId), data.toString());
+      if (data['success'] == 1) {
+        dialog(data['message'].toString(), context);
+      } else {
+        dialog(data['message'].toString(), context);
+      }
+      setState(() {});
+    });
+  }
+
+  getParametersForAllApiInThisPage(final String seasonId) {
     String param =
         "&user_id=" + getPrefValue(Keys.USER_ID) + "&season_id=" + seasonId;
     return param;

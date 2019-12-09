@@ -18,9 +18,14 @@ const String GET_PLAYER_PLAYING_STATUS = "getPlayersPlayingStatus";
 const String GET_LATEST_MESSAGES = "getLatestMessages";
 const String ADD_PLAY_STATUS = "addPlayStatus";
 const String GET_SEASON_INVOICE = "getSeasonInvoice";
+const String PAY_INVOICE = "payInvoice";
+const String GET_SUPPORT_MESSAGES = "getSupportMessages";
+const String SEND_SUPPORT_MESSAGES = "sendSupportMessage";
+const String GET_SUPPORT_LATEST_MESSAGES = "getSupportLatestMessages";
 
 // 1. Login API
 Future<http.Response> login(param) async {
+  print("Login Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
@@ -34,6 +39,7 @@ Future<http.Response> login(param) async {
 
 // 2. Get Teams List API
 Future<http.Response> getTeamsList(param) async {
+  print("getTeamsList Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
@@ -47,6 +53,7 @@ Future<http.Response> getTeamsList(param) async {
 
 // 3. Get Season List API
 Future<http.Response> getSeasonList() async {
+  print("getSeasonList Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
@@ -60,6 +67,7 @@ Future<http.Response> getSeasonList() async {
 
 // 4. Update Profile API
 Future<http.Response> updateProfile(param) async {
+  print("updateProfile Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
@@ -73,6 +81,7 @@ Future<http.Response> updateProfile(param) async {
 
 // 5. Get Ladders And Fixtures API
 Future<http.Response> getLaddersFixtures(param) async {
+  print("getLaddersFixtures Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
@@ -86,6 +95,7 @@ Future<http.Response> getLaddersFixtures(param) async {
 
 // 6. Get TeamList For Chat API
 Future<http.Response> getTeamListForChat(param) async {
+  print("getTeamListForChat Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
@@ -99,6 +109,7 @@ Future<http.Response> getTeamListForChat(param) async {
 
 // 7. Open Team Chat
 Future<http.Response> openTeamChat(param) async {
+  print("openTeamChat Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
@@ -112,6 +123,7 @@ Future<http.Response> openTeamChat(param) async {
 
 // 8. Send Message
 Future<http.Response> sendMessage(param) async {
+  print("sendMessage Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
@@ -125,6 +137,7 @@ Future<http.Response> sendMessage(param) async {
 
 // 9. Get Notification
 Future<http.Response> getNotification(param) async {
+  print("getNotification Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
@@ -138,6 +151,7 @@ Future<http.Response> getNotification(param) async {
 
 // 10. Get Player PlayingStatus
 Future<http.Response> getPlayerPlayingStatus(param) async {
+  print("getPlayerPlayingStatus Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
@@ -151,6 +165,7 @@ Future<http.Response> getPlayerPlayingStatus(param) async {
 
 // 11. Get Latest Messages
 Future<http.Response> getLatestMessages(param) async {
+  print("getLatestMessages Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
@@ -164,6 +179,7 @@ Future<http.Response> getLatestMessages(param) async {
 
 // 12. Add Play Status
 Future<http.Response> addPlayStatus(param) async {
+  print("addPlayStatus Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
@@ -177,10 +193,67 @@ Future<http.Response> addPlayStatus(param) async {
 
 // 13. Get Season Invoice
 Future<http.Response> getSeasonInvoice(param) async {
+  print("getSeasonInvoice Api(){...}");
   var client = new http.Client();
   try {
     http.Response data = await client.post(
       BASE_URL + GET_SEASON_INVOICE + param,
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 14. Pay Invoice
+Future<http.Response> payInvoice(param) async {
+  print("payInvoice Api(){...}");
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + PAY_INVOICE + param,
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 15. Get Support Messages
+Future<http.Response> getSupportMessages(param) async {
+  print("getSupportMessages Api(){...}");
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + GET_SUPPORT_MESSAGES + '&user_id=$param',
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 16. Send Support Message
+Future<http.Response> sendSupportMessage(param) async {
+  print("sendSupportMessage Api(){...}");
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + SEND_SUPPORT_MESSAGES + param,
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 17. Get Support Latest Messages
+Future<http.Response> getSupportLatestMessages(param) async {
+  print("getSupportLatestMessages Api(){...}");
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + GET_SUPPORT_LATEST_MESSAGES + param,
     );
     return data;
   } finally {

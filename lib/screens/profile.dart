@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sfindit/common/color.dart';
+import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/images.dart';
+import 'package:sfindit/common/keys.dart';
 import 'package:sfindit/common/string.dart';
 import 'package:sfindit/utils/appbar.dart';
 
@@ -30,12 +32,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.all(10.0),
                       child: new ClipRRect(
                         borderRadius: new BorderRadius.circular(50.0),
-                        child: Image.asset(
-                          "assets/images/jocker.jpg",
-                          height: 80.0,
-                          width: 80.0,
-                          fit: BoxFit.cover,
-                        ),
+//                        child: Image.asset(
+//                          "assets/images/jocker.jpg",
+//                          height: 80.0,
+//                          width: 80.0,
+//                          fit: BoxFit.cover,
+//                        ),
+                        child: checkBlank(getPrefValue(Keys.PROFILE_PIC)) != ""
+                            ? Image.network(
+                                getPrefValue(Keys.PROFILE_PIC),
+                                height: 80.0,
+                                width: 80.0,
+                                fit: BoxFit.cover,
+                              )
+                            : Container(
+                                height: 80.0,
+                                width: 80.0,
+                                color: primaryColor,
+                                child: Image.asset(
+                                  Images.LOGO_TRANSPARENT,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                       ),
                     ),
                     Padding(
@@ -44,14 +62,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Loream Ipsum',
+                            checkBlank(getPrefValue(Keys.NAME)),
                             style: Theme.of(context)
                                 .textTheme
                                 .body2
                                 .copyWith(fontSize: 20.0),
                           ),
                           Text(
-                            'Nick name',
+                            checkBlank(getPrefValue(Keys.NICK_NAME)),
                             style: Theme.of(context)
                                 .textTheme
                                 .body1
@@ -83,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "dummy@gmail.com",
+                          checkBlank(getPrefValue(Keys.EMAIL)),
                           style: Theme.of(context)
                               .textTheme
                               .body1
@@ -109,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "+61 9876543210",
+                          checkBlank(getPrefValue(Keys.MOBILE)),
                           style: Theme.of(context)
                               .textTheme
                               .body1
@@ -170,7 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "Sam moore",
+                          checkBlank(getPrefValue(Keys.EMERGENCY_NAME)),
                           style: Theme.of(context)
                               .textTheme
                               .body1
@@ -196,7 +214,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "+61 9876543210",
+                          checkBlank(getPrefValue(Keys.EMERGENCY_CONTACT)),
                           style: Theme.of(context)
                               .textTheme
                               .body1
