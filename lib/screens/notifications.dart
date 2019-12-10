@@ -111,9 +111,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   .copyWith(fontSize: 13.0)),
                         ],
                       ),
-                      SizedBox(
-                        height: 2.0,
-                      ),
+                      SizedBox(height: 2.0),
                       Text(checkBlank(list.notification),
                           style: Theme.of(context)
                               .textTheme

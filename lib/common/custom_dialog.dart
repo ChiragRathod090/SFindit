@@ -140,8 +140,23 @@ class SelectPhotoDialog extends StatelessWidget {
         elevation: 2.5,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                  width: width / 1.5,
+                  child: Center(
+                    child: Text(
+                      txtSelectImage,
+                      style: Theme.of(context)
+                          .textTheme
+                          .body2
+                          .copyWith(fontSize: 18.0),
+                    ),
+                  )),
+            ),
+            Divider(),
             SizedBox(
               width: width / 1.5,
               child: FlatButton(

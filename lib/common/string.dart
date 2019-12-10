@@ -41,6 +41,7 @@ const String txtOk = "Ok";
 const String txtYes = "Yes";
 const String txtNo = "No";
 const String txtTryAgain = "Try Again";
+const String txtSelectImage = "Select Image";
 const String txtCamera = "Camera";
 const String txtGallery = "Gallery";
 const String txtNoDataFound = "No Data Found";

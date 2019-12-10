@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/constants.dart';
+import 'package:sfindit/common/custom_dialog.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/input_type_validation.dart';
 import 'package:sfindit/common/keys.dart';
@@ -20,14 +24,6 @@ class _EditProfileState extends State<EditProfile> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var isValidation = false;
 
-//  TextEditingController _nameController = new TextEditingController();
-//  TextEditingController _nickNameController = new TextEditingController();
-//  TextEditingController _emailController = new TextEditingController();
-//  TextEditingController _phoneNoController = new TextEditingController();
-//  TextEditingController _emergencyNameController = new TextEditingController();
-//  TextEditingController _emergencyContactController =
-//      new TextEditingController();
-
   FocusNode nameFocusNode,
       nickNameFocusNode,
       emailFocusNode,
@@ -41,6 +37,31 @@ class _EditProfileState extends State<EditProfile> {
       _phoneNo,
       _emergencyContactName,
       _emergencyContactNumber;
+
+  File _image;
+
+  Future getImage(bool isCamera) async {
+    var image;
+    isCamera
+        ? image = await ImagePicker.pickImage(source: ImageSource.camera)
+        : image = await ImagePicker.pickImage(source: ImageSource.gallery);
+// Compress plugin
+    File compressedImage = await FlutterImageCompress.compressAndGetFile(
+      image.path,
+      image.path,
+      quality: 50,
+    );
+    setState(() {
+      _image = compressedImage;
+      print("Image Path : " + compressedImage.path);
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,20 +89,58 @@ class _EditProfileState extends State<EditProfile> {
                         children: <Widget>[
                           ClipRRect(
                             borderRadius: new BorderRadius.circular(70.0),
-                            child: Image.asset(
-                              "assets/images/jocker.jpg",
-                              height: 140.0,
-                              width: 140.0,
-                              fit: BoxFit.cover,
-                            ),
+                            child: _image == null
+                                ? Container(
+                                    height: 140.0,
+                                    width: 140.0,
+                                    color: primaryColor,
+                                    child: FadeInImage.assetNetwork(
+                                      placeholder: Images.LOGO_TRANSPARENT,
+                                      image:
+                                          getPrefValue(Keys.PROFILE_PIC) != ""
+                                              ? getPrefValue(Keys.PROFILE_PIC)
+                                              : Images.LOGO_TRANSPARENT,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : Image.file(
+                                    _image,
+                                    height: 140.0,
+                                    width: 140.0,
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
+//                               ClipRRect(
+//                                  borderRadius: new BorderRadius.circular(70.0),
+//                                  child: Image.asset(
+//                                    "assets/images/jocker.jpg",
+//                                    height: 140.0,
+//                                    width: 140.0,
+//                                    fit: BoxFit.cover,
+//                                  ),
+//                                ),
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0, left: 8.0),
-                            child: Image.asset(
-                              Images.SELECT_IMAGE,
-                              height: 50.0,
-                              width: 50.0,
-                              fit: BoxFit.fill,
+                            child: InkWell(
+                              onTap: () {
+                                print("Select Image(){...}");
+                                showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        SelectPhotoDialog(callCamera: () {
+                                          getImage(true);
+                                        }, callPhoto: () {
+                                          getImage(false);
+                                        }));
+                              },
+                              child: Container(
+                                child: Image.asset(
+                                  Images.SELECT_IMAGE,
+                                  height: 50.0,
+                                  width: 50.0,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
                             ),
                           ),
                         ],
