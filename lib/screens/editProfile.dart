@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sfindit/Model/editProfile.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/constants.dart';
 import 'package:sfindit/common/custom_dialog.dart';
@@ -23,6 +24,8 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var isValidation = false;
+
+  EditProfileResponse editProfileResponse;
 
   FocusNode nameFocusNode,
       nickNameFocusNode,
@@ -51,9 +54,10 @@ class _EditProfileState extends State<EditProfile> {
       image.path,
       quality: 50,
     );
+    isCamera ? _image = compressedImage : _image = image;
+    print("Image Path : " + _image.path);
     setState(() {
-      _image = compressedImage;
-      print("Image Path : " + compressedImage.path);
+      //   print("Image Path : " + compressedImage.path);
     });
   }
 
@@ -483,6 +487,9 @@ class _EditProfileState extends State<EditProfile> {
 
   bool isChanged() {
     bool isChanged = false;
+    if (_image != null) {
+      isChanged = true;
+    }
     if (checkBlank(getPrefValue(Keys.NAME)) != _name) {
       isChanged = true;
     }
@@ -518,17 +525,49 @@ class _EditProfileState extends State<EditProfile> {
 
   void editProfileApi() {
     showDialog(context: context, builder: (context) => Loading());
-    updateProfile(getParameter()).then((response) {
-      Navigator.pop(context);
-      var data = json.decode(response.body);
-      print(data);
-      if (data['success'] == 1) {
-        dialog(data['message'].toString(), context);
-      } else {
-        dialog(data['message'].toString(), context);
-      }
-      setState(() {});
-    });
+    if (_image == null) {
+      print('image==null');
+      updateProfile(getParameter()).then((response) {
+        Navigator.pop(context);
+        var data = json.decode(response.body);
+        //editProfileResponse = EditProfileResponse.fromMap(json.decode(data));
+        print(data);
+        if (data['success'] == 1) {
+          setPrefValue(Keys.PROFILE_PIC, data['result']['profile_pic']);
+          setPrefValue(Keys.NAME, data['result']['name']);
+          setPrefValue(Keys.NICK_NAME, data['result']['nickname']);
+          setPrefValue(Keys.EMAIL, data['result']['email']);
+          setPrefValue(Keys.MOBILE, data['result']['mobile']);
+          setPrefValue(Keys.EMERGENCY_NAME, data['result']['emr_name']);
+          setPrefValue(Keys.EMERGENCY_CONTACT, data['result']['emr_contact']);
+          dialog(data['message'].toString(), context);
+        } else {
+          dialog(data['message'].toString(), context);
+        }
+        setState(() {});
+      });
+    } else {
+      print('With Image');
+      updateProfileWithProfilePic(_image, getParameterWithImage(), (onData) {
+        Navigator.pop(context);
+        var data = json.decode(onData);
+        print(data);
+        //editProfileResponse = EditProfileResponse.fromMap(json.decode(data));
+        if (data['success'] == 1) {
+          setPrefValue(Keys.PROFILE_PIC, data['result']['profile_pic']);
+          setPrefValue(Keys.NAME, data['result']['name']);
+          setPrefValue(Keys.NICK_NAME, data['result']['nickname']);
+          setPrefValue(Keys.EMAIL, data['result']['email']);
+          setPrefValue(Keys.MOBILE, data['result']['mobile']);
+          setPrefValue(Keys.EMERGENCY_NAME, data['result']['emr_name']);
+          setPrefValue(Keys.EMERGENCY_CONTACT, data['result']['emr_contact']);
+          dialog(data['message'].toString(), context);
+        } else {
+          dialog(data['message'].toString(), context);
+        }
+        setState(() {});
+      });
+    }
   }
 
   String getParameter() {
@@ -540,6 +579,27 @@ class _EditProfileState extends State<EditProfile> {
         "&emergency_contact=$_emergencyContactNumber" +
         "&user_id=" +
         getPrefValue(Keys.USER_ID);
+  }
+
+  getParameterWithImage() {
+    return {
+      'name': '$_name',
+      'nickname': '$_nickName',
+      'email': '$_email',
+      'mobile': '$_phoneNo',
+      'emergency_name': '$_emergencyContactName',
+      'emergency_contact': '$_emergencyContactNumber',
+      'user_id': '${getPrefValue(Keys.USER_ID)}',
+    };
+
+//    return "&name=$_name" +
+//        "&nickname=$_nickName" +
+//        "&email=$_email" +
+//        "&mobile=$_phoneNo" +
+//        "&emergency_name=$_emergencyContactName" +
+//        "&emergency_contact=$_emergencyContactNumber" +
+//        "&user_id=" +
+//        getPrefValue(Keys.USER_ID);
   }
 }
 

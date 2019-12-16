@@ -88,8 +88,8 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             child: Container(
               decoration: BoxDecoration(
-                  //color: list[index].color,
-                  color: orangeColor,
+                  color: getColor(list[index].type),
+                  //color: orangeColor,
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
               height: 165.0,
               child: Center(
@@ -97,8 +97,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Image(
-                    //image: AssetImage(list[index].imagePath),
-                    image: AssetImage(Images.SUMMER),
+                    image: AssetImage(getBackground(list[index].type)),
                     height: 110.0,
                     width: 110.0,
                     fit: BoxFit.fill,
@@ -118,5 +117,27 @@ class _SeasonScreenState extends State<SeasonScreen> {
         ),
       ),
     );
+  }
+
+  getColor(String type) {
+    switch (type) {
+      case "1":
+        return autumnColor;
+      case "2":
+        return springColor;
+      case "3":
+        return summerColor;
+    }
+  }
+
+  getBackground(String type) {
+    switch (type) {
+      case "1":
+        return Images.AUTUMN;
+      case "2":
+        return Images.SPRING;
+      case "3":
+        return Images.SUMMER;
+    }
   }
 }

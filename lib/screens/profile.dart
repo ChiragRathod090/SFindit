@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/constants.dart';
+import 'package:sfindit/common/custom_dialog.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/keys.dart';
+import 'package:sfindit/common/pref.dart';
 import 'package:sfindit/common/string.dart';
+import 'package:sfindit/screens/login.dart';
 import 'package:sfindit/utils/appbar.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -229,17 +232,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
             margin: EdgeInsets.all(20.0),
             alignment: Alignment.bottomCenter,
             child: FlatButton(
-              child: Text(
-                txtLogout,
-                style: Theme.of(context)
-                    .textTheme
-                    .body1
-                    .copyWith(fontSize: 20.0, color: Colors.grey[800]),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => CustomDialogYesNo(
+                          msg: txtLogoutMessage,
+                          yesCallBack: () {
+                            logout();
+                          },
+                          noCallBack: () {
+                            Navigator.pop(context);
+                          },
+                        ));
+              },
+              color: Colors.grey[100],
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  txtLogout,
+                  style: Theme.of(context)
+                      .textTheme
+                      .body1
+                      .copyWith(fontSize: 20.0, color: Colors.grey[800]),
+                ),
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  void logout() {
+    Pref.clear();
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 }

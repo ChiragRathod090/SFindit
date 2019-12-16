@@ -35,7 +35,7 @@ class OpenTeamChat {
 
 class Result {
   List<Message> messages;
-  UpcomingMatch upcomingMatch;
+  List<UpcomingMatch> upcomingMatch;
 
   Result({
     this.messages,
@@ -45,12 +45,14 @@ class Result {
   factory Result.fromMap(Map<String, dynamic> json) => Result(
         messages:
             List<Message>.from(json["messages"].map((x) => Message.fromMap(x))),
-        upcomingMatch: UpcomingMatch.fromMap(json["upcoming_match"]),
+        upcomingMatch: List<UpcomingMatch>.from(
+            json["upcoming_match"].map((x) => UpcomingMatch.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
         "messages": List<dynamic>.from(messages.map((x) => x.toMap())),
-        "upcoming_match": upcomingMatch.toMap(),
+        "upcoming_match":
+            List<dynamic>.from(upcomingMatch.map((x) => x.toMap())),
       };
 }
 
@@ -87,7 +89,6 @@ class Message {
         activeFlag: json["active_flag"],
         crtDate: json["crt_date"],
         name: json["name"],
-        //name: nameValues.map[json["name"]],
         nickname: json["nickname"],
         profilePic: json["profile_pic"],
         sameUser: json["same_user"],
@@ -100,8 +101,8 @@ class Message {
         "message": message,
         "active_flag": activeFlag,
         "crt_date": crtDate,
-        "name": name,
-        "nickname": nickname,
+        "name": nameValues.reverse[name],
+        "nickname": nicknameValues.reverse[nickname],
         "profile_pic": profilePic,
         "same_user": sameUser,
       };
@@ -112,10 +113,10 @@ enum Name { GEOFF_TAYLOR, ALANNA_MYERS }
 final nameValues = EnumValues(
     {"Alanna Myers": Name.ALANNA_MYERS, "Geoff Taylor": Name.GEOFF_TAYLOR});
 
-enum Nickname { GEOFF_T, ALANNA_M }
+enum Nickname { GEOFF_TAYLOR_S, ALANNA_M }
 
-final nicknameValues =
-    EnumValues({"Alanna M": Nickname.ALANNA_M, "Geoff T": Nickname.GEOFF_T});
+final nicknameValues = EnumValues(
+    {"Alanna M": Nickname.ALANNA_M, "Geoff Taylor's": Nickname.GEOFF_TAYLOR_S});
 
 class UpcomingMatch {
   String matchId;

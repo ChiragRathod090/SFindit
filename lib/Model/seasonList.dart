@@ -40,6 +40,7 @@ class Result {
   String sfindit;
   String sfinditInchat;
   String current;
+  String type;
 
   Result({
     this.id,
@@ -48,6 +49,7 @@ class Result {
     this.sfindit,
     this.sfinditInchat,
     this.current,
+    this.type,
   });
 
   factory Result.fromMap(Map<String, dynamic> json) => Result(
@@ -57,6 +59,7 @@ class Result {
         sfindit: json["sfindit"],
         sfinditInchat: json["sfindit_inchat"],
         current: json["current"],
+        type: json["type"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -66,5 +69,6 @@ class Result {
         "sfindit": sfindit,
         "sfindit_inchat": sfinditInchat,
         "current": current,
+        "type": type,
       };
 }

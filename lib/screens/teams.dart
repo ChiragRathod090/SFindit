@@ -77,7 +77,9 @@ class _TeamsScreenState extends State<TeamsScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Chat(teamId: list[index].teamId)));
+                builder: (context) => Chat(
+                    teamId: list[index].teamId,
+                    teamName: list[index].teamName)));
       },
       child: Padding(
         padding: const EdgeInsets.all(10.0),

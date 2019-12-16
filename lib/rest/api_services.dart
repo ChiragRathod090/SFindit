@@ -1,4 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+import 'package:sfindit/Model/getNotifications.dart';
 
 //Base api service
 const String BASE_URL =
@@ -79,6 +85,21 @@ Future<http.Response> updateProfile(param) async {
   }
 }
 
+updateProfileWithProfilePic(file, param, callBack) async {
+  var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+  var length = await file.length();
+  var uri = Uri.parse(BASE_URL + UPDATE_PROFILE);
+  var request = new http.MultipartRequest("POST", uri);
+  var multipartFile = new http.MultipartFile('profile_pic', stream, length,
+      filename: basename(file.path));
+  request.files.add(multipartFile);
+  request.fields.addAll(param);
+  var response = await request.send();
+  response.stream.transform(utf8.decoder).listen((value) {
+    callBack(value);
+  });
+}
+
 // 5. Get Ladders And Fixtures API
 Future<http.Response> getLaddersFixtures(param) async {
   print("getLaddersFixtures Api(){...}");
@@ -136,14 +157,14 @@ Future<http.Response> sendMessage(param) async {
 }
 
 // 9. Get Notification
-Future<http.Response> getNotification(param) async {
+Future<GetNotifications> getNotification(param) async {
   print("getNotification Api(){...}");
   var client = new http.Client();
   try {
-    http.Response data = await client.post(
-      BASE_URL + GET_NOTIFICATION + '&user_id=$param',
+    var data = await client.post(
+      BASE_URL + GET_NOTIFICATION + param,
     );
-    return data;
+    return GetNotifications.fromMap(json.decode(data.body));
   } finally {
     client.close();
   }

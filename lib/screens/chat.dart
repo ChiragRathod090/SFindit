@@ -14,21 +14,25 @@ import 'package:sfindit/utils/appbar.dart';
 
 class Chat extends StatefulWidget {
   final String teamId;
+  final String teamName;
 
-  const Chat({Key key, this.teamId}) : super(key: key);
+//const  Chat(this.teamId, this.teamName, { this.teamId,  this.teamName});
+  const Chat({Key key, this.teamId, this.teamName}) : super(key: key);
 
   @override
-  _ChatState createState() => _ChatState(teamId);
+  _ChatState createState() => _ChatState(teamId, teamName);
 }
 
 class _ChatState extends State<Chat> {
   final String teamId;
+  final String teamName;
   String text;
 
   TextEditingController _messageController = new TextEditingController();
 
   OpenTeamChat openTeamChatResponse;
   List<Message> chatList;
+  List<UpcomingMatch> upcomingMatchList;
   UpcomingMatch upcomingMatchData;
 
   var playingList;
@@ -37,19 +41,18 @@ class _ChatState extends State<Chat> {
 
   String playingStatus;
 
-  _ChatState(this.teamId);
+  _ChatState(this.teamId, this.teamName);
 
   @override
   void initState() {
     super.initState();
     openTeamChatApi();
-    callLatestMessageApiTimer();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Appbar('SFindit Flyers', false),
+      appBar: Appbar(teamName, false),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.max,
@@ -475,9 +478,17 @@ class _ChatState extends State<Chat> {
       printResponse(getParametersForGetChat(), data.toString());
       openTeamChatResponse = OpenTeamChat.fromMap(data);
       chatList = openTeamChatResponse.result.messages;
-      upcomingMatchData = openTeamChatResponse.result.upcomingMatch;
-      latestMessageId = chatList[0].messageId;
-      playingStatus = upcomingMatchData.playStatus;
+      upcomingMatchList = openTeamChatResponse.result.upcomingMatch;
+      if (chatList.length > 0) {
+        latestMessageId = chatList[0].messageId;
+      }
+      if (upcomingMatchList.length > 0) {
+        upcomingMatchData = upcomingMatchList[0];
+        playingStatus = upcomingMatchData.playStatus;
+      } else {
+        upcomingMatchData = null;
+      }
+      callLatestMessageApiTimer();
       setState(() {});
     });
   }
