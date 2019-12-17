@@ -690,15 +690,6 @@ class _EditProfileState extends State<EditProfile> {
       'medical_condition': '$_medicalCondition',
       'user_id': '${getPrefValue(Keys.USER_ID)}',
     };
-
-//    return "&name=$_name" +
-//        "&nickname=$_nickName" +
-//        "&email=$_email" +
-//        "&mobile=$_phoneNo" +
-//        "&emergency_name=$_emergencyContactName" +
-//        "&emergency_contact=$_emergencyContactNumber" +
-//        "&user_id=" +
-//        getPrefValue(Keys.USER_ID);
   }
 
   String getNewPath(String path) {
