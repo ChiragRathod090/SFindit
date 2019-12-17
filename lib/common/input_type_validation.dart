@@ -39,6 +39,13 @@ class InputValidation {
       return null;
   }
 
+  static String validateMedicalCondition(String value) {
+    if (value.isEmpty)
+      return 'Medical Condition is required';
+    else
+      return null;
+  }
+
   static String validateMobile(String value) {
     if (value.isEmpty) return 'Phone number is required';
     if (value.length < 10)

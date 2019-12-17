@@ -21,212 +21,254 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: Appbar(txtProfile, true),
       body: Stack(
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              Image.asset(
-                Images.APPBAR_HEADER,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: new ClipRRect(
-                        borderRadius: new BorderRadius.circular(50.0),
-//                        child: Image.asset(
-//                          "assets/images/jocker.jpg",
-//                          height: 80.0,
-//                          width: 80.0,
-//                          fit: BoxFit.cover,
-//                        ),
-                        child: checkBlank(getPrefValue(Keys.PROFILE_PIC)) != ""
-                            ? Image.network(
-                                getPrefValue(Keys.PROFILE_PIC),
-                                height: 80.0,
-                                width: 80.0,
-                                fit: BoxFit.cover,
-                              )
-                            : Container(
-                                height: 80.0,
-                                width: 80.0,
-                                color: primaryColor,
-                                child: Image.asset(
-                                  Images.LOGO_TRANSPARENT,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Image.asset(
+                  Images.APPBAR_HEADER,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: new ClipRRect(
+                          borderRadius: new BorderRadius.circular(50.0),
+                          child:
+                              checkBlank(getPrefValue(Keys.PROFILE_PIC)) != ""
+                                  ? FadeInImage.assetNetwork(
+                                      placeholder: Images.LOADER,
+                                      image: getPrefValue(Keys.PROFILE_PIC),
+                                      fit: BoxFit.cover,
+                                      height: 80.0,
+                                      width: 80.0,
+                                    )
+                                  : Container(
+                                      height: 80.0,
+                                      width: 80.0,
+                                      color: primaryColor,
+                                      child: Image.asset(
+                                        Images.LOGO_TRANSPARENT,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            checkBlank(getPrefValue(Keys.NAME)),
-                            style: Theme.of(context)
-                                .textTheme
-                                .body2
-                                .copyWith(fontSize: 20.0),
-                          ),
-                          Text(
-                            checkBlank(getPrefValue(Keys.NICK_NAME)),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              checkBlank(getPrefValue(Keys.NAME)),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body2
+                                  .copyWith(fontSize: 20.0),
+                            ),
+                            Text(
+                              checkBlank(getPrefValue(Keys.NICK_NAME)),
+                              style: Theme.of(context).textTheme.body1.copyWith(
+                                  fontSize: 12.0, color: primaryColor),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image(
+                          color: Colors.grey[500],
+                          image: AssetImage(Images.MAIL),
+                          height: 20.0,
+                          width: 20.0,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            checkBlank(getPrefValue(Keys.EMAIL)),
                             style: Theme.of(context)
                                 .textTheme
                                 .body1
-                                .copyWith(fontSize: 12.0, color: primaryColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                                .copyWith(color: Colors.grey[600]),
+                          )),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image(
-                        color: Colors.grey[500],
-                        image: AssetImage(Images.MAIL),
-                        height: 20.0,
-                        width: 20.0,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                    Padding(
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
                         padding: const EdgeInsets.all(8.0),
+                        child: Image(
+                          color: Colors.grey[500],
+                          image: AssetImage(Images.PHONE),
+                          height: 20.0,
+                          width: 20.0,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            checkBlank(getPrefValue(Keys.MOBILE)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(color: Colors.grey[600]),
+                          )),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Container(
+                        height: 1.0,
+                        width: MediaQuery.of(context).size.width / 5,
+                        color: Colors.grey,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                         child: Text(
-                          checkBlank(getPrefValue(Keys.EMAIL)),
+                          hintEmergencyContact,
                           style: Theme.of(context)
                               .textTheme
                               .body1
-                              .copyWith(color: Colors.grey[600]),
-                        )),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image(
-                        color: Colors.grey[500],
-                        image: AssetImage(Images.PHONE),
-                        height: 20.0,
-                        width: 20.0,
-                        fit: BoxFit.fill,
+                              .copyWith(backgroundColor: whiteColor),
+                        ),
                       ),
-                    ),
-                    Padding(
+                      Container(
+                        height: 1.0,
+                        width: MediaQuery.of(context).size.width / 5,
+                        color: Colors.grey,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
                         padding: const EdgeInsets.all(8.0),
+                        child: Image(
+                          color: Colors.grey[500],
+                          image: AssetImage(Images.USER_PROFILE),
+                          height: 20.0,
+                          width: 20.0,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            checkBlank(getPrefValue(Keys.EMERGENCY_NAME)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(color: Colors.grey[600]),
+                          )),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image(
+                          color: Colors.grey[500],
+                          image: AssetImage(Images.PHONE),
+                          height: 20.0,
+                          width: 20.0,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            checkBlank(getPrefValue(Keys.EMERGENCY_CONTACT)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(color: Colors.grey[600]),
+                          )),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Container(
+                        height: 1.0,
+                        width: MediaQuery.of(context).size.width / 5,
+                        color: Colors.grey,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                         child: Text(
-                          checkBlank(getPrefValue(Keys.MOBILE)),
+                          hintMedicalCondition,
                           style: Theme.of(context)
                               .textTheme
                               .body1
-                              .copyWith(color: Colors.grey[600]),
-                        )),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Container(
-                      height: 1.0,
-                      width: MediaQuery.of(context).size.width / 5,
-                      color: Colors.grey,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                      child: Text(
-                        "Emergency contact",
-                        style: Theme.of(context)
-                            .textTheme
-                            .body1
-                            .copyWith(backgroundColor: whiteColor),
+                              .copyWith(backgroundColor: whiteColor),
+                        ),
                       ),
-                    ),
-                    Container(
-                      height: 1.0,
-                      width: MediaQuery.of(context).size.width / 5,
-                      color: Colors.grey,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image(
-                        color: Colors.grey[500],
-                        image: AssetImage(Images.USER_PROFILE),
-                        height: 20.0,
-                        width: 20.0,
-                        fit: BoxFit.fill,
+                      Container(
+                        height: 1.0,
+                        width: MediaQuery.of(context).size.width / 5,
+                        color: Colors.grey,
                       ),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          checkBlank(getPrefValue(Keys.EMERGENCY_NAME)),
-                          style: Theme.of(context)
-                              .textTheme
-                              .body1
-                              .copyWith(color: Colors.grey[600]),
-                        )),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image(
-                        color: Colors.grey[500],
-                        image: AssetImage(Images.PHONE),
-                        height: 20.0,
-                        width: 20.0,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          checkBlank(getPrefValue(Keys.EMERGENCY_CONTACT)),
-                          style: Theme.of(context)
-                              .textTheme
-                              .body1
-                              .copyWith(color: Colors.grey[600]),
-                        )),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    checkBlank(getPrefValue(Keys.MEDICAL_CONDITION)),
+                    maxLines: 100,
+                    softWrap: true,
+                    textAlign: TextAlign.justify,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .body1
+                        .copyWith(color: Colors.grey[600]),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Container(
             margin: EdgeInsets.all(20.0),

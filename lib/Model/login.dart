@@ -41,6 +41,7 @@ class Result {
   String emergencyContact;
   String email;
   String mobile;
+  String medicalCondition;
 
   Result({
     this.userId,
@@ -51,6 +52,7 @@ class Result {
     this.emergencyContact,
     this.email,
     this.mobile,
+    this.medicalCondition,
   });
 
   factory Result.fromMap(Map<String, dynamic> json) => Result(
@@ -62,6 +64,7 @@ class Result {
         emergencyContact: json["emergency_contact"],
         email: json["email"],
         mobile: json["mobile"],
+        medicalCondition: json["medical_condition"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -73,5 +76,6 @@ class Result {
         "emergency_contact": emergencyContact,
         "email": email,
         "mobile": mobile,
+        "medical_condition": medicalCondition,
       };
 }

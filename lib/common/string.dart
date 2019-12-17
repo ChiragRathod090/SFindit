@@ -34,6 +34,7 @@ const String hintEmail = "Email";
 const String hintPhoneNumber = "Phone no.";
 const String hintEmergencyContactName = "Emergency contact name";
 const String hintEmergencyContact = "Emergency contact";
+const String hintMedicalCondition = "Medical condition";
 const String hintWriteMessage = "Write Message";
 
 // Dialogs Labels

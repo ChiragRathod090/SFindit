@@ -26,4 +26,6 @@ class Images {
   static const String PHONE = "assets/images/phone.png";
   static const String TEAMS = "assets/images/ic_teams.png";
   static const String INFO = "assets/images/ic_info.png";
+
+  static const String LOADER = "assets/images/loading.gif";
 }

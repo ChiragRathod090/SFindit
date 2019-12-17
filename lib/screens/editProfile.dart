@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sfindit/Model/editProfile.dart';
 import 'package:sfindit/common/color.dart';
 import 'package:sfindit/common/constants.dart';
-import 'package:sfindit/common/custom_dialog.dart';
 import 'package:sfindit/common/images.dart';
 import 'package:sfindit/common/input_type_validation.dart';
 import 'package:sfindit/common/keys.dart';
@@ -32,33 +31,56 @@ class _EditProfileState extends State<EditProfile> {
       emailFocusNode,
       phoneNoFocusNode,
       emergencyNameFocusNode,
-      emergencyContactFocusNode;
+      emergencyContactFocusNode,
+      medicalConditionFocusNode;
 
   String _name,
       _nickName,
       _email,
       _phoneNo,
       _emergencyContactName,
-      _emergencyContactNumber;
+      _emergencyContactNumber,
+      _medicalCondition;
 
   File _image;
 
-  Future getImage(bool isCamera) async {
-    var image;
-    isCamera
-        ? image = await ImagePicker.pickImage(source: ImageSource.camera)
-        : image = await ImagePicker.pickImage(source: ImageSource.gallery);
-// Compress plugin
-    File compressedImage = await FlutterImageCompress.compressAndGetFile(
-      image.path,
-      image.path,
-      quality: 50,
-    );
-    isCamera ? _image = compressedImage : _image = image;
-    print("Image Path : " + _image.path);
-    setState(() {
-      //   print("Image Path : " + compressedImage.path);
-    });
+  Future<void> captureImage(ImageSource imageSource) async {
+    try {
+      final imageFile = await ImagePicker.pickImage(source: imageSource);
+
+//      await CompressImage.compress(
+//          imageSrc: imageFile.path, desiredQuality: 60);
+
+      _image = imageFile;
+      setState(() {});
+// below code also working
+      print("Old Path : " + imageFile.path);
+      print("New Path : " + getNewPath(imageFile.path));
+      File compressedImage = await FlutterImageCompress.compressAndGetFile(
+        imageFile.path,
+        getNewPath(imageFile.path),
+        quality: 75,
+      );
+      _image = compressedImage;
+      setState(() {});
+      /*if (imageSource == ImageSource.gallery) {
+        _image = imageFile;
+        setState(() {});
+      } else {
+        File compressedImage = await FlutterImageCompress.compressAndGetFile(
+          imageFile.path,
+          getNewPath(imageFile.path),
+          quality: 80,
+        );
+        setState(() {
+          print('@@@@@@@@@@@ : ' + imageFile.path);
+          print('@@@@@@@@@@@ : ' + compressedImage.path);
+          _image = compressedImage;
+        });
+      }*/
+    } catch (e) {
+      print("exception : " + e.toString());
+    }
   }
 
   @override
@@ -93,49 +115,31 @@ class _EditProfileState extends State<EditProfile> {
                         children: <Widget>[
                           ClipRRect(
                             borderRadius: new BorderRadius.circular(70.0),
-                            child: _image == null
-                                ? Container(
-                                    height: 140.0,
-                                    width: 140.0,
-                                    color: primaryColor,
-                                    child: FadeInImage.assetNetwork(
-                                      placeholder: Images.LOGO_TRANSPARENT,
-                                      image:
-                                          getPrefValue(Keys.PROFILE_PIC) != ""
-                                              ? getPrefValue(Keys.PROFILE_PIC)
-                                              : Images.LOGO_TRANSPARENT,
+                            child: Container(
+                              height: 140.0,
+                              width: 140.0,
+                              child: _image == null
+                                  ? FadeInImage.assetNetwork(
+                                      placeholder: Images.LOADER,
+                                      image: getPrefValue(Keys.PROFILE_PIC),
+                                      fit: BoxFit.cover,
+                                      height: 140.0,
+                                      width: 140.0,
+                                    )
+                                  : Image.file(
+                                      _image,
+                                      height: 140,
+                                      width: 140,
                                       fit: BoxFit.cover,
                                     ),
-                                  )
-                                : Image.file(
-                                    _image,
-                                    height: 140.0,
-                                    width: 140.0,
-                                    fit: BoxFit.cover,
-                                  ),
+                            ),
                           ),
-//                               ClipRRect(
-//                                  borderRadius: new BorderRadius.circular(70.0),
-//                                  child: Image.asset(
-//                                    "assets/images/jocker.jpg",
-//                                    height: 140.0,
-//                                    width: 140.0,
-//                                    fit: BoxFit.cover,
-//                                  ),
-//                                ),
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0, left: 8.0),
                             child: InkWell(
                               onTap: () {
                                 print("Select Image(){...}");
-                                showDialog(
-                                    context: context,
-                                    builder: (context) =>
-                                        SelectPhotoDialog(callCamera: () {
-                                          getImage(true);
-                                        }, callPhoto: () {
-                                          getImage(false);
-                                        }));
+                                bottomSheet(context);
                               },
                               child: Container(
                                 child: Image.asset(
@@ -225,7 +229,6 @@ class _EditProfileState extends State<EditProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
-                          //controller: _nickNameController,
                           initialValue:
                               checkBlank(getPrefValue(Keys.NICK_NAME)),
                           validator: InputValidation.validateNickName,
@@ -276,7 +279,6 @@ class _EditProfileState extends State<EditProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
-                          //controller: _emailController,
                           initialValue: checkBlank(getPrefValue(Keys.EMAIL)),
                           validator: InputValidation.validateEmail,
                           onSaved: (val) {
@@ -327,7 +329,6 @@ class _EditProfileState extends State<EditProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
-                          //controller: _phoneNoController,
                           initialValue: checkBlank(getPrefValue(Keys.MOBILE)),
                           validator: InputValidation.validateMobile,
                           onSaved: (val) {
@@ -379,7 +380,6 @@ class _EditProfileState extends State<EditProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
-                          //controller: _emergencyNameController,
                           initialValue:
                               checkBlank(getPrefValue(Keys.EMERGENCY_NAME)),
                           validator: InputValidation.validateEmergencyName,
@@ -430,7 +430,6 @@ class _EditProfileState extends State<EditProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
-                          //controller: _emergencyContactController,
                           initialValue:
                               checkBlank(getPrefValue(Keys.EMERGENCY_CONTACT)),
                           validator:
@@ -443,12 +442,67 @@ class _EditProfileState extends State<EditProfile> {
                               .textTheme
                               .body1
                               .copyWith(fontSize: 16.0, color: blackColor),
-                          textInputAction: TextInputAction.done,
+                          textInputAction: TextInputAction.next,
                           autocorrect: false,
                           keyboardType: TextInputType.number,
                           focusNode: emergencyContactFocusNode,
                           decoration: InputDecoration.collapsed(
                               hintText: hintEmergencyContact),
+                          onFieldSubmitted: (term) {
+                            _fieldFocusChange(
+                                context,
+                                emergencyContactFocusNode,
+                                medicalConditionFocusNode);
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              hintMedicalCondition,
+                              style: Theme.of(context).textTheme.body1.copyWith(
+                                  fontSize: 14.0, color: Colors.grey[600]),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: new EdgeInsets.only(
+                          left: 10.0, right: 10.0, bottom: 10.0, top: 5.0),
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: TextFormField(
+                          initialValue:
+                              checkBlank(getPrefValue(Keys.MEDICAL_CONDITION)),
+                          validator: InputValidation.validateMedicalCondition,
+                          onSaved: (val) {
+                            _medicalCondition = val;
+                          },
+                          minLines: 3,
+                          maxLines: 3,
+                          style: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(fontSize: 16.0, color: blackColor),
+                          textInputAction: TextInputAction.done,
+                          autocorrect: false,
+                          keyboardType: TextInputType.text,
+                          focusNode: medicalConditionFocusNode,
+                          decoration: InputDecoration.collapsed(
+                              hintText: hintMedicalCondition),
                           onFieldSubmitted: (term) {},
                         ),
                       ),
@@ -485,6 +539,40 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
+  bottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            child: new Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: Icon(Icons.camera),
+                    title: Text('Camera'),
+                    onTap: () {
+                      captureImage(ImageSource.camera);
+                      Navigator.pop(context);
+                    }),
+                Center(
+                  child: ListTile(
+                    leading: Icon(Icons.image),
+                    title: Text('Gallery'),
+                    onTap: () {
+                      captureImage(ImageSource.gallery);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                ListTile(
+                  title: Center(child: Text('Cancel')),
+                  onTap: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   bool isChanged() {
     bool isChanged = false;
     if (_image != null) {
@@ -508,6 +596,9 @@ class _EditProfileState extends State<EditProfile> {
     }
     if (checkBlank(getPrefValue(Keys.EMERGENCY_CONTACT)) !=
         _emergencyContactNumber) {
+      isChanged = true;
+    }
+    if (checkBlank(getPrefValue(Keys.MEDICAL_CONDITION)) != _medicalCondition) {
       isChanged = true;
     }
     return isChanged;
@@ -540,6 +631,8 @@ class _EditProfileState extends State<EditProfile> {
           setPrefValue(Keys.MOBILE, data['result']['mobile']);
           setPrefValue(Keys.EMERGENCY_NAME, data['result']['emr_name']);
           setPrefValue(Keys.EMERGENCY_CONTACT, data['result']['emr_contact']);
+          setPrefValue(
+              Keys.MEDICAL_CONDITION, data['result']['medical_condition']);
           dialog(data['message'].toString(), context);
         } else {
           dialog(data['message'].toString(), context);
@@ -561,10 +654,14 @@ class _EditProfileState extends State<EditProfile> {
           setPrefValue(Keys.MOBILE, data['result']['mobile']);
           setPrefValue(Keys.EMERGENCY_NAME, data['result']['emr_name']);
           setPrefValue(Keys.EMERGENCY_CONTACT, data['result']['emr_contact']);
+          setPrefValue(
+              Keys.MEDICAL_CONDITION, data['result']['medical_condition']);
           dialog(data['message'].toString(), context);
         } else {
           dialog(data['message'].toString(), context);
         }
+        //_image.deleteSync(recursive: true);
+        //_image.delete(recursive: true);
         setState(() {});
       });
     }
@@ -577,6 +674,7 @@ class _EditProfileState extends State<EditProfile> {
         "&mobile=$_phoneNo" +
         "&emergency_name=$_emergencyContactName" +
         "&emergency_contact=$_emergencyContactNumber" +
+        "&medical_condition=$_medicalCondition" +
         "&user_id=" +
         getPrefValue(Keys.USER_ID);
   }
@@ -589,6 +687,7 @@ class _EditProfileState extends State<EditProfile> {
       'mobile': '$_phoneNo',
       'emergency_name': '$_emergencyContactName',
       'emergency_contact': '$_emergencyContactNumber',
+      'medical_condition': '$_medicalCondition',
       'user_id': '${getPrefValue(Keys.USER_ID)}',
     };
 
@@ -600,6 +699,18 @@ class _EditProfileState extends State<EditProfile> {
 //        "&emergency_contact=$_emergencyContactNumber" +
 //        "&user_id=" +
 //        getPrefValue(Keys.USER_ID);
+  }
+
+  String getNewPath(String path) {
+    var data = path.split('/');
+    var pathNew = "";
+    var name = '${DateTime.now().millisecondsSinceEpoch.toString()}' +
+        data[data.length - 1];
+    for (var i = 0; i < data.length - 1; ++i) {
+      var o = data[i];
+      pathNew = pathNew + o + "/";
+    }
+    return pathNew + name;
   }
 }
 
