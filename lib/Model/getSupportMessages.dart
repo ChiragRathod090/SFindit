@@ -43,6 +43,7 @@ class Result {
   String crtDate;
   String supportName;
   String supportPic;
+  String messageTimea;
 
   Result({
     this.messageId,
@@ -52,6 +53,7 @@ class Result {
     this.crtDate,
     this.supportName,
     this.supportPic,
+    this.messageTimea,
   });
 
   factory Result.fromMap(Map<String, dynamic> json) => Result(
@@ -62,6 +64,7 @@ class Result {
         crtDate: json["crt_date"],
         supportName: json["support_name"],
         supportPic: json["support_pic"],
+        messageTimea: json["message_timea"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -70,7 +73,27 @@ class Result {
         "message": message,
         "reply_from_support": replyFromSupport,
         "crt_date": crtDate,
-        "support_name": supportName,
+        "support_name": supportNameValues.reverse[supportName],
         "support_pic": supportPic,
+        "message_timea": messageTimea,
       };
+}
+
+enum SupportName { EMPTY, SFINDIT_SUPPORT }
+
+final supportNameValues = EnumValues(
+    {"": SupportName.EMPTY, "Sfindit Support": SupportName.SFINDIT_SUPPORT});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    if (reverseMap == null) {
+      reverseMap = map.map((k, v) => new MapEntry(v, k));
+    }
+    return reverseMap;
+  }
 }

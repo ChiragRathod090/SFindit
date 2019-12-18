@@ -171,6 +171,9 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
                       itemCount: ladderList.length,
                       itemBuilder: (context, index) {
                         return Card(
+                          color: ladderList[index]['background'] == 1
+                              ? orangeColor
+                              : whiteColor,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Theme(
@@ -194,7 +197,11 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
                                             .body1
                                             .copyWith(
                                                 fontSize: 14.0,
-                                                color: Colors.grey[600])),
+                                                color: ladderList[index]
+                                                            ['background'] ==
+                                                        1
+                                                    ? blackColor
+                                                    : Colors.grey[600])),
                                   ],
                                 ),
                                 children: <Widget>[
@@ -208,20 +215,36 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: <Widget>[
-                                          blocks("W", ladderList[index]['win'],
-                                              true),
-                                          blocks("L", ladderList[index]['loss'],
-                                              true),
-                                          blocks("D", ladderList[index]['draw'],
-                                              true),
+                                          blocks(
+                                              "W",
+                                              ladderList[index]['win'],
+                                              true,
+                                              ladderList[index]['background']),
+                                          blocks(
+                                              "L",
+                                              ladderList[index]['loss'],
+                                              true,
+                                              ladderList[index]['background']),
+                                          blocks(
+                                              "D",
+                                              ladderList[index]['draw'],
+                                              true,
+                                              ladderList[index]['background']),
                                           blocks(
                                               "F",
                                               ladderList[index]['forfeited'],
-                                              true),
-                                          blocks("G%", ladderList[index]['g%'],
-                                              true),
-                                          blocks("M%", ladderList[index]['m%'],
-                                              false),
+                                              true,
+                                              ladderList[index]['background']),
+                                          blocks(
+                                              "G%",
+                                              ladderList[index]['g%'],
+                                              true,
+                                              ladderList[index]['background']),
+                                          blocks(
+                                              "M%",
+                                              ladderList[index]['m%'],
+                                              false,
+                                              ladderList[index]['background']),
                                         ],
                                       ),
                                     ],
@@ -243,7 +266,7 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
     );
   }
 
-  Widget blocks(name, value, isShowDivider) {
+  Widget blocks(name, value, isShowDivider, background) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
@@ -256,20 +279,16 @@ class _FixtureAndLaddersScreenState extends State<FixtureAndLaddersScreen> {
             children: <Widget>[
               Text(
                 name,
-                style: Theme.of(context)
-                    .textTheme
-                    .body1
-                    .copyWith(color: Colors.grey[600]),
+                style: Theme.of(context).textTheme.body1.copyWith(
+                    color: background == 1 ? blackColor : Colors.grey[600]),
               ),
               SizedBox(
                 height: 5.0,
               ),
               Text(
                 value,
-                style: Theme.of(context)
-                    .textTheme
-                    .body1
-                    .copyWith(color: Colors.grey[600]),
+                style: Theme.of(context).textTheme.body1.copyWith(
+                    color: background == 1 ? blackColor : Colors.grey[600]),
               ),
             ],
           ),
@@ -328,9 +347,9 @@ Widget fixturesItem(context, final fixturesList, index) {
   String teamName = checkBlank(fixturesList[index]['opponent_name']);
   String roundNumber = "RND-" + checkBlank(fixturesList[index]['round_number']);
   String venueName = checkBlank(fixturesList[index]['venue_name']);
-  String winLoss = checkBlank(fixturesList[index]['home']) +
+  String winLoss = checkBlank(fixturesList[index]['hscore']) +
       " - " +
-      checkBlank(fixturesList[index]['away']);
+      checkBlank(fixturesList[index]['ascore']);
   String dateTime = checkBlank(fixturesList[index]['match_date']) +
       "\n" +
       checkBlank(fixturesList[index]['match_time']);

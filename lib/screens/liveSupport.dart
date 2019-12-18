@@ -131,7 +131,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                           message: text,
                           replyFromSupport: "0",
                           supportName: "",
-                          supportPic: "",
+                          supportPic: getPrefValue(Keys.PROFILE_PIC),
                           crtDate: "121641");
                       chatList.insert(0, message);
                       _messageController.text = "";
@@ -165,13 +165,34 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
               color: primaryColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(list.message,
-                    style: Theme.of(context)
-                        .textTheme
-                        .body1
-                        .copyWith(color: whiteColor)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      checkBlank(list.message),
+                      style: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(color: whiteColor),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 8.0, bottom: 8.0, right: 8.0),
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        checkBlank(list.messageTimea),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(color: whiteColor, fontSize: 10.0),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               margin: EdgeInsets.only(top: 6.0, bottom: 6.0),
             ),
@@ -245,25 +266,41 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
               color: Colors.grey[100],
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+                    child: Text(
                       list.supportName,
                       style: Theme.of(context)
                           .textTheme
                           .body1
                           .copyWith(fontSize: 12.0, color: Colors.grey[500]),
                     ),
-                    SizedBox(
-                      height: 4.0,
-                    ),
-                    Text(list.message,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 8.0, right: 8.0, top: 5.0, bottom: 8.0),
+                    child: Text(list.message,
                         style: Theme.of(context).textTheme.body1),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 8.0, bottom: 8.0, right: 8.0),
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        checkBlank(list.messageTimea),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 10.0),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               margin: EdgeInsets.only(top: 6.0, bottom: 6.0),
             ),

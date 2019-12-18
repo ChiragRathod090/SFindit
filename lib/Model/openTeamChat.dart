@@ -67,6 +67,7 @@ class Message {
   String nickname;
   String profilePic;
   int sameUser;
+  String messageTime;
 
   Message({
     this.messageId,
@@ -79,6 +80,7 @@ class Message {
     this.nickname,
     this.profilePic,
     this.sameUser,
+    this.messageTime,
   });
 
   factory Message.fromMap(Map<String, dynamic> json) => Message(
@@ -92,6 +94,7 @@ class Message {
         nickname: json["nickname"],
         profilePic: json["profile_pic"],
         sameUser: json["same_user"],
+        messageTime: json["message_time"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -105,18 +108,25 @@ class Message {
         "nickname": nicknameValues.reverse[nickname],
         "profile_pic": profilePic,
         "same_user": sameUser,
+        "message_time": messageTime,
       };
 }
 
-enum Name { GEOFF_TAYLOR, ALANNA_MYERS }
+enum Name { SFINDIT_SUPPORT, GEOFF_TAYLOR, ALANNA_MYERS }
 
-final nameValues = EnumValues(
-    {"Alanna Myers": Name.ALANNA_MYERS, "Geoff Taylor": Name.GEOFF_TAYLOR});
+final nameValues = EnumValues({
+  "Alanna Myers": Name.ALANNA_MYERS,
+  "Geoff Taylor": Name.GEOFF_TAYLOR,
+  "Sfindit Support": Name.SFINDIT_SUPPORT
+});
 
-enum Nickname { GEOFF_TAYLOR_S, ALANNA_M }
+enum Nickname { SFINDIT_SUPPORT, GEOFF_T, ALANNA_M }
 
-final nicknameValues = EnumValues(
-    {"Alanna M": Nickname.ALANNA_M, "Geoff Taylor's": Nickname.GEOFF_TAYLOR_S});
+final nicknameValues = EnumValues({
+  "Alanna M": Nickname.ALANNA_M,
+  "Geoff T": Nickname.GEOFF_T,
+  "Sfindit Support": Nickname.SFINDIT_SUPPORT
+});
 
 class UpcomingMatch {
   String matchId;

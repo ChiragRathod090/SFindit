@@ -186,15 +186,34 @@ class _ChatState extends State<Chat> {
               color: primaryColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  checkBlank(list.message),
-                  style: Theme.of(context)
-                      .textTheme
-                      .body1
-                      .copyWith(color: whiteColor),
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      checkBlank(list.message),
+                      style: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(color: whiteColor),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 8.0, bottom: 8.0, right: 8.0),
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        checkBlank(list.messageTime),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(color: whiteColor, fontSize: 10.0),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               margin: EdgeInsets.only(top: 6.0, bottom: 6.0),
             ),
@@ -235,7 +254,6 @@ class _ChatState extends State<Chat> {
     return Container(
       margin: EdgeInsets.only(left: 14.0, right: 40.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
@@ -264,28 +282,51 @@ class _ChatState extends State<Chat> {
           ),
           Expanded(
             child: Card(
-              color: Colors.grey[100],
+              color: list.activeFlag == "2" ? orangeColor : Colors.grey[100],
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+                    child: Text(
                       list.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .body1
-                          .copyWith(fontSize: 12.0, color: Colors.grey[500]),
+                      style: Theme.of(context).textTheme.body1.copyWith(
+                          fontSize: 12.0,
+                          color: list.activeFlag == "2"
+                              ? blackColor
+                              : Colors.grey[500],
+                          fontWeight: list.activeFlag == "2"
+                              ? FontWeight.bold
+                              : FontWeight.normal),
                     ),
-                    SizedBox(
-                      height: 4.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 8.0, right: 8.0, top: 5.0, bottom: 8.0),
+                    child: Text(list.message,
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(color: blackColor)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 8.0, bottom: 8.0, right: 8.0),
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        checkBlank(list.messageTime),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 10.0, color: blackColor),
+                      ),
                     ),
-                    Text(list.message,
-                        style: Theme.of(context).textTheme.body1),
-                  ],
-                ),
+                  ),
+                ],
               ),
               margin: EdgeInsets.only(top: 6.0, bottom: 6.0),
             ),
