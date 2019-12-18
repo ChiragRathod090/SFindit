@@ -99,19 +99,22 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
             children: <Widget>[
               new Flexible(
                 child: Container(
-                  padding: EdgeInsets.all(10.0),
+                  height: 50,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25.0),
                       color: Colors.grey[200]),
-                  child: new TextField(
-                    controller: _messageController,
-                    textCapitalization: TextCapitalization.sentences,
-                    textInputAction: TextInputAction.done,
-                    onChanged: (String text) {
-                      this.text = text;
-                    },
-                    decoration: new InputDecoration.collapsed(
-                        hintText: hintWriteMessage),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: new TextField(
+                      controller: _messageController,
+                      textCapitalization: TextCapitalization.sentences,
+                      textInputAction: TextInputAction.done,
+                      onChanged: (String text) {
+                        this.text = text;
+                      },
+                      decoration: new InputDecoration.collapsed(
+                          hintText: hintWriteMessage),
+                    ),
                   ),
                 ),
               ),

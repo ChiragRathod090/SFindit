@@ -69,34 +69,33 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 20,
               ),
               Container(
+                padding: EdgeInsets.only(left: 10),
+                height: 50,
                 margin: new EdgeInsets.all(10),
                 decoration: BoxDecoration(
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: TextFormField(
-                    textInputAction: TextInputAction.next,
-                    focusNode: userNameFocusNode,
-                    autocorrect: false,
-                    decoration:
-                        InputDecoration.collapsed(hintText: hintUsername),
-                    validator: InputValidation.validateEmail,
-                    onSaved: (val) {
-                      _email = val;
-                    },
-                    onFieldSubmitted: (term) {
-                      _fieldFocusChange(
-                          context, userNameFocusNode, passwordFocusNode);
-                    },
-                  ),
+                child: TextFormField(
+                  textInputAction: TextInputAction.next,
+                  focusNode: userNameFocusNode,
+                  autocorrect: false,
+                  decoration: InputDecoration.collapsed(hintText: hintUsername),
+                  validator: InputValidation.validateEmail,
+                  onSaved: (val) {
+                    _email = val;
+                  },
+                  onFieldSubmitted: (term) {
+                    _fieldFocusChange(
+                        context, userNameFocusNode, passwordFocusNode);
+                  },
                 ),
               ),
               SizedBox(
                 height: 10,
               ),
               Container(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.only(left: 10),
+                height: 50,
                 margin: new EdgeInsets.all(10),
                 decoration: BoxDecoration(
                     color: Colors.grey[200],

@@ -170,6 +170,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                     Container(
+                      height: 50,
                       margin: new EdgeInsets.only(
                           left: 10.0, right: 10.0, bottom: 10.0, top: 5.0),
                       decoration: BoxDecoration(
@@ -177,9 +178,8 @@ class _EditProfileState extends State<EditProfile> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0))),
                       child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.only(left: 10),
                         child: TextFormField(
-                          //controller: _nameController,
                           initialValue: checkBlank(getPrefValue(Keys.NAME)),
                           validator: InputValidation.validateName,
                           onSaved: (val) {
@@ -220,6 +220,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                     Container(
+                      height: 50,
                       margin: new EdgeInsets.only(
                           left: 10.0, right: 10.0, bottom: 10.0, top: 5.0),
                       decoration: BoxDecoration(
@@ -227,7 +228,7 @@ class _EditProfileState extends State<EditProfile> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0))),
                       child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.only(left: 10),
                         child: TextFormField(
                           initialValue:
                               checkBlank(getPrefValue(Keys.NICK_NAME)),
@@ -270,6 +271,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                     Container(
+                      height: 50,
                       margin: new EdgeInsets.only(
                           left: 10.0, right: 10.0, bottom: 10.0, top: 5.0),
                       decoration: BoxDecoration(
@@ -277,7 +279,7 @@ class _EditProfileState extends State<EditProfile> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0))),
                       child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.only(left: 10),
                         child: TextFormField(
                           initialValue: checkBlank(getPrefValue(Keys.EMAIL)),
                           validator: InputValidation.validateEmail,
@@ -320,6 +322,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                     Container(
+                      height: 50,
                       margin: new EdgeInsets.only(
                           left: 10.0, right: 10.0, bottom: 10.0, top: 5.0),
                       decoration: BoxDecoration(
@@ -327,7 +330,7 @@ class _EditProfileState extends State<EditProfile> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0))),
                       child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.only(left: 10),
                         child: TextFormField(
                           initialValue: checkBlank(getPrefValue(Keys.MOBILE)),
                           validator: InputValidation.validateMobile,
@@ -371,6 +374,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                     Container(
+                      height: 50,
                       margin: new EdgeInsets.only(
                           left: 10.0, right: 10.0, bottom: 10.0, top: 5.0),
                       decoration: BoxDecoration(
@@ -378,7 +382,7 @@ class _EditProfileState extends State<EditProfile> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0))),
                       child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.only(left: 10),
                         child: TextFormField(
                           initialValue:
                               checkBlank(getPrefValue(Keys.EMERGENCY_NAME)),
@@ -421,6 +425,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                     Container(
+                      height: 50,
                       margin: new EdgeInsets.only(
                           left: 10.0, right: 10.0, bottom: 10.0, top: 5.0),
                       decoration: BoxDecoration(
@@ -428,7 +433,7 @@ class _EditProfileState extends State<EditProfile> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0))),
                       child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.only(left: 10),
                         child: TextFormField(
                           initialValue:
                               checkBlank(getPrefValue(Keys.EMERGENCY_CONTACT)),

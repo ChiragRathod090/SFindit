@@ -117,25 +117,29 @@ class _ChatState extends State<Chat> {
             children: <Widget>[
               new Flexible(
                 child: Container(
-                  padding: EdgeInsets.all(10.0),
+                  height: 50,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25.0),
                       color: Colors.grey[200]),
-                  child: new TextField(
-                    controller: _messageController,
-                    textCapitalization: TextCapitalization.sentences,
-                    textInputAction: TextInputAction.done,
-                    onChanged: (String text) {
-                      this.text = text;
-                    },
-                    decoration: new InputDecoration.collapsed(
-                        hintText: hintWriteMessage),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: new TextField(
+                      controller: _messageController,
+                      textCapitalization: TextCapitalization.sentences,
+                      textInputAction: TextInputAction.done,
+                      onChanged: (String text) {
+                        this.text = text;
+                      },
+                      decoration: new InputDecoration.collapsed(
+                          hintText: hintWriteMessage),
+                    ),
                   ),
                 ),
               ),
               new Container(
+                height: 40,
                 margin: EdgeInsets.only(right: 8.0, left: 8.0),
-                padding: EdgeInsets.all(11.0),
+                padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25.0),
                     color: Colors.grey[200]),
