@@ -133,6 +133,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                           userId: getPrefValue(Keys.USER_ID),
                           message: text,
                           replyFromSupport: "0",
+                          messageTimea: "now",
                           supportName: "",
                           supportPic: getPrefValue(Keys.PROFILE_PIC),
                           crtDate: "121641");
@@ -364,6 +365,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
             message: messages['message'],
             replyFromSupport: messages['reply_from_support'],
             supportName: messages['support_name'],
+            messageTimea: messages['message_timea'],
             supportPic: messages['support_pic'],
             crtDate: messages['crt_date']);
         chatList.insert(0, messageData);

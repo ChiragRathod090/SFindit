@@ -154,6 +154,7 @@ class _ChatState extends State<Chat> {
                           message: text,
                           activeFlag: "1",
                           crtDate: "121641",
+                          messageTime: "Now",
                           name: getPrefValue(Keys.NAME),
                           nickname: getPrefValue(Keys.NICK_NAME),
                           profilePic: getPrefValue(Keys.PROFILE_PIC),
@@ -559,11 +560,13 @@ class _ChatState extends State<Chat> {
             activeFlag: messages['active_flag'],
             crtDate: messages['crt_date'],
             name: messages['name'],
+            messageTime: messages['message_time'],
             nickname: messages['nickname'],
             profilePic: messages['profile_pic'],
             sameUser: messages['same_user']);
         chatList.insert(0, messageData);
       }
+      setState(() {});
       if (isRemove) callLatestMessageApiTimer();
     });
   }
@@ -797,12 +800,12 @@ class CustomDialog extends StatelessWidget {
 
   String getStatus(final playingList, final int index) {
     switch (playingList[index]['play_status']) {
-      case 0:
+      case "0":
         return "Not Confirmed";
-      case 1:
+      case "1":
         return "Playing";
-      case 2:
-        return "Not available";
+      case "2":
+        return "Unavailable";
       default:
         return "Not Confirmed";
     }
@@ -810,11 +813,11 @@ class CustomDialog extends StatelessWidget {
 
   getStatusColor(final playingList, final int index) {
     switch (playingList[index]['play_status']) {
-      case 0:
+      case "0":
         return Colors.grey;
-      case 1:
+      case "1":
         return greenColor;
-      case 2:
+      case "2":
         return Colors.red;
       default:
         return Colors.grey;

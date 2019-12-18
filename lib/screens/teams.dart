@@ -132,4 +132,3 @@ class _TeamsScreenState extends State<TeamsScreen> {
     );
   }
 }
-
