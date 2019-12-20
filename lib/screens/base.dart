@@ -12,6 +12,7 @@ class _BaseScreenState extends State<BaseScreen> {
   }
 }
 
+
 _push(BuildContext context, MaterialPageRoute materialPageRoute) {
   Navigator.push(context, materialPageRoute);
 }
