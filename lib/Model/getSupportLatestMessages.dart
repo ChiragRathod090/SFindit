@@ -12,32 +12,50 @@ String getSupportLatestMessagesToJson(GetSupportLatestMessages data) =>
 
 class GetSupportLatestMessages {
   int success;
-  List<Latestmessage> latestmessage;
+  List<Result> result;
   String message;
 
   GetSupportLatestMessages({
     this.success,
-    this.latestmessage,
+    this.result,
     this.message,
   });
 
   factory GetSupportLatestMessages.fromMap(Map<String, dynamic> json) =>
       GetSupportLatestMessages(
         success: json["success"],
-        latestmessage: List<Latestmessage>.from(
-            json["latestmessage"].map((x) => Latestmessage.fromMap(x))),
+        result: List<Result>.from(json["result"].map((x) => Result.fromMap(x))),
         message: json["message"],
       );
 
   Map<String, dynamic> toMap() => {
         "success": success,
-        "latestmessage":
-            List<dynamic>.from(latestmessage.map((x) => x.toMap())),
+        "result": List<dynamic>.from(result.map((x) => x.toMap())),
         "message": message,
       };
 }
 
-class Latestmessage {
+class Result {
+  String day;
+  List<Datum> data;
+
+  Result({
+    this.day,
+    this.data,
+  });
+
+  factory Result.fromMap(Map<String, dynamic> json) => Result(
+        day: json["day"],
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromMap(x))),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "day": day,
+        "data": List<dynamic>.from(data.map((x) => x.toMap())),
+      };
+}
+
+class Datum {
   String messageId;
   String userId;
   String message;
@@ -45,8 +63,9 @@ class Latestmessage {
   String crtDate;
   String supportName;
   String supportPic;
+  String messageTimea;
 
-  Latestmessage({
+  Datum({
     this.messageId,
     this.userId,
     this.message,
@@ -54,9 +73,10 @@ class Latestmessage {
     this.crtDate,
     this.supportName,
     this.supportPic,
+    this.messageTimea,
   });
 
-  factory Latestmessage.fromMap(Map<String, dynamic> json) => Latestmessage(
+  factory Datum.fromMap(Map<String, dynamic> json) => Datum(
         messageId: json["message_id"],
         userId: json["user_id"],
         message: json["message"],
@@ -64,6 +84,7 @@ class Latestmessage {
         crtDate: json["crt_date"],
         supportName: json["support_name"],
         supportPic: json["support_pic"],
+        messageTimea: json["message_timea"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -72,7 +93,29 @@ class Latestmessage {
         "message": message,
         "reply_from_support": replyFromSupport,
         "crt_date": crtDate,
-        "support_name": supportName,
+        "support_name": supportNameValues.reverse[supportName],
         "support_pic": supportPic,
+        "message_timea": messageTimea,
       };
+}
+
+enum SupportName { GEOFF_TAYLOR, SFINDIT_SUPPORT }
+
+final supportNameValues = EnumValues({
+  "Geoff Taylor": SupportName.GEOFF_TAYLOR,
+  "Sfindit Support": SupportName.SFINDIT_SUPPORT
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    if (reverseMap == null) {
+      reverseMap = map.map((k, v) => new MapEntry(v, k));
+    }
+    return reverseMap;
+  }
 }

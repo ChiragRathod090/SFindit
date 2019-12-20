@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               RoundedAppBar(),
-              SizedBox(
+              /*SizedBox(
                 height: 30,
               ),
               Row(
@@ -64,9 +64,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           .body1
                           .copyWith(fontSize: 35.0)),
                 ],
-              ),
+              ),*/
               SizedBox(
-                height: 20,
+                height: 30,
               ),
               Container(
                 padding: EdgeInsets.only(left: 10),
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   textInputAction: TextInputAction.next,
                   focusNode: userNameFocusNode,
                   autocorrect: false,
-                  decoration: InputDecoration.collapsed(hintText: hintUsername),
+                  decoration: InputDecoration.collapsed(hintText: hintEmail),
                   validator: InputValidation.validateEmail,
                   onSaved: (val) {
                     _email = val;
@@ -116,20 +116,23 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 10,
               ),
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                child: Text(txtLogin,
-                    style: Theme.of(context)
-                        .textTheme
-                        .body1
-                        .copyWith(fontSize: 20.0, color: whiteColor)),
-                color: orangeColor,
-                padding: EdgeInsets.only(left: 50.0, right: 50.0),
-                textColor: whiteColor,
-                onPressed: () {
-                  if (isValidate()) loginApi();
-                },
+              Container(
+                padding: EdgeInsets.only(bottom: 60),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  child: Text(txtLogin,
+                      style: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(fontSize: 20.0, color: whiteColor)),
+                  color: orangeColor,
+                  padding: EdgeInsets.only(left: 50.0, right: 50.0),
+                  textColor: whiteColor,
+                  onPressed: () {
+                    if (isValidate()) loginApi();
+                  },
+                ),
               ),
             ],
           ),
@@ -222,7 +225,7 @@ class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         Image(
           image: AssetImage(Images.LOGO_TRANSPARENT),
-          width: 250.0,
+          width: 200.0,
           fit: BoxFit.fill,
         ),
       ],
@@ -230,5 +233,5 @@ class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(260.0);
+  Size get preferredSize => const Size.fromHeight(200.0);
 }

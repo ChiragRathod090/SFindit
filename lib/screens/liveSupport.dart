@@ -10,6 +10,7 @@ import 'package:sfindit/common/keys.dart';
 import 'package:sfindit/common/string.dart';
 import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/utils/appbar.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 
 class LiveSupportScreen extends StatefulWidget {
   @override
@@ -45,38 +46,83 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
           Expanded(
             child: Stack(
               children: <Widget>[
-                getSupportLatestMessagesResponse == null
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : checkListIsNullAndBlank(chatList)
-                        ? ListView.builder(
-                            reverse: true,
-                            padding: EdgeInsets.only(top: 12.0, bottom: 16.0),
-                            itemCount: chatList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return chatList[index].replyFromSupport == "1"
-                                  ? leftSideView(chatList[index])
-                                  : rightSideView(chatList[index]);
-                            },
-                          )
-                        : Container(
-                            margin: EdgeInsets.all(40.0),
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(40.0),
-                                child: Text(
-                                  'write message and hit send to start chat',
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .body1
-                                      .copyWith(
-                                          color: blackColor, fontSize: 16.0),
+                Container(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: getSupportLatestMessagesResponse == null
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : checkListIsNullAndBlank(chatList)
+                          ? ListView.builder(
+                              reverse: true,
+                              padding: EdgeInsets.only(top: 12.0, bottom: 16.0),
+                              itemCount: chatList.length,
+                              itemBuilder:
+                                  (BuildContext context, final int index) {
+                                return StickyHeader(
+                                    header: Container(
+                                      child: Center(
+                                        child: Container(
+                                          width: 150,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(50.0),
+                                              color: Colors.white),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Center(
+                                              child: Text(chatList[index].day,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .body2
+                                                      .copyWith(
+                                                          color: blackColor)),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    content: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      reverse: true,
+                                      scrollDirection: Axis.vertical,
+                                      padding: EdgeInsets.only(
+                                          top: 12.0, bottom: 16.0),
+                                      itemCount: chatList[index].data.length,
+                                      itemBuilder:
+                                          (BuildContext context, final int i) {
+                                        return chatList[index]
+                                                    .data[i]
+                                                    .replyFromSupport ==
+                                                "0"
+                                            ? rightSideView(
+                                                chatList[index].data[i])
+                                            : leftSideView(
+                                                chatList[index].data[i]);
+                                      },
+                                    ));
+                              },
+                            )
+                          : Container(
+                              margin: EdgeInsets.all(40.0),
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(40.0),
+                                  child: Text(
+                                    'write message and hit send to start chat',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .body1
+                                        .copyWith(
+                                            color: blackColor, fontSize: 16.0),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                ),
                 Image.asset(
                   Images.APPBAR_HEADER,
                 )
@@ -128,7 +174,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                   onTap: () {
                     if (text != null) if (text.length != 0) {
                       var messageId = int.parse(latestMessageId) + 1;
-                      Result message = new Result(
+                      Datum message = new Datum(
                           messageId: messageId.toString(),
                           userId: getPrefValue(Keys.USER_ID),
                           message: text,
@@ -137,7 +183,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                           supportName: "",
                           supportPic: getPrefValue(Keys.PROFILE_PIC),
                           crtDate: "121641");
-                      chatList.insert(0, message);
+                      chatList[0].data.insert(0, message);
                       _messageController.text = "";
                       timer.cancel();
                       setState(() {});
@@ -158,7 +204,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
     );
   }
 
-  Widget rightSideView(Result list) {
+  Widget rightSideView(list) {
     return Container(
       margin: EdgeInsets.only(left: 40.0, right: 14.0),
       child: Row(
@@ -233,7 +279,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
     );
   }
 
-  Widget leftSideView(Result list) {
+  Widget leftSideView(list) {
     return Container(
       margin: EdgeInsets.only(left: 14.0, right: 40.0),
       child: Row(
@@ -267,7 +313,9 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
           ),
           Expanded(
             child: Card(
-              color: Colors.grey[100],
+              //color: Colors.grey[100],
+              color:
+                  list.replyFromSupport == "1" ? orangeColor : Colors.grey[100],
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
               child: Column(
@@ -278,10 +326,14 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                         const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
                     child: Text(
                       list.supportName,
-                      style: Theme.of(context)
-                          .textTheme
-                          .body1
-                          .copyWith(fontSize: 12.0, color: Colors.grey[500]),
+                      style: Theme.of(context).textTheme.body1.copyWith(
+                          fontSize: 12.0,
+                          color: list.replyFromSupport == "1"
+                              ? blackColor
+                              : Colors.grey[500],
+                          fontWeight: list.replyFromSupport == "1"
+                              ? FontWeight.bold
+                              : FontWeight.normal),
                     ),
                   ),
                   Padding(
@@ -320,7 +372,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
       printResponse(getPrefValue(Keys.USER_ID), data.toString());
       getSupportLatestMessagesResponse = GetSupportMessages.fromMap(data);
       chatList = getSupportLatestMessagesResponse.result;
-      latestMessageId = chatList[0].messageId;
+      latestMessageId = chatList[0].data[0].messageId;
       setState(() {});
     });
   }
@@ -356,10 +408,11 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
       var data = json.decode(response.body);
       printResponse(
           getParametersForGetSupportLatestMessages(), data.toString());
-      if (isRemove) chatList.removeAt(0);
-      for (var messages in data['result']) {
+      if (List.from(data['result']).length == 0) return;
+      if (isRemove) chatList[0].data.removeAt(0);
+      for (var messages in data['result'][0]['data']) {
         latestMessageId = messages['message_id'];
-        Result messageData = new Result(
+        Datum messageData = new Datum(
             messageId: messages['message_id'],
             userId: messages['user_id'],
             message: messages['message'],
@@ -368,7 +421,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
             messageTimea: messages['message_timea'],
             supportPic: messages['support_pic'],
             crtDate: messages['crt_date']);
-        chatList.insert(0, messageData);
+        chatList[0].data.insert(0, messageData);
       }
       if (isRemove) callSupportLatestMessageApiTimer();
     });
@@ -388,7 +441,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
     // TODO: implement dispose
     super.dispose();
     setState(() {
-      timer.cancel();
+      if (timer != null) timer.cancel();
     });
   }
 }

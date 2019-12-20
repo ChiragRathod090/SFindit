@@ -11,12 +11,12 @@ import 'package:sfindit/common/loding.dart';
 import 'package:sfindit/common/string.dart';
 import 'package:sfindit/rest/api_services.dart';
 import 'package:sfindit/utils/appbar.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
 class Chat extends StatefulWidget {
   final String teamId;
   final String teamName;
 
-//const  Chat(this.teamId, this.teamName, { this.teamId,  this.teamName});
   const Chat({Key key, this.teamId, this.teamName}) : super(key: key);
 
   @override
@@ -32,6 +32,7 @@ class _ChatState extends State<Chat> {
 
   OpenTeamChat openTeamChatResponse;
   List<Message> chatList;
+  List<Datum> messagesList;
   List<UpcomingMatch> upcomingMatchList;
   UpcomingMatch upcomingMatchData;
 
@@ -57,6 +58,14 @@ class _ChatState extends State<Chat> {
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
+          Image.asset(
+            Images.APPBAR_HEADER,
+          ),
+          Container(
+            child: upcomingMatchData != null
+                ? upcomingMatchPopUp(upcomingMatchData)
+                : Container(),
+          ),
           Expanded(
             child: Stack(
               children: <Widget>[
@@ -69,10 +78,50 @@ class _ChatState extends State<Chat> {
                             reverse: true,
                             padding: EdgeInsets.only(top: 12.0, bottom: 16.0),
                             itemCount: chatList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return chatList[index].sameUser == 1
-                                  ? rightSideView(chatList[index])
-                                  : leftSideView(chatList[index]);
+                            itemBuilder:
+                                (BuildContext context, final int index) {
+                              return StickyHeader(
+                                  header: Container(
+                                    child: Center(
+                                      child: Container(
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(50.0),
+                                            color: Colors.white),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Center(
+                                            child: Text(chatList[index].day,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .body2
+                                                    .copyWith(
+                                                        color: blackColor)),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  content: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    reverse: true,
+                                    scrollDirection: Axis.vertical,
+                                    padding: EdgeInsets.only(
+                                        top: 12.0, bottom: 16.0),
+                                    itemCount: chatList[index].data.length,
+                                    itemBuilder:
+                                        (BuildContext context, final int i) {
+                                      return chatList[index].data[i].sameUser ==
+                                              1
+                                          ? rightSideView(
+                                              chatList[index].data[i])
+                                          : leftSideView(
+                                              chatList[index].data[i]);
+                                    },
+                                  ));
                             },
                           )
                         : Container(
@@ -92,12 +141,6 @@ class _ChatState extends State<Chat> {
                               ),
                             ),
                           ),
-                upcomingMatchData != null
-                    ? upcomingMatchPopUp(upcomingMatchData)
-                    : Container(),
-                Image.asset(
-                  Images.APPBAR_HEADER,
-                )
               ],
             ),
           ),
@@ -147,7 +190,7 @@ class _ChatState extends State<Chat> {
                   onTap: () {
                     if (text != null) if (text.length != 0) {
                       var messageId = int.parse(latestMessageId) + 1;
-                      Message message = new Message(
+                      Datum message = new Datum(
                           messageId: messageId.toString(),
                           teamId: teamId,
                           userId: getPrefValue(Keys.USER_ID),
@@ -159,7 +202,7 @@ class _ChatState extends State<Chat> {
                           nickname: getPrefValue(Keys.NICK_NAME),
                           profilePic: getPrefValue(Keys.PROFILE_PIC),
                           sameUser: 1);
-                      chatList.insert(0, message);
+                      chatList[0].data.insert(0, message);
                       _messageController.text = "";
                       timer.cancel();
                       setState(() {});
@@ -180,7 +223,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  Widget rightSideView(final Message list) {
+  Widget rightSideView(final list) {
     return Container(
       margin: EdgeInsets.only(left: 40.0, right: 14.0),
       child: Row(
@@ -255,7 +298,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  Widget leftSideView(final Message list) {
+  Widget leftSideView(final list) {
     return Container(
       margin: EdgeInsets.only(left: 14.0, right: 40.0),
       child: Row(
@@ -344,7 +387,6 @@ class _ChatState extends State<Chat> {
   Widget upcomingMatchPopUp(UpcomingMatch list) {
     return SingleChildScrollView(
       child: Container(
-        padding: EdgeInsets.only(top: 10.0),
         alignment: Alignment.topCenter,
         color: Colors.grey[200],
         child: Padding(
@@ -526,7 +568,7 @@ class _ChatState extends State<Chat> {
       chatList = openTeamChatResponse.result.messages;
       upcomingMatchList = openTeamChatResponse.result.upcomingMatch;
       if (chatList.length > 0) {
-        latestMessageId = chatList[0].messageId;
+        latestMessageId = chatList[0].data[0].messageId;
       }
       if (upcomingMatchList.length > 0) {
         upcomingMatchData = upcomingMatchList[0];
@@ -549,10 +591,11 @@ class _ChatState extends State<Chat> {
     getLatestMessages(getParametersForGetLatestMessages()).then((response) {
       var data = json.decode(response.body);
       printResponse(getParametersForGetLatestMessages(), data.toString());
-      if (isRemove) chatList.removeAt(0);
-      for (var messages in data['result']['messages']) {
+      if (List.from(data['result']['messages']).length == 0) return;
+      if (isRemove) chatList[0].data.removeAt(0);
+      for (var messages in data['result']['messages'][0]['data']) {
         latestMessageId = messages['message_id'];
-        Message messageData = new Message(
+        Datum messageData = new Datum(
             messageId: messages['message_id'],
             teamId: messages['team_id'],
             userId: messages['user_id'],
@@ -564,7 +607,7 @@ class _ChatState extends State<Chat> {
             nickname: messages['nickname'],
             profilePic: messages['profile_pic'],
             sameUser: messages['same_user']);
-        chatList.insert(0, messageData);
+        chatList[0].data.insert(0, messageData);
       }
       setState(() {});
       if (isRemove) callLatestMessageApiTimer();
@@ -659,7 +702,7 @@ class _ChatState extends State<Chat> {
   @override
   void dispose() {
     super.dispose();
-    timer.cancel();
+    if (timer != null) timer.cancel();
   }
 }
 

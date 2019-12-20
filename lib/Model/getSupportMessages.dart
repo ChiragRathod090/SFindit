@@ -36,6 +36,26 @@ class GetSupportMessages {
 }
 
 class Result {
+  String day;
+  List<Datum> data;
+
+  Result({
+    this.day,
+    this.data,
+  });
+
+  factory Result.fromMap(Map<String, dynamic> json) => Result(
+        day: json["day"],
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromMap(x))),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "day": day,
+        "data": List<dynamic>.from(data.map((x) => x.toMap())),
+      };
+}
+
+class Datum {
   String messageId;
   String userId;
   String message;
@@ -45,7 +65,7 @@ class Result {
   String supportPic;
   String messageTimea;
 
-  Result({
+  Datum({
     this.messageId,
     this.userId,
     this.message,
@@ -56,7 +76,7 @@ class Result {
     this.messageTimea,
   });
 
-  factory Result.fromMap(Map<String, dynamic> json) => Result(
+  factory Datum.fromMap(Map<String, dynamic> json) => Datum(
         messageId: json["message_id"],
         userId: json["user_id"],
         message: json["message"],
@@ -79,10 +99,12 @@ class Result {
       };
 }
 
-enum SupportName { EMPTY, SFINDIT_SUPPORT }
+enum SupportName { GEOFF_TAYLOR, SFINDIT_SUPPORT }
 
-final supportNameValues = EnumValues(
-    {"": SupportName.EMPTY, "Sfindit Support": SupportName.SFINDIT_SUPPORT});
+final supportNameValues = EnumValues({
+  "Geoff Taylor": SupportName.GEOFF_TAYLOR,
+  "Sfindit Support": SupportName.SFINDIT_SUPPORT
+});
 
 class EnumValues<T> {
   Map<String, T> map;

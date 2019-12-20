@@ -57,19 +57,39 @@ class Result {
 }
 
 class Message {
+  String day;
+  List<Datum> data;
+
+  Message({
+    this.day,
+    this.data,
+  });
+
+  factory Message.fromMap(Map<String, dynamic> json) => Message(
+        day: json["day"],
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromMap(x))),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "day": day,
+        "data": List<dynamic>.from(data.map((x) => x.toMap())),
+      };
+}
+
+class Datum {
   String messageId;
   String teamId;
   String userId;
   String message;
   String activeFlag;
   String crtDate;
-  Name name;
-  Nickname nickname;
+  String name;
+  String nickname;
   String profilePic;
   int sameUser;
   String messageTime;
 
-  Message({
+  Datum({
     this.messageId,
     this.teamId,
     this.userId,
@@ -83,15 +103,15 @@ class Message {
     this.messageTime,
   });
 
-  factory Message.fromMap(Map<String, dynamic> json) => Message(
+  factory Datum.fromMap(Map<String, dynamic> json) => Datum(
         messageId: json["message_id"],
         teamId: json["team_id"],
         userId: json["user_id"],
         message: json["message"],
         activeFlag: json["active_flag"],
         crtDate: json["crt_date"],
-        name: nameValues.map[json["name"]],
-        nickname: nicknameValues.map[json["nickname"]],
+        name: json["name"],
+        nickname: json["nickname"],
         profilePic: json["profile_pic"],
         sameUser: json["same_user"],
         messageTime: json["message_time"],
@@ -104,34 +124,10 @@ class Message {
         "message": message,
         "active_flag": activeFlag,
         "crt_date": crtDate,
-        "name": nameValues.reverse[name],
-        "nickname": nicknameValues.reverse[nickname],
+        "name": name,
+        "nickname": nickname,
         "profile_pic": profilePic,
         "same_user": sameUser,
         "message_time": messageTime,
       };
-}
-
-enum Name { GEOFF_TAYLOR, ALANNA_MYERS }
-
-final nameValues = EnumValues(
-    {"Alanna Myers": Name.ALANNA_MYERS, "Geoff Taylor": Name.GEOFF_TAYLOR});
-
-enum Nickname { GEOFF_T, ALANNA_M }
-
-final nicknameValues =
-    EnumValues({"Alanna M": Nickname.ALANNA_M, "Geoff T": Nickname.GEOFF_T});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap;
-  }
 }

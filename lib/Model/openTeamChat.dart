@@ -57,6 +57,26 @@ class Result {
 }
 
 class Message {
+  String day;
+  List<Datum> data;
+
+  Message({
+    this.day,
+    this.data,
+  });
+
+  factory Message.fromMap(Map<String, dynamic> json) => Message(
+        day: json["day"],
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromMap(x))),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "day": day,
+        "data": List<dynamic>.from(data.map((x) => x.toMap())),
+      };
+}
+
+class Datum {
   String messageId;
   String teamId;
   String userId;
@@ -69,7 +89,7 @@ class Message {
   int sameUser;
   String messageTime;
 
-  Message({
+  Datum({
     this.messageId,
     this.teamId,
     this.userId,
@@ -83,7 +103,7 @@ class Message {
     this.messageTime,
   });
 
-  factory Message.fromMap(Map<String, dynamic> json) => Message(
+  factory Datum.fromMap(Map<String, dynamic> json) => Datum(
         messageId: json["message_id"],
         teamId: json["team_id"],
         userId: json["user_id"],
@@ -112,7 +132,7 @@ class Message {
       };
 }
 
-enum Name { SFINDIT_SUPPORT, GEOFF_TAYLOR, ALANNA_MYERS }
+enum Name { ALANNA_MYERS, SFINDIT_SUPPORT, GEOFF_TAYLOR }
 
 final nameValues = EnumValues({
   "Alanna Myers": Name.ALANNA_MYERS,
@@ -120,7 +140,7 @@ final nameValues = EnumValues({
   "Sfindit Support": Name.SFINDIT_SUPPORT
 });
 
-enum Nickname { SFINDIT_SUPPORT, GEOFF_T, ALANNA_M }
+enum Nickname { ALANNA_M, SFINDIT_SUPPORT, GEOFF_T }
 
 final nicknameValues = EnumValues({
   "Alanna M": Nickname.ALANNA_M,
