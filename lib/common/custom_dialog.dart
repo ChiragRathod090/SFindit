@@ -123,6 +123,26 @@ class CustomDialogYesNo extends StatelessWidget {
   }
 }
 
+Future<void> showAlertDialog(
+        {BuildContext context, String title, String description}) =>
+    showDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) => AlertDialog(
+              title: Text(title),
+              content: SingleChildScrollView(
+                child: Text(description),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ));
+
 class SelectPhotoDialog extends StatelessWidget {
   final Null Function() callCamera;
   final Null Function() callPhoto;
