@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:built_collection/src/list.dart';
 import 'package:flutter/material.dart';
 import 'package:sfindit/Model/getSeasonInvoice.dart';
 import 'package:sfindit/common/color.dart';
@@ -37,12 +36,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   GetSeasonInvoice getSeasonInvoiceResponse;
   List<CardList> cardList;
   List<TotalDatum> totalData;
+  double totlePrice;
 
-  bool get _chargeServerHostReplaced => chargeServerHost != "REPLACE_ME";
-
-  bool get _squareLocationSet => squareLocationId != "REPLACE_ME";
-
-  bool get _applePayMerchantIdSet => applePayMerchantId != "REPLACE_ME";
+//  bool get _chargeServerHostReplaced => chargeServerHost != "REPLACE_ME";
+//
+//  bool get _squareLocationSet => squareLocationId != "REPLACE_ME";
+//
+//  bool get _applePayMerchantIdSet => applePayMerchantId != "REPLACE_ME";
 
 //  bool isLoading = true;
 //  bool applePayEnabled = false;
@@ -160,7 +160,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                               color: blackColor),
                                     ),
                                     Text(
-                                      '\$' + totalData[0].total,
+                                      '\$' + totlePrice.toString(),
                                       style: Theme.of(context)
                                           .textTheme
                                           .body1
@@ -254,7 +254,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 SizedBox(
                                   height: 6.0,
                                 ),
-                                totalData[0].total == "0"
+                                totlePrice > 0
                                     ? Container(
                                         margin: EdgeInsets.all(30.0),
                                         child: RaisedButton(
@@ -317,6 +317,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         getSeasonInvoiceResponse = GetSeasonInvoice.fromMap(data);
         cardList = getSeasonInvoiceResponse.result.cardList;
         totalData = getSeasonInvoiceResponse.result.totalData;
+        totlePrice =
+            double.parse(getSeasonInvoiceResponse.result.totalData[0].total);
       }
       setState(() {});
     });
@@ -513,19 +515,20 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   Future<void> _onStartCardEntryFlowWithBuyerVerification() async {
     print("_onStartCardEntryFlowWithBuyerVerification(){...}");
     var money = Money((b) => b
-      ..amount = /*int.parse(totalData[0].total)*/ 100
-      ..currencyCode = 'USD');
+      ..amount = totlePrice.toInt()
+      ..currencyCode = 'USD' /*'AUD'*/);
 
     var contact = Contact((b) => b
-      ..givenName = "John"
-      ..familyName = "Doe"
-      ..addressLines = new ListBuilder<String>(["London Eye", "Riverside Walk"])
+          ..givenName = getPrefValue(Keys.NAME)
+          ..email = getPrefValue(Keys.EMAIL)
+          ..phone = getPrefValue(Keys.MOBILE)
+//      ..familyName = ""
+//      ..addressLines = new ListBuilder<String>(["London Eye", "Riverside Walk"])
 //          new BuiltList<String>(["London Eye", "Riverside Walk"]).toBuilder()
-      ..city = "London"
-      ..countryCode = "GB"
-      ..email = "johndoe@example.com"
-      ..phone = "8001234567"
-      ..postalCode = "SE1 7");
+//      ..city = "London"
+//      ..countryCode = "GB"
+//      ..postalCode = "SE1 7"
+        );
 
     await InAppPayments.startCardEntryFlowWithBuyerVerification(
         onBuyerVerificationSuccess: _onBuyerVerificationSuccess,
@@ -544,15 +547,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     print("_onBuyerVerificationSuccess(){...}" + result.nonce);
     print("_onBuyerVerificationSuccess(){...}" + result.token);
     print("result : " + result.toString());
-    if (!_chargeServerHostReplaced) {
-      _showUrlNotSetAndPrintCurlCommand(result.nonce,
-          verificationToken: result.token);
-      return;
-    }
 
     try {
       showDialog(context: context, builder: (context) => Loading());
-      await chargeCardAfterBuyerVerification(result, totalData[0].total)
+      await chargeCardAfterBuyerVerification(result, totlePrice.toInt())
           .then((response) {
         print(json.decode(response.body));
         payInvoiceApi(widget.seasonId);
@@ -564,6 +562,24 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
           description: ex.errorMessage);
     }
   }
+
+  void _onBuyerVerificationFailure(ErrorInfo errorInfo) async {
+    print("_onBuyerVerificationFailure(){...}");
+    // handle the error
+    showAlertDialog(
+        context: context, title: "Error", description: errorInfo.message);
+  }
+
+  //   * Callback when card entry is cancelled and UI is closed
+
+  void _onCancelCardEntryFlow() {
+    print("_onCancelCardEntryFlow(){...}");
+    // Handle the cancel callback
+  }
+
+//   * An event listener to start card entry flow
+
+/*
 
   void _showUrlNotSetAndPrintCurlCommand(String nonce,
       {String verificationToken}) {
@@ -580,20 +596,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
             "Check your console for a CURL command to charge the nonce, or replace CHARGE_SERVER_HOST with your server host.");
     // printCurlCommand(nonce, verificationToken);
   }
-
-  void _onBuyerVerificationFailure(ErrorInfo errorInfo) async {
-    print("_onBuyerVerificationFailure(){...}");
-    // handle the error
-  }
-
-  //   * Callback when card entry is cancelled and UI is closed
-
-  void _onCancelCardEntryFlow() {
-    print("_onCancelCardEntryFlow(){...}");
-    // Handle the cancel callback
-  }
-
-  //   * An event listener to start card entry flow
 
   Future<void> _onStartCardEntryFlow() async {
     print("_onStartCardEntryFlow(){...}");
@@ -635,60 +637,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
               "Go to your Square dashbord to see this order reflected in the sales tab.");
     }
   }
+*/
 
-//  void printCurlCommand(String nonce, String verificationToken) {
-//    var hostUrl = 'https://connect.squareup.com';
-//    if (squareApplicationId.startsWith('sandbox')) {
-//      hostUrl = 'https://connect.squareupsandbox.com';
-//    }
-//    var uuid = Uuid().v4();
-//
-//    if (verificationToken == null) {
-//      print(
-//          'curl --request POST $hostUrl/v2/locations/SQUARE_LOCATION_ID/transactions \\'
-//              '--header \"Content-Type: application/json\" \\'
-//              '--header \"Authorization: Bearer YOUR_ACCESS_TOKEN\" \\'
-//              '--header \"Accept: application/json\" \\'
-//              '--data \'{'
-//              '\"idempotency_key\": \"$uuid\",'
-//              '\"amount_money\": {'
-//              '\"amount\": $cookieAmount,'
-//              '\"currency\": \"USD\"},'
-//              '\"card_nonce\": \"$nonce\"'
-//              '}\'');
-//    } else {
-//      print('curl --request POST $hostUrl/v2/payments \\'
-//          '--header \"Content-Type: application/json\" \\'
-//          '--header \"Authorization: Bearer YOUR_ACCESS_TOKEN\" \\'
-//          '--header \"Accept: application/json\" \\'
-//          '--data \'{'
-//          '\"idempotency_key\": \"$uuid\",'
-//          '\"amount_money\": {'
-//          '\"amount\": $cookieAmount,'
-//          '\"currency\": \"USD\"},'
-//          '\"source_id\": \"$nonce\",'
-//          '\"verification_token\": \"$verificationToken\"'
-//          '}\'');
-//    }
-//  }
-
-//  Future _setIOSCardEntryTheme() async {
-//    var themeConfiguationBuilder = IOSThemeBuilder();
-//    themeConfiguationBuilder.saveButtonTitle = 'Pay';
-//    themeConfiguationBuilder.errorColor = RGBAColorBuilder()
-//      ..r = 255
-//      ..g = 0
-//      ..b = 0;
-//    themeConfiguationBuilder.tintColor = RGBAColorBuilder()
-//      ..r = 36
-//      ..g = 152
-//      ..b = 141;
-//    themeConfiguationBuilder.keyboardAppearance = KeyboardAppearance.light;
-//    themeConfiguationBuilder.messageColor = RGBAColorBuilder()
-//      ..r = 114
-//      ..g = 114
-//      ..b = 114;
-//
-//    await InAppPayments.setIOSCardEntryTheme(themeConfiguationBuilder.build());
-//  }
 }

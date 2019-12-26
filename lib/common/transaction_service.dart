@@ -56,19 +56,18 @@ Future<void> chargeCard(CardDetails result) async {
 }
 
 Future<http.Response> chargeCardAfterBuyerVerification(
-    BuyerVerificationDetails result, String price) async {
+    BuyerVerificationDetails result, int price) async {
   //var body = jsonEncode({"nonce": result.nonce, "token": result.token});
 
   http.Response response;
   try {
-    response = await http.post(chargeUrl,
-        body: json.encode(getParams(result, double.parse(price))),
-        headers: {
-          "Accept": "application/json",
-          "Authorization":
-              "Bearer EAAAEPMz-1I1p7AI6eBT09Fwvq5rZbUknhiRSA2Af_UmZnqalk0bIE0vI-xdFmrZ",
-          "content-type": "application/json"
-        });
+    response = await http
+        .post(chargeUrl, body: json.encode(getParams(result, price)), headers: {
+      "Accept": "application/json",
+      "Authorization":
+          "Bearer EAAAEPMz-1I1p7AI6eBT09Fwvq5rZbUknhiRSA2Af_UmZnqalk0bIE0vI-xdFmrZ",
+      "content-type": "application/json"
+    });
   } on SocketException catch (ex) {
     throw ChargeException(ex.message);
   }
@@ -81,13 +80,13 @@ Future<http.Response> chargeCardAfterBuyerVerification(
   }
 }
 
-getParams(BuyerVerificationDetails result, double price) {
+getParams(BuyerVerificationDetails result, int price) {
   return {
     'idempotency_key': new Random().nextInt(10000000).toString(),
     'autocomplete': true,
     'amount_money': {
       'amount': price,
-      'currency': 'USD',
+      'currency': 'USD' /*'AUD'*/,
     },
     'source_id': result.nonce,
   };
