@@ -28,6 +28,8 @@ const String PAY_INVOICE = "payInvoice";
 const String GET_SUPPORT_MESSAGES = "getSupportMessages";
 const String SEND_SUPPORT_MESSAGES = "sendSupportMessage";
 const String GET_SUPPORT_LATEST_MESSAGES = "getSupportLatestMessages";
+const String GET_VERSIONS = "getVersions";
+const String GET_MESSAGE_UNREAD_FLAG = "getMessageUnreadFlag";
 
 // 1. Login API
 Future<http.Response> login(param) async {
@@ -71,7 +73,7 @@ Future<http.Response> getSeasonList() async {
   }
 }
 
-// 4. Update Profile API
+// 4. Update Profile API (Without Profile)
 Future<http.Response> updateProfile(param) async {
   print("updateProfile Api(){...}");
   var client = new http.Client();
@@ -85,6 +87,7 @@ Future<http.Response> updateProfile(param) async {
   }
 }
 
+// 4. Update Profile API (With Profile)
 updateProfileWithProfilePic(file, param, callBack) async {
   var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
   var length = await file.length();
@@ -275,6 +278,34 @@ Future<http.Response> getSupportLatestMessages(param) async {
   try {
     http.Response data = await client.post(
       BASE_URL + GET_SUPPORT_LATEST_MESSAGES + param,
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 18. Get App Versions
+Future<http.Response> getVersions() async {
+  print("getVersions Api(){...}");
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + GET_VERSIONS,
+    );
+    return data;
+  } finally {
+    client.close();
+  }
+}
+
+// 19. Get Message Unread Flag
+Future<http.Response> getMessageUnreadFlag(param) async {
+  print("getMessageUnreadFlag Api(){...}");
+  var client = new http.Client();
+  try {
+    http.Response data = await client.post(
+      BASE_URL + GET_MESSAGE_UNREAD_FLAG + '&user_id=$param',
     );
     return data;
   } finally {

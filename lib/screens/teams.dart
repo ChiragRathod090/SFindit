@@ -92,36 +92,57 @@ class _TeamsScreenState extends State<TeamsScreen> {
             child: Container(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(list[index].teamName,
-                        style: Theme.of(context)
-                            .textTheme
-                            .body2
-                            .copyWith(fontSize: 16.0)),
-                    SizedBox(
-                      height: 4.0,
-                    ),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Image(
-                          color: Colors.grey[600],
-                          image: AssetImage(Images.TEAMS),
-                          height: 16.0,
-                          width: 16.0,
-                          fit: BoxFit.fill,
-                        ),
-                        SizedBox(
-                          width: 4.0,
-                        ),
-                        Text(list[index].playerCount,
+                        Text(list[index].teamName,
                             style: Theme.of(context)
                                 .textTheme
-                                .body1
-                                .copyWith(fontSize: 13.0)),
+                                .body2
+                                .copyWith(fontSize: 16.0)),
+                        SizedBox(
+                          height: 4.0,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Image(
+                              color: Colors.grey[600],
+                              image: AssetImage(Images.TEAMS),
+                              height: 16.0,
+                              width: 16.0,
+                              fit: BoxFit.fill,
+                            ),
+                            SizedBox(
+                              width: 4.0,
+                            ),
+                            Text(list[index].playerCount,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .body1
+                                    .copyWith(fontSize: 13.0)),
+                          ],
+                        ),
                       ],
                     ),
+                    list[index].unReadFlag == 1
+                        ? Container(
+                            padding: EdgeInsets.all(10.0),
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              alignment: Alignment.topRight,
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(25.0))),
+                              height: 8.0,
+                              width: 8.0,
+                            ),
+                          )
+                        : Container()
                   ],
                 ),
               ),
@@ -132,3 +153,22 @@ class _TeamsScreenState extends State<TeamsScreen> {
     );
   }
 }
+/*                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+,
+                        Container(
+                          padding: EdgeInsets.all(5.0),
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            alignment: Alignment.topRight,
+                            decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(25.0))),
+                            height: 5.0,
+                            width: 5.0,
+                          ),
+                        )
+                      ],
+                    ),*/

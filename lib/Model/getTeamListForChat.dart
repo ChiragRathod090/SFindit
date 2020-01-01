@@ -38,23 +38,35 @@ class GetTeamListForChat {
 class Result {
   String teamId;
   String teamName;
+  String seasonID;
   String playerCount;
+  int unReadFlag;
+  String comp;
 
   Result({
     this.teamId,
     this.teamName,
+    this.seasonID,
     this.playerCount,
+    this.unReadFlag,
+    this.comp,
   });
 
   factory Result.fromMap(Map<String, dynamic> json) => Result(
         teamId: json["teamID"],
         teamName: json["team_name"],
+        seasonID: json["seasonID"],
         playerCount: json["player_count"],
+        unReadFlag: json["un_read_flag"],
+        comp: json["comp"],
       );
 
   Map<String, dynamic> toMap() => {
         "teamID": teamId,
         "team_name": teamName,
+        "seasonID": seasonID,
         "player_count": playerCount,
+        "un_read_flag": unReadFlag,
+        "comp": comp,
       };
 }
