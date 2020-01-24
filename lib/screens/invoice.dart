@@ -582,7 +582,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         // return object of type Dialog
         return AlertDialog(
           content: new Text(
-              "A 1.9% plus 30c fee applies to all Square transactions. A further ${total} will be added to your payment."),
+              "A 1.9% ${'+'} 30c fee applies to all Square transactions. A further ${total} will be added to your payment."),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             FlatButton(
