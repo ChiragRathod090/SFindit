@@ -262,7 +262,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(8.0))),
                                           child: Text(
-                                            txtPayInvoice,
+                                            txtPaySecurely,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .body1
@@ -278,8 +278,11 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                               bottom: 10.0),
                                           textColor: whiteColor,
                                           onPressed: () {
-                                            //_onStartCardEntryFlow();
-                                            _onStartCardEntryFlowWithBuyerVerification();
+                                            double totalFurther =
+                                                (totlePrice / 1.9 + 0.30);
+                                            var total =
+                                                totalFurther.toStringAsFixed(2);
+                                            _showDialog(context, total);
                                           },
                                         ),
                                       )
@@ -522,12 +525,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
           ..givenName = getPrefValue(Keys.NAME)
           ..email = getPrefValue(Keys.EMAIL)
           ..phone = getPrefValue(Keys.MOBILE)
-//      ..familyName = ""
-//      ..addressLines = new ListBuilder<String>(["London Eye", "Riverside Walk"])
-//          new BuiltList<String>(["London Eye", "Riverside Walk"]).toBuilder()
-//      ..city = "London"
-//      ..countryCode = "GB"
-//      ..postalCode = "SE1 7"
         );
 
     await InAppPayments.startCardEntryFlowWithBuyerVerification(
@@ -575,6 +572,29 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   void _onCancelCardEntryFlow() {
     print("_onCancelCardEntryFlow(){...}");
     // Handle the cancel callback
+  }
+
+  void _showDialog(BuildContext context, String total) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          content: new Text(
+              "A 1.9% plus 30c fee applies to all Square transactions. A further ${total} will be added to your payment."),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+                child: Text("Continue"),
+                onPressed: () {
+                  Navigator.pop(context);
+                  _onStartCardEntryFlowWithBuyerVerification();
+                }),
+          ],
+        );
+      },
+    );
   }
 
 //   * An event listener to start card entry flow

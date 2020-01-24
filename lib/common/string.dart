@@ -12,6 +12,8 @@ const String txtUnavailable = "Unavailable";
 const String txtPayInvoice = "Pay Invoice";
 const String txtFixtures = "Fixtures";
 const String txtLadders = "Ladders";
+const String txtPaySecurely= "Pay Securely with Square";
+
 
 const String txtProfile = "Profile";
 const String txtNotifications = "Notifications";
